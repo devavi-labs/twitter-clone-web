@@ -1,20 +1,13 @@
 import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, Typography, ButtonProps } from "@material-ui/core";
 import { RoundedButton } from ".";
 
-interface SignupButtonProps {
-  onClick?: () => any;
-}
-
-export const SignupButton: React.FC<SignupButtonProps> = ({
-  onClick = () => null,
-}) => {
+export const SignupButton: React.FC<ButtonProps> = (props) => {
   const useStyles = makeStyles({
     button: {
       margin: "0.4rem 0",
     },
     buttonText: {
-      color: "white",
       fontWeight: "bold",
     },
   });
@@ -26,7 +19,7 @@ export const SignupButton: React.FC<SignupButtonProps> = ({
       className={classes.button}
       disableElevation
       fullWidth
-      onClick={onClick}
+      {...props}
     >
       <Typography color="textPrimary" className={classes.buttonText}>
         Sign up
