@@ -6,7 +6,7 @@ function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   return (
-    <ThemeProvider theme={prefersDarkMode ? dark : dark}>
+    <ThemeProvider theme={prefersDarkMode ? dark : light}>
       <CssBaseline />
       <Routes />
     </ThemeProvider>
