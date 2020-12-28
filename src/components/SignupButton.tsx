@@ -21,9 +21,7 @@ export const SignupButton: React.FC<ButtonProps> = (props) => {
       fullWidth
       {...props}
     >
-      <Typography color="textPrimary" className={classes.buttonText}>
-        Sign up
-      </Typography>
+      <Typography className={classes.buttonText}>Sign up</Typography>
     </RoundedButton>
   );
 };
