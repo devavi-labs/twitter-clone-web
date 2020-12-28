@@ -4,3 +4,5 @@ export { SignupButton } from "./SignupButton";
 export { LoginButton } from "./LoginButton";
 export { SignupModal } from "./SignupModal";
 export { RoundedButton } from "./RoundedButton";
+export { LoginForm } from "./LoginForm";
+export { SignupForm } from "./SignupForm";

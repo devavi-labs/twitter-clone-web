@@ -8,13 +8,32 @@ import {
   Typography,
   useTheme,
 } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsChat, BsPeople, BsSearch } from "react-icons/bs";
-import { LoginButton, Logo, SignupButton } from "../components";
+import { useHistory } from "react-router-dom";
+import { LoginButton, Logo, SignupButton, SignupModal } from "../components";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 
 const Home = () => {
   const { sm, xs } = useMediaQuery();
+  const history = useHistory();
+  const {
+    location: { pathname },
+  } = history;
+
+  const [signupModalOpen, setSignupModalOpen] = useState(
+    pathname === "/signup"
+  );
+
+  useEffect(() => {
+    pathname === "/signup" && !signupModalOpen && setSignupModalOpen(true);
+    pathname === "/" && signupModalOpen && setSignupModalOpen(false);
+  }, [pathname, signupModalOpen]);
+
+  const closeSignupModal = () => {
+    setSignupModalOpen(false);
+    history.replace("/");
+  };
 
   const { palette } = useTheme();
 
@@ -108,8 +127,8 @@ const Home = () => {
         {sm && (
           <Box className={classes.bottomBox}>
             <Box className={classes.bottomBoxInner}>
-              <SignupButton />
-              <LoginButton />
+              <SignupButton onClick={() => history.push("/signup")} />
+              <LoginButton onClick={() => history.push("/login")} />
             </Box>
           </Box>
         )}
@@ -161,8 +180,8 @@ const Home = () => {
               <Typography className={classes.callText}>
                 Join Quacker today.
               </Typography>
-              <SignupButton />
-              <LoginButton />
+              <SignupButton onClick={() => history.push("/signup")} />
+              <LoginButton onClick={() => history.push("/login")} />
             </Box>
           </Box>
         </Box>
@@ -172,6 +191,7 @@ const Home = () => {
           © {new Date().getFullYear().toString()} Quacker
         </Typography>
       </Box>
+      <SignupModal open={signupModalOpen} onClose={closeSignupModal} />
     </Box>
   );
 };
