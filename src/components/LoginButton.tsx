@@ -1,13 +1,17 @@
 import React from "react";
-import { Button, makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
+import { RoundedButton } from ".";
 
-export const LoginButton = () => {
+interface LoginButtonProps {
+  onClick?: () => any;
+}
+
+export const LoginButton: React.FC<LoginButtonProps> = ({
+  onClick = () => null,
+}) => {
   const useStyles = makeStyles({
     button: {
-      borderRadius: "1000px",
       margin: "0.4rem 0",
-      textTransform: "unset",
-      padding: "0.6em",
     },
     buttonText: {
       fontWeight: "bold",
@@ -15,14 +19,15 @@ export const LoginButton = () => {
   });
   const classes = useStyles();
   return (
-    <Button
+    <RoundedButton
       variant="outlined"
       color="primary"
       className={classes.button}
       disableElevation
       fullWidth
+      onClick={onClick}
     >
       <Typography className={classes.buttonText}>Log in</Typography>
-    </Button>
+    </RoundedButton>
   );
 };

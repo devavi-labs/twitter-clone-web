@@ -1,13 +1,17 @@
 import React from "react";
-import { Button, makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
+import { RoundedButton } from ".";
 
-export const SignupButton = () => {
+interface SignupButtonProps {
+  onClick?: () => any;
+}
+
+export const SignupButton: React.FC<SignupButtonProps> = ({
+  onClick = () => null,
+}) => {
   const useStyles = makeStyles({
     button: {
-      borderRadius: "1000px",
       margin: "0.4rem 0",
-      textTransform: "unset",
-      padding: "0.6em",
     },
     buttonText: {
       color: "white",
@@ -16,16 +20,17 @@ export const SignupButton = () => {
   });
   const classes = useStyles();
   return (
-    <Button
+    <RoundedButton
       variant="contained"
       color="primary"
       className={classes.button}
       disableElevation
       fullWidth
+      onClick={onClick}
     >
       <Typography color="textPrimary" className={classes.buttonText}>
         Sign up
       </Typography>
-    </Button>
+    </RoundedButton>
   );
 };
