@@ -1,19 +1,23 @@
-import { Box } from "@material-ui/core";
+import { Box, BoxProps } from "@material-ui/core";
 import React from "react";
 
 interface LogoProps {
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  size?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
   variant?: "blue" | "white" | "main";
 }
 
-export const Logo: React.FC<LogoProps> = ({
+export const Logo: React.FC<LogoProps & BoxProps> = ({
   size = "xs",
   variant = "white",
+  ...props
 }) => {
   let sizepx: string = "36px";
   let image: string = "logo-white192.png";
 
   switch (size) {
+    case "xxs":
+      sizepx = "24px";
+      break;
     case "xs":
       sizepx = "36px";
       break;
@@ -49,12 +53,13 @@ export const Logo: React.FC<LogoProps> = ({
 
   return (
     <Box
-      width={sizepx}
-      height={sizepx}
       style={{
         backgroundImage: `url("${image}")`,
         backgroundSize: "100%",
+        width: sizepx,
+        height: sizepx,
       }}
+      {...props}
     />
   );
 };
