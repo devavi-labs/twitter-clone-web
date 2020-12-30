@@ -52,10 +52,7 @@ export const authExchange = authE<AuthState>({
     const result = await fetch(REST_ENDPOINT + "/refresh_token", {
       method: "post",
       credentials: "include",
-      headers: new Headers({
-        Authorization: "Basic " + refreshToken,
-        "Content-Type": "application/x-www-form-urlencoded",
-      }),
+      headers: new Headers({ Authorization: "Basic " + refreshToken }),
     });
 
     if (result.status === 200) {
