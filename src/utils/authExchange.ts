@@ -66,7 +66,7 @@ export const authExchange = authE<AuthState>({
           return { accessToken, refreshToken };
         }
       } else mutate(LogoutDocument);
-    } else mutate(LogoutDocument);
+    }
 
     return null;
   },
