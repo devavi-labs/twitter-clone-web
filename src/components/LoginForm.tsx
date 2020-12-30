@@ -1,8 +1,12 @@
 import React from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { TextField } from "@material-ui/core";
 import { LoginButton } from ".";
+import { useLoginMutation } from "../generated/graphql";
+import { mapErrors } from "../utils/mapErrors";
+import { useHistory } from "react-router-dom";
+import { TopProgressBar } from ".";
 
 type LoginValues = {
   emailOrUsername: string;
@@ -20,14 +24,41 @@ const validationSchema = Yup.object({
 });
 
 export const LoginForm: React.FC = () => {
+  const [, login] = useLoginMutation();
+
+  const {
+    replace,
+    location: { search },
+  } = useHistory();
+  const queries = new URLSearchParams(search);
+  const from = queries.get("from");
+
+  const handleSubmit = async (
+    values: LoginValues,
+    { setErrors }: FormikHelpers<LoginValues>
+  ) => {
+    const { data } = await login(values);
+
+    if (data?.login.user) {
+      if (from) return replace(from);
+      else return replace("/");
+    }
+
+    if (data?.login.errors) {
+      const errors = mapErrors(data?.login.errors);
+      setErrors(errors);
+    }
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={handleSubmit}
     >
-      {() => (
+      {({ isSubmitting }) => (
         <Form>
+          <TopProgressBar visible={isSubmitting} />
           <Field name="emailOrUsername">
             {({
               field,
@@ -77,7 +108,11 @@ export const LoginForm: React.FC = () => {
               />
             )}
           </Field>
-          <LoginButton type="submit" variant="contained" />
+          <LoginButton
+            type="submit"
+            variant="contained"
+            disabled={isSubmitting}
+          />
         </Form>
       )}
     </Formik>

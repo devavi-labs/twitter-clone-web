@@ -1,8 +1,11 @@
-import React from "react";
-import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
 import { Link, makeStyles, TextField, Typography } from "@material-ui/core";
-import { SignupButton } from ".";
+import { Field, Form, Formik, FormikHelpers } from "formik";
+import React from "react";
+import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
+import { SignupButton, TopProgressBar } from ".";
+import { useSignupMutation } from "../generated/graphql";
+import { mapErrors } from "../utils/mapErrors";
 
 type SignupValues = {
   displayName: string;
@@ -40,14 +43,43 @@ export const SignupForm: React.FC = () => {
     },
   }));
   const classes = useStyles();
+
+  const [, signup] = useSignupMutation();
+
+  const {
+    replace,
+    location: { search },
+  } = useHistory();
+  const queries = new URLSearchParams(search);
+  const from = queries.get("from");
+
+  const handleSubmit = async (
+    values: SignupValues,
+    { setErrors }: FormikHelpers<SignupValues>
+  ) => {
+    const { data } = await signup({ input: values });
+
+    if (data?.signup.user) {
+      if (from) return replace(from);
+      else return replace("/");
+    }
+
+    if (data?.signup.errors) {
+      const errors = mapErrors(data?.signup.errors);
+      setErrors(errors);
+    }
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={handleSubmit}
     >
-      {() => (
+      {({ isSubmitting }) => (
         <Form>
+          <TopProgressBar visible={isSubmitting} />
+
           <Field name="displayName">
             {({
               field,
@@ -143,7 +175,7 @@ export const SignupForm: React.FC = () => {
             Others will be able to find you by email when provided ·{" "}
             <Link>Privacy Options</Link>
           </Typography>
-          <SignupButton type="submit" />
+          <SignupButton type="submit" disabled={isSubmitting} />
         </Form>
       )}
     </Formik>

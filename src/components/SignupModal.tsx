@@ -1,10 +1,4 @@
-import {
-  makeStyles,
-  Modal,
-  Typography,
-  useTheme,
-  IconButton,
-} from "@material-ui/core";
+import { makeStyles, Modal, Typography, IconButton } from "@material-ui/core";
 import React from "react";
 import { Logo } from "./Logo";
 import { useMediaQuery } from "../hooks/useMediaQuery";
@@ -18,25 +12,21 @@ interface SignupModalProps {
 
 export const SignupModal: React.FC<SignupModalProps> = ({ open, onClose }) => {
   const rootRef = React.useRef(null);
+
   const { xs } = useMediaQuery();
 
-  const {
-    palette: { type },
-  } = useTheme();
-
-  const useStyles = makeStyles(({ palette }) => ({
+  const useStyles = makeStyles(({ palette: { text, secondary, type } }) => ({
     backdrop: {
-      backgroundColor: `${palette.text.primary} !important`,
+      backgroundColor: `${text.primary} !important`,
       opacity: 0.2,
     },
-
     modal: {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
     },
     paper: {
-      backgroundColor: palette.secondary.main,
+      backgroundColor: secondary.main,
       width: "100%",
       maxWidth: "600px",
       height: xs ? "100%" : "95%",
@@ -61,7 +51,7 @@ export const SignupModal: React.FC<SignupModalProps> = ({ open, onClose }) => {
       display: "flex",
       alignItems: "center",
       padding: "0.5rem 2rem",
-      opacity: palette.type === "dark" ? 0.8 : 1,
+      opacity: type === "dark" ? 0.8 : 1,
     },
 
     logo: {
@@ -74,7 +64,7 @@ export const SignupModal: React.FC<SignupModalProps> = ({ open, onClose }) => {
       fontWeight: "bold",
       alignSelf: "flex-start",
       margin: "0.5rem 0",
-      opacity: palette.type === "dark" ? 0.8 : 1,
+      opacity: type === "dark" ? 0.8 : 1,
     },
   }));
 
@@ -104,11 +94,7 @@ export const SignupModal: React.FC<SignupModalProps> = ({ open, onClose }) => {
               <IconButton onClick={onClose}>
                 <BsX />
               </IconButton>
-              <Logo
-                size="xxs"
-                variant={type === "dark" ? "white" : "blue"}
-                className={classes.logo}
-              />
+              <Logo size="xxs" className={classes.logo} />
             </div>
             <div className={classes.body}>
               <Typography

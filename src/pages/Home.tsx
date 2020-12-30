@@ -6,7 +6,6 @@ import {
   ListItemText,
   makeStyles,
   Typography,
-  useTheme,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { BsChat, BsPeople, BsSearch } from "react-icons/bs";
@@ -35,12 +34,10 @@ const Home = () => {
     history.replace("/");
   };
 
-  const { palette } = useTheme();
-
-  const useStyles = makeStyles({
+  const useStyles = makeStyles(({ palette: { type, primary, secondary } }) => ({
     leftBox: {
       flex: 1,
-      backgroundColor: palette.primary.light,
+      backgroundColor: primary.light,
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -77,20 +74,20 @@ const Home = () => {
       maxWidth: "400px",
     },
     logo: {
-      opacity: palette.type === "dark" ? 0.8 : 1,
+      opacity: type === "dark" ? 0.8 : 1,
     },
     paragraph: {
       fontSize: "1.9rem",
       fontWeight: "bold",
       marginTop: "1rem",
       marginBottom: "4rem",
-      opacity: palette.type === "dark" ? 0.8 : 1,
+      opacity: type === "dark" ? 0.8 : 1,
     },
     callText: {
       fontSize: "0.9rem",
       fontWeight: "bold",
       marginBottom: "0.5em",
-      opacity: palette.type === "dark" ? 0.8 : 1,
+      opacity: type === "dark" ? 0.8 : 1,
     },
 
     bottomBox: {
@@ -104,15 +101,15 @@ const Home = () => {
       padding: "0 1em",
     },
     footer: {
-      backgroundColor: palette.secondary.main,
+      backgroundColor: secondary.main,
       padding: "1rem",
     },
     copyrightText: {
       fontSize: "0.8rem",
       textAlign: "center",
-      opacity: palette.type === "dark" ? 0.6 : 1,
+      opacity: type === "dark" ? 0.6 : 1,
     },
-  });
+  }));
 
   const classes = useStyles();
 
@@ -127,8 +124,8 @@ const Home = () => {
         {sm && (
           <Box className={classes.bottomBox}>
             <Box className={classes.bottomBoxInner}>
-              <SignupButton onClick={() => history.push("/signup")} />
-              <LoginButton onClick={() => history.push("/login")} />
+              <SignupButton onClick={() => history.push("/signup?from=/")} />
+              <LoginButton onClick={() => history.push("/login?from=/")} />
             </Box>
           </Box>
         )}
@@ -170,7 +167,7 @@ const Home = () => {
           <Box className={classes.rightBoxInner}>
             <Box>
               <Box className={classes.logo}>
-                <Logo variant={palette.type === "dark" ? "white" : "blue"} />
+                <Logo />
               </Box>
               <Typography paragraph className={classes.paragraph}>
                 See what’s happening in the world right now
@@ -180,8 +177,8 @@ const Home = () => {
               <Typography className={classes.callText}>
                 Join Quacker today.
               </Typography>
-              <SignupButton onClick={() => history.push("/signup")} />
-              <LoginButton onClick={() => history.push("/login")} />
+              <SignupButton onClick={() => history.push("/signup?from=/")} />
+              <LoginButton onClick={() => history.push("/login?from=/")} />
             </Box>
           </Box>
         </Box>

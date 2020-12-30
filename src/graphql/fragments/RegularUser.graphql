@@ -1,0 +1,75 @@
+fragment RegularUser on User {
+  id
+  displayName
+  username
+  displayPicture
+  coverPicture
+  emailVerified
+  followers {
+    id
+    displayName
+    username
+    emailVerified
+    displayPicture
+  }
+  followings {
+    id
+    displayName
+    username
+    emailVerified
+    displayPicture
+  }
+  amIDeactivated
+  quacks {
+    id
+    text
+    truncatedText
+    urls
+    isVisible
+    likes {
+      id
+    }
+    requacks {
+      id
+    }
+    replies {
+      id
+    }
+  }
+  requacks {
+    quack {
+      id
+      text
+      truncatedText
+      urls
+      isVisible
+      likes {
+        id
+      }
+      requacks {
+        id
+      }
+      replies {
+        id
+      }
+    }
+  }
+  likes {
+    quack {
+      id
+      text
+      truncatedText
+      urls
+      isVisible
+      likes {
+        id
+      }
+      requacks {
+        id
+      }
+      replies {
+        id
+      }
+    }
+  }
+}

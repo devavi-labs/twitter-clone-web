@@ -6,3 +6,4 @@ export { SignupModal } from "./SignupModal";
 export { RoundedButton } from "./RoundedButton";
 export { LoginForm } from "./LoginForm";
 export { SignupForm } from "./SignupForm";
+export { TopProgressBar } from "./TopProgressBar";

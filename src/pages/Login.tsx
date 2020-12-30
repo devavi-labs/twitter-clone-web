@@ -4,9 +4,9 @@ import { Logo } from "../components";
 import { LoginForm } from "../components/LoginForm";
 
 const Login = () => {
-  const useStyles = makeStyles(({ palette }) => ({
+  const useStyles = makeStyles(({ palette: { type, secondary } }) => ({
     root: {
-      backgroundColor: palette.secondary.main,
+      backgroundColor: secondary.main,
       padding: "1rem",
     },
     container: {
@@ -19,11 +19,11 @@ const Login = () => {
       fontWeight: "bold",
       textAlign: "center",
       margin: "1rem 0",
-      opacity: palette.type === "dark" ? 0.8 : 1,
+      opacity: type === "dark" ? 0.8 : 1,
     },
     logo: {
       margin: "0 auto",
-      opacity: palette.type === "dark" ? 0.8 : 1,
+      opacity: type === "dark" ? 0.8 : 1,
     },
     extraLinks: {
       display: "flex",
@@ -47,7 +47,7 @@ const Login = () => {
 
         <div className={classes.extraLinks}>
           <Link>Forgot password?</Link> ·{" "}
-          <Link href="/signup">Sign up for Twitter</Link>
+          <Link href="/signup?from=/login">Sign up for Twitter</Link>
         </div>
       </Box>
     </Box>
