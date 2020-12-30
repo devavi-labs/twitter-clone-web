@@ -49,18 +49,23 @@ export const authExchange = authE<AuthState>({
       }
     }
 
-    const result = await fetch(REST_ENDPOINT + "/refresh_token", {
-      method: "post",
-      credentials: "include",
-      headers: new Headers({ Authorization: "Basic " + refreshToken }),
-    });
+    if (refreshToken) {
+      const result = await fetch(REST_ENDPOINT + "/refresh_token", {
+        method: "post",
+        credentials: "include",
+        headers: new Headers({
+          Authorization: "Basic " + refreshToken,
+          "Content-Type": "application/json",
+        }),
+      });
 
-    if (result.status === 200) {
-      const refreshToken = Cookies.get(REFRESH_TOKEN);
-      const accessToken = Cookies.get(ACCESS_TOKEN);
-      if (accessToken && refreshToken) {
-        return { accessToken, refreshToken };
-      }
+      if (result.ok) {
+        const refreshToken = Cookies.get(REFRESH_TOKEN);
+        const accessToken = Cookies.get(ACCESS_TOKEN);
+        if (accessToken && refreshToken) {
+          return { accessToken, refreshToken };
+        }
+      } else mutate(LogoutDocument);
     } else mutate(LogoutDocument);
 
     return null;
