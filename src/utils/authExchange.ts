@@ -54,7 +54,7 @@ export const authExchange = authE<AuthState>({
       credentials: "include",
       headers: new Headers({
         Authorization: "Basic " + refreshToken,
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       }),
     });
 
