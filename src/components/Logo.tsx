@@ -1,4 +1,4 @@
-import { Box, BoxProps } from "@material-ui/core";
+import { Box, BoxProps, useTheme } from "@material-ui/core";
 import React from "react";
 
 interface LogoProps {
@@ -7,12 +7,17 @@ interface LogoProps {
 }
 
 export const Logo: React.FC<LogoProps & BoxProps> = ({
-  size = "xs",
-  variant = "white",
+  size,
+  variant,
   ...props
 }) => {
+  const {
+    palette: { type },
+  } = useTheme();
+
   let sizepx: string = "36px";
-  let image: string = "logo-white192.png";
+  let image: string =
+    type === "dark" ? "logo-white192.png" : "logo-blue192.png";
 
   switch (size) {
     case "xxs":
@@ -48,7 +53,7 @@ export const Logo: React.FC<LogoProps & BoxProps> = ({
       image = "logo192.png";
       break;
     default:
-      image = "logo-white192.png";
+      image = type === "dark" ? "logo-white192.png" : "logo-blue192.png";
   }
 
   return (
