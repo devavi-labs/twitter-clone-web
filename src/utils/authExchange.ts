@@ -60,11 +60,9 @@ export const authExchange = authE<AuthState>({
       });
 
       if (result.ok) {
-        const refreshToken = Cookies.get(REFRESH_TOKEN);
-        const accessToken = Cookies.get(ACCESS_TOKEN);
-        if (accessToken && refreshToken) {
-          return { accessToken, refreshToken };
-        }
+        const newAT = Cookies.get(ACCESS_TOKEN);
+        const newRT = Cookies.get(REFRESH_TOKEN);
+        return { accessToken: newAT!, refreshToken: newRT! };
       } else mutate(LogoutDocument);
     }
 
