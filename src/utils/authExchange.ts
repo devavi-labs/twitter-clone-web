@@ -42,8 +42,10 @@ export const authExchange = authE<AuthState>({
   },
   getAuth: async ({ authState, mutate }) => {
     const refreshToken = Cookies.get(REFRESH_TOKEN);
+    console.log("refreshToken: ", refreshToken);
     if (!authState) {
       const accessToken = Cookies.get(ACCESS_TOKEN);
+      console.log("accessToken: ", accessToken);
       if (accessToken && refreshToken) {
         return { accessToken, refreshToken };
       }
