@@ -8,11 +8,27 @@ export const saveTokens = (accessToken: string, refreshToken: string) => {
 };
 
 export const getTokens = () => ({
-  accessToken: localStorage.getItem(ACCESS_TOKEN),
-  refreshToken: localStorage.getItem(REFRESH_TOKEN),
+  accessToken: _getToken(ACCESS_TOKEN),
+  refreshToken: _getToken(REFRESH_TOKEN),
 });
 
-export const validateToken = (token: string) => {
+export const removeTokens = () => {
+  localStorage.removeItem(ACCESS_TOKEN);
+  localStorage.removeItem(REFRESH_TOKEN);
+  return true;
+};
+
+const _getToken = (key: typeof ACCESS_TOKEN | typeof REFRESH_TOKEN) => {
+  const _token = localStorage.getItem(key);
+  if (!_token) return null;
+  if (!_validateToken(_token)) {
+    localStorage.removeItem(key);
+    return null;
+  }
+  return _token;
+};
+
+const _validateToken = (token: string) => {
   const payload = decode(token, { json: true });
 
   if (!payload) {

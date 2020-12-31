@@ -2,11 +2,10 @@ import { authExchange as authE } from "@urql/exchange-auth";
 import { makeOperation } from "urql";
 import { LogoutDocument } from "../generated/graphql";
 import { REST_ENDPOINT } from "./constants";
-import { getTokens, saveTokens, validateToken } from "./manageTokens";
+import { getTokens, removeTokens, saveTokens } from "./manageTokens";
 
 interface AuthState {
   accessToken: string;
-  refreshToken: string;
 }
 
 export const authExchange = authE<AuthState>({
@@ -32,7 +31,7 @@ export const authExchange = authE<AuthState>({
     });
   },
   willAuthError: ({ authState }) => {
-    if (!authState || validateToken(authState?.accessToken)) return true;
+    if (!authState) return true;
     return false;
   },
   didAuthError: ({ error }) => {
@@ -43,33 +42,32 @@ export const authExchange = authE<AuthState>({
   getAuth: async ({ authState, mutate }) => {
     const { accessToken, refreshToken } = getTokens();
     if (!authState) {
-      if (
-        accessToken &&
-        validateToken(accessToken) &&
-        refreshToken &&
-        validateToken(refreshToken)
-      ) {
-        return { accessToken, refreshToken };
+      if (accessToken) {
+        return { accessToken };
+      } else if (refreshToken) {
+        const result = await fetch(REST_ENDPOINT + "/refresh_token", {
+          method: "post",
+          credentials: "include",
+          headers: new Headers({
+            Authorization: "Basic " + refreshToken,
+            "Content-Type": "application/json",
+          }),
+        });
+
+        if (result.ok) {
+          const {
+            accessToken: newAT,
+            refreshToken: newRT,
+          } = await result.json();
+          saveTokens(newAT, newRT);
+          return { accessToken: newAT! };
+        } else {
+          removeTokens();
+          mutate(LogoutDocument);
+        }
       }
+      return null;
     }
-
-    if (refreshToken && validateToken(refreshToken)) {
-      const result = await fetch(REST_ENDPOINT + "/refresh_token", {
-        method: "post",
-        credentials: "include",
-        headers: new Headers({
-          Authorization: "Basic " + refreshToken,
-          "Content-Type": "application/json",
-        }),
-      });
-
-      if (result.ok) {
-        const { accessToken: newAT, refreshToken: newRT } = await result.json();
-        saveTokens(newAT, newRT);
-        return { accessToken: newAT!, refreshToken: newRT! };
-      } else mutate(LogoutDocument);
-    }
-
-    return null;
+    return authState;
   },
 });
