@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import { SignupButton, TopProgressBar } from ".";
 import { useSignupMutation } from "../generated/graphql";
+import { saveTokens } from "../utils/manageTokens";
 import { mapErrors } from "../utils/mapErrors";
 
 type SignupValues = {
@@ -60,6 +61,8 @@ export const SignupForm: React.FC = () => {
     const { data } = await signup({ input: values });
 
     if (data?.signup.user) {
+      saveTokens(data?.signup.accessToken!, data?.signup.refreshToken!);
+
       if (from) return replace(from);
       else return replace("/");
     }

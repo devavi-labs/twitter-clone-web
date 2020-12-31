@@ -1,8 +1,8 @@
 import { authExchange as authE } from "@urql/exchange-auth";
-import Cookies from "js-cookie";
 import { makeOperation } from "urql";
 import { LogoutDocument } from "../generated/graphql";
-import { ACCESS_TOKEN, REFRESH_TOKEN, REST_ENDPOINT } from "./constants";
+import { REST_ENDPOINT } from "./constants";
+import { getTokens, saveTokens, validateToken } from "./manageTokens";
 
 interface AuthState {
   accessToken: string;
@@ -32,7 +32,7 @@ export const authExchange = authE<AuthState>({
     });
   },
   willAuthError: ({ authState }) => {
-    if (!authState) return true;
+    if (!authState || validateToken(authState?.accessToken)) return true;
     return false;
   },
   didAuthError: ({ error }) => {
@@ -41,17 +41,19 @@ export const authExchange = authE<AuthState>({
     );
   },
   getAuth: async ({ authState, mutate }) => {
-    const refreshToken = Cookies.get(REFRESH_TOKEN);
-    console.log("refreshToken: ", refreshToken);
+    const { accessToken, refreshToken } = getTokens();
     if (!authState) {
-      const accessToken = Cookies.get(ACCESS_TOKEN);
-      console.log("accessToken: ", accessToken);
-      if (accessToken && refreshToken) {
+      if (
+        accessToken &&
+        validateToken(accessToken) &&
+        refreshToken &&
+        validateToken(refreshToken)
+      ) {
         return { accessToken, refreshToken };
       }
     }
 
-    if (refreshToken) {
+    if (refreshToken && validateToken(refreshToken)) {
       const result = await fetch(REST_ENDPOINT + "/refresh_token", {
         method: "post",
         credentials: "include",
@@ -62,8 +64,8 @@ export const authExchange = authE<AuthState>({
       });
 
       if (result.ok) {
-        const newAT = Cookies.get(ACCESS_TOKEN);
-        const newRT = Cookies.get(REFRESH_TOKEN);
+        const { accessToken: newAT, refreshToken: newRT } = await result.json();
+        saveTokens(newAT, newRT);
         return { accessToken: newAT!, refreshToken: newRT! };
       } else mutate(LogoutDocument);
     }

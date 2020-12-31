@@ -7,6 +7,7 @@ import { useLoginMutation } from "../generated/graphql";
 import { mapErrors } from "../utils/mapErrors";
 import { useHistory } from "react-router-dom";
 import { TopProgressBar } from ".";
+import { saveTokens } from "../utils/manageTokens";
 
 type LoginValues = {
   emailOrUsername: string;
@@ -40,6 +41,8 @@ export const LoginForm: React.FC = () => {
     const { data } = await login(values);
 
     if (data?.login.user) {
+      saveTokens(data?.login.accessToken!, data?.login.refreshToken!);
+
       if (from) return replace(from);
       else return replace("/");
     }
