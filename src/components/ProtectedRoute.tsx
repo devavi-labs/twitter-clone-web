@@ -5,12 +5,14 @@ import { Splash } from "./Splash";
 
 interface ProtectedRouteProps {
   ProtectedComponent: FC;
-  redirectPath: string;
+  FallbackComponent?: FC;
+  redirectPath?: string;
   reverse?: boolean;
 }
 
 export const ProtectedRoute: FC<ProtectedRouteProps & RouteProps> = ({
   ProtectedComponent,
+  FallbackComponent,
   redirectPath,
   reverse = false,
   ...props
@@ -24,9 +26,23 @@ export const ProtectedRoute: FC<ProtectedRouteProps & RouteProps> = ({
   }
 
   if (data?.me) {
-    C = reverse ? <Redirect to={redirectPath} /> : <ProtectedComponent />;
+    C = reverse ? (
+      FallbackComponent ? (
+        <FallbackComponent />
+      ) : (
+        <Redirect to={redirectPath || "/login"} />
+      )
+    ) : (
+      <ProtectedComponent />
+    );
   } else {
-    C = reverse ? <ProtectedComponent /> : <Redirect to={redirectPath} />;
+    C = reverse ? (
+      <ProtectedComponent />
+    ) : FallbackComponent ? (
+      <FallbackComponent />
+    ) : (
+      <Redirect to={redirectPath || "/login"} />
+    );
   }
 
   return <Route {...props}>{C}</Route>;
