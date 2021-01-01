@@ -18,6 +18,7 @@ export const RoundedButton: React.FC<ButtonProps> = ({
         textTransform: "unset",
         padding: "0.6em",
         color: props.variant === "contained" ? "white" : main,
+        fontWeight: "bold",
       }}
       {...props}
     >
