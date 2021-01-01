@@ -1,5 +1,6 @@
 import React from "react";
-import { makeStyles, Typography, ButtonProps } from "@material-ui/core";
+import { Typography, ButtonProps } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { RoundedButton } from ".";
 
 export const SignupButton: React.FC<ButtonProps> = (props) => {

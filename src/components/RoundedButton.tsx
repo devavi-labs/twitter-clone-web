@@ -1,4 +1,5 @@
-import { Button, ButtonProps, useTheme } from "@material-ui/core";
+import { Button, ButtonProps } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import React from "react";
 
 export const RoundedButton: React.FC<ButtonProps> = ({

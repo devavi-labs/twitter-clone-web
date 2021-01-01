@@ -1,4 +1,5 @@
-import { makeStyles, Modal, Typography, IconButton } from "@material-ui/core";
+import { Modal, Typography, IconButton } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { Logo } from "./Logo";
 import { useMediaQuery } from "../hooks/useMediaQuery";

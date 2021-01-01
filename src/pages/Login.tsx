@@ -1,4 +1,5 @@
-import { Box, Typography, makeStyles, Link } from "@material-ui/core";
+import { Box, Typography, Link } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { Logo } from "../components";
 import { LoginForm } from "../components/LoginForm";

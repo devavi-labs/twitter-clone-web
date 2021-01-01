@@ -4,9 +4,9 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  makeStyles,
   Typography,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import { BsChat, BsPeople, BsSearch } from "react-icons/bs";
 import { useHistory } from "react-router-dom";

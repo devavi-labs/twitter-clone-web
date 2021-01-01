@@ -1,4 +1,5 @@
-import { Box, BoxProps, useTheme } from "@material-ui/core";
+import { Box, BoxProps } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import React from "react";
 
 interface LogoProps {
