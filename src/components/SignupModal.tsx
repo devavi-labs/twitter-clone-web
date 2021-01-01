@@ -41,16 +41,18 @@ export const SignupModal: React.FC<SignupModalProps> = ({ open, onClose }) => {
         </>
       }
     >
-      <Typography
-        variant="h2"
-        component="h2"
-        id="modal-title"
-        className={classes.heading}
-      >
-        Create your account
-      </Typography>
+      <>
+        <Typography
+          variant="h2"
+          component="h2"
+          id="modal-title"
+          className={classes.heading}
+        >
+          Create your account
+        </Typography>
 
-      <SignupForm />
+        <SignupForm />
+      </>
     </Modal>
   );
 };
