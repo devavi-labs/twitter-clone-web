@@ -1,0 +1,10 @@
+mutation Quack($input: QuackInput!) {
+  quack(input: $input) {
+    quack {
+      ...RegularQuack
+    }
+    errors {
+      ...RegularFieldError
+    }
+  }
+}

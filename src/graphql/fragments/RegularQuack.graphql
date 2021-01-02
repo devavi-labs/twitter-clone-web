@@ -1,0 +1,42 @@
+fragment RegularQuack on Quack {
+  id
+  createdAt
+  text
+  truncatedText
+  urls
+  quackedByUser {
+    ...RegularUser
+  }
+  inReplyToQuack {
+    id
+    createdAt
+    text
+    truncatedText
+    urls
+    quackedByUser {
+      ...RegularUser
+    }
+    replies {
+      id
+    }
+    requacks {
+      id
+    }
+    likes {
+      id
+    }
+    requackStatus
+    likeStatus
+  }
+  replies {
+    id
+  }
+  requacks {
+    id
+  }
+  likes {
+    id
+  }
+  requackStatus
+  likeStatus
+}

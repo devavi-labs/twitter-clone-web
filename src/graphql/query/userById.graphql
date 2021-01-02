@@ -1,0 +1,5 @@
+query UserById($userId: String!) {
+  userById(userId: $userId) {
+    ...RegularUser
+  }
+}

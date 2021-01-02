@@ -21,7 +21,9 @@ export type Query = {
   quacks?: Maybe<Array<Quack>>;
   quacksFromFollowings?: Maybe<Array<Quack>>;
   me?: Maybe<User>;
-  user?: Maybe<User>;
+  userById?: Maybe<User>;
+  userByEmail?: Maybe<User>;
+  userByUsername?: Maybe<User>;
 };
 
 
@@ -31,8 +33,18 @@ export type QueryQuacksFromFollowingsArgs = {
 };
 
 
-export type QueryUserArgs = {
+export type QueryUserByIdArgs = {
   userId: Scalars['String'];
+};
+
+
+export type QueryUserByEmailArgs = {
+  email: Scalars['String'];
+};
+
+
+export type QueryUserByUsernameArgs = {
+  username: Scalars['String'];
 };
 
 export type Quack = {
@@ -231,6 +243,40 @@ export type RegularFieldErrorFragment = (
   & Pick<FieldError, 'field' | 'message'>
 );
 
+export type RegularQuackFragment = (
+  { __typename?: 'Quack' }
+  & Pick<Quack, 'id' | 'createdAt' | 'text' | 'truncatedText' | 'urls' | 'requackStatus' | 'likeStatus'>
+  & { quackedByUser: (
+    { __typename?: 'User' }
+    & RegularUserFragment
+  ), inReplyToQuack?: Maybe<(
+    { __typename?: 'Quack' }
+    & Pick<Quack, 'id' | 'createdAt' | 'text' | 'truncatedText' | 'urls' | 'requackStatus' | 'likeStatus'>
+    & { quackedByUser: (
+      { __typename?: 'User' }
+      & RegularUserFragment
+    ), replies?: Maybe<Array<(
+      { __typename?: 'Quack' }
+      & Pick<Quack, 'id'>
+    )>>, requacks?: Maybe<Array<(
+      { __typename?: 'Requack' }
+      & Pick<Requack, 'id'>
+    )>>, likes?: Maybe<Array<(
+      { __typename?: 'Like' }
+      & Pick<Like, 'id'>
+    )>> }
+  )>, replies?: Maybe<Array<(
+    { __typename?: 'Quack' }
+    & Pick<Quack, 'id'>
+  )>>, requacks?: Maybe<Array<(
+    { __typename?: 'Requack' }
+    & Pick<Requack, 'id'>
+  )>>, likes?: Maybe<Array<(
+    { __typename?: 'Like' }
+    & Pick<Like, 'id'>
+  )>> }
+);
+
 export type RegularUserFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'displayName' | 'username' | 'displayPicture' | 'coverPicture' | 'emailVerified' | 'amIDeactivated'>
@@ -322,6 +368,25 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
+export type QuackMutationVariables = Exact<{
+  input: QuackInput;
+}>;
+
+
+export type QuackMutation = (
+  { __typename?: 'Mutation' }
+  & { quack: (
+    { __typename?: 'QuackResponse' }
+    & { quack?: Maybe<(
+      { __typename?: 'Quack' }
+      & RegularQuackFragment
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & RegularFieldErrorFragment
+    )>> }
+  ) }
+);
+
 export type SignupMutationVariables = Exact<{
   input: UserInput;
 }>;
@@ -341,6 +406,45 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
+    { __typename?: 'User' }
+    & RegularUserFragment
+  )> }
+);
+
+export type UserByEmailQueryVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type UserByEmailQuery = (
+  { __typename?: 'Query' }
+  & { userByEmail?: Maybe<(
+    { __typename?: 'User' }
+    & RegularUserFragment
+  )> }
+);
+
+export type UserByIdQueryVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type UserByIdQuery = (
+  { __typename?: 'Query' }
+  & { userById?: Maybe<(
+    { __typename?: 'User' }
+    & RegularUserFragment
+  )> }
+);
+
+export type UserByUsernameQueryVariables = Exact<{
+  username: Scalars['String'];
+}>;
+
+
+export type UserByUsernameQuery = (
+  { __typename?: 'Query' }
+  & { userByUsername?: Maybe<(
     { __typename?: 'User' }
     & RegularUserFragment
   )> }
@@ -423,6 +527,50 @@ export const RegularUserFragmentDoc = gql`
   }
 }
     `;
+export const RegularQuackFragmentDoc = gql`
+    fragment RegularQuack on Quack {
+  id
+  createdAt
+  text
+  truncatedText
+  urls
+  quackedByUser {
+    ...RegularUser
+  }
+  inReplyToQuack {
+    id
+    createdAt
+    text
+    truncatedText
+    urls
+    quackedByUser {
+      ...RegularUser
+    }
+    replies {
+      id
+    }
+    requacks {
+      id
+    }
+    likes {
+      id
+    }
+    requackStatus
+    likeStatus
+  }
+  replies {
+    id
+  }
+  requacks {
+    id
+  }
+  likes {
+    id
+  }
+  requackStatus
+  likeStatus
+}
+    ${RegularUserFragmentDoc}`;
 export const RegularFieldErrorFragmentDoc = gql`
     fragment RegularFieldError on FieldError {
   field
@@ -462,6 +610,23 @@ export const LogoutDocument = gql`
 export function useLogoutMutation() {
   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 };
+export const QuackDocument = gql`
+    mutation Quack($input: QuackInput!) {
+  quack(input: $input) {
+    quack {
+      ...RegularQuack
+    }
+    errors {
+      ...RegularFieldError
+    }
+  }
+}
+    ${RegularQuackFragmentDoc}
+${RegularFieldErrorFragmentDoc}`;
+
+export function useQuackMutation() {
+  return Urql.useMutation<QuackMutation, QuackMutationVariables>(QuackDocument);
+};
 export const SignupDocument = gql`
     mutation Signup($input: UserInput!) {
   signup(input: $input) {
@@ -483,4 +648,37 @@ export const MeDocument = gql`
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+};
+export const UserByEmailDocument = gql`
+    query UserByEmail($email: String!) {
+  userByEmail(email: $email) {
+    ...RegularUser
+  }
+}
+    ${RegularUserFragmentDoc}`;
+
+export function useUserByEmailQuery(options: Omit<Urql.UseQueryArgs<UserByEmailQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserByEmailQuery>({ query: UserByEmailDocument, ...options });
+};
+export const UserByIdDocument = gql`
+    query UserById($userId: String!) {
+  userById(userId: $userId) {
+    ...RegularUser
+  }
+}
+    ${RegularUserFragmentDoc}`;
+
+export function useUserByIdQuery(options: Omit<Urql.UseQueryArgs<UserByIdQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserByIdQuery>({ query: UserByIdDocument, ...options });
+};
+export const UserByUsernameDocument = gql`
+    query UserByUsername($username: String!) {
+  userByUsername(username: $username) {
+    ...RegularUser
+  }
+}
+    ${RegularUserFragmentDoc}`;
+
+export function useUserByUsernameQuery(options: Omit<Urql.UseQueryArgs<UserByUsernameQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserByUsernameQuery>({ query: UserByUsernameDocument, ...options });
 };
