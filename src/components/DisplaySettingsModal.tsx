@@ -28,6 +28,7 @@ export const DisplaySettingsModal: React.FC<DisplaySettingsModalProps> = ({
       fontWeight: "bold",
       marginTop: "1rem",
       color: text.primary,
+      margin: "0 auto",
     },
     subHeading: {
       textAlign: "center",

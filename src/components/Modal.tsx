@@ -10,12 +10,14 @@ interface ModalProps {
   open: boolean;
   onClose: () => any;
   header?: any;
+  fixedHeight?: boolean;
 }
 
 export const Modal: React.FC<ModalProps & MuiModalProps> = ({
   open,
   onClose,
   header,
+  fixedHeight,
   children,
   ...props
 }) => {
@@ -40,7 +42,8 @@ export const Modal: React.FC<ModalProps & MuiModalProps> = ({
         backgroundColor: secondary.main,
         width: "100%",
         maxWidth: "600px",
-        height: xs ? "100%" : "95%",
+        height: xs ? "100%" : fixedHeight ? "95%" : "auto",
+        maxHeight: xs ? "100%" : "95%",
         borderRadius: xs ? "none" : "20px",
         display: "flex",
         flexDirection: "column",
@@ -61,7 +64,6 @@ export const Modal: React.FC<ModalProps & MuiModalProps> = ({
         width: "100%",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
         padding: "0.5rem 2rem",
         opacity: type === "dark" ? 0.8 : 1,
         fontWeight: "bold",
