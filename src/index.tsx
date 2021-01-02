@@ -5,14 +5,17 @@ import App from "./App";
 import { Provider } from "urql";
 
 import { createUrqlClient } from "./utils/createUrqlClient";
+import { ContextProvider } from "./context/provider";
 
 const client = createUrqlClient();
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider value={client}>
-      <App />
-    </Provider>
+    <ContextProvider>
+      <Provider value={client}>
+        <App />
+      </Provider>
+    </ContextProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
