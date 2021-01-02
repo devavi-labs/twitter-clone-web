@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocalTheme } from "../hooks/useLocalTheme";
 import { ThemeContext } from "./theme";
 
 export const ContextProvider: React.FC = ({ children }) => {
-  const localTheme = useLocalTheme();
-  const [theme, toggleTheme] = useState<"dark" | "light">(
-    localTheme || "light"
-  );
+  const { theme, toggleTheme } = useLocalTheme();
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
