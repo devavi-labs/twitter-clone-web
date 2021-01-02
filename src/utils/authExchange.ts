@@ -10,6 +10,13 @@ interface AuthState {
 
 export const authExchange = authE<AuthState>({
   addAuthToOperation: ({ authState, operation }) => {
+    if (
+      (operation.query.definitions[0] as { name: { value: any } })?.name
+        .value === "Logout"
+    ) {
+      removeTokens();
+    }
+
     if (!authState || !authState.accessToken) {
       return operation;
     }
