@@ -17,7 +17,7 @@ export const useLocalTheme = () => {
 
   if (localTheme && theme !== localTheme) {
     setTheme(localTheme);
-  } else if (prefersDarkMode && theme !== "dark") {
+  } else if (!localTheme && prefersDarkMode && theme !== "dark") {
     setTheme("dark");
   }
 
