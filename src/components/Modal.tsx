@@ -11,6 +11,7 @@ interface ModalProps {
   onClose: () => any;
   header?: any;
   fixedHeight?: boolean;
+  padding?: string;
 }
 
 export const Modal: React.FC<ModalProps & MuiModalProps> = ({
@@ -18,6 +19,7 @@ export const Modal: React.FC<ModalProps & MuiModalProps> = ({
   onClose,
   header,
   fixedHeight,
+  padding,
   children,
   ...props
 }) => {
@@ -54,10 +56,11 @@ export const Modal: React.FC<ModalProps & MuiModalProps> = ({
         },
       },
       body: {
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "0.5rem 2rem",
+        padding: padding || "0.5rem",
         overflowY: "auto",
       },
       header: {

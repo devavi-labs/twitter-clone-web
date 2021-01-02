@@ -50,10 +50,8 @@ export const SignupForm: React.FC = () => {
 
   const {
     replace,
-    location: { search },
-  } = useHistory();
-  const queries = new URLSearchParams(search);
-  const from = queries.get("from");
+    location: { state },
+  } = useHistory<{ from?: string }>();
 
   const handleSubmit = async (
     values: SignupValues,
@@ -64,7 +62,7 @@ export const SignupForm: React.FC = () => {
     if (data?.signup.user) {
       saveTokens(data?.signup.accessToken!, data?.signup.refreshToken!);
 
-      if (from) return replace(from);
+      if (state?.from) return replace(state?.from);
       else return replace("/");
     }
 

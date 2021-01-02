@@ -48,7 +48,7 @@ const Login = () => {
 
         <div className={classes.extraLinks}>
           <Link>Forgot password?</Link> ·{" "}
-          <Link href="/signup?from=/login">Sign up for Twitter</Link>
+          <Link href="/signup">Sign up for Twitter</Link>
         </div>
       </Box>
     </Box>

@@ -109,6 +109,7 @@ export const DisplaySettingsModal: React.FC<DisplaySettingsModalProps> = ({
         <Typography className={classes.heading}>Customize your view</Typography>
       }
       disableBackdropClick={false}
+      padding="0.5rem 2rem"
     >
       <>
         <Typography className={classes.subHeading}>

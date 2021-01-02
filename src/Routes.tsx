@@ -11,34 +11,51 @@ export const Routes = () => {
         <ProtectedRoute
           path="/signup"
           exact
-          ProtectedComponent={Home}
+          ProtectedComponent={<Home popup="signup" />}
           redirectPath="/home"
           reverse
         />
         <ProtectedRoute
           path="/login"
           exact
-          ProtectedComponent={Login}
+          ProtectedComponent={<Login />}
           redirectPath="/home"
           reverse
         />
         <ProtectedRoute
           path="/home"
           exact
-          ProtectedComponent={Dashboard}
+          ProtectedComponent={<Dashboard feed="home" />}
           redirectPath="/"
+          redirectState={{ from: "/home" }}
+        />
+        <ProtectedRoute
+          path="/compose/quack"
+          exact
+          ProtectedComponent={<Dashboard feed="home" popup="compose-quack" />}
+          redirectPath="/login"
+          redirectState={{ from: "/compose/quack" }}
+        />
+        <ProtectedRoute
+          path="/i/display"
+          exact
+          ProtectedComponent={
+            <Dashboard feed="home" popup="display-settings" />
+          }
+          redirectPath="/login"
+          redirectState={{ from: "/i/display" }}
         />
         <ProtectedRoute
           path="/"
           exact
-          ProtectedComponent={Home}
+          ProtectedComponent={<Home />}
           redirectPath="/home"
           reverse
         />
         <ProtectedRoute
           path="/"
-          ProtectedComponent={Dashboard}
-          FallbackComponent={Home}
+          ProtectedComponent={<Dashboard feed="profile" />}
+          FallbackComponent={<Home />}
         />
       </Switch>
     </Router>

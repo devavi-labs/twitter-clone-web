@@ -10,12 +10,17 @@ import {
   BsThreeDots,
 } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
-import { AccountButton, TabButton, RoundedButton } from ".";
+import { AccountButton, RoundedButton, TabButton } from ".";
 import { usePopper } from "../hooks/usePopper";
+import { CreateQuackModal } from "./CreateQuackModal";
 import { Logo } from "./Logo";
 import { MoreMenuPopper } from "./MoreMenuPopper";
 
-export const LeftSidebar = () => {
+interface LeftSidebarProps {
+  popup?: "display-settings" | "compose-quack";
+}
+
+export const LeftSidebar: React.FC<LeftSidebarProps> = ({ popup }) => {
   const useStyles = makeStyles(({ palette: { secondary, type } }) => ({
     root: {
       flex: 2,
@@ -60,6 +65,10 @@ export const LeftSidebar = () => {
 
   const { open, anchorEl, handleClick, onClose } = usePopper();
 
+  const handleMClose = () => {
+    history.push("/");
+  };
+
   return (
     <>
       <Box component="aside" className={classes.root}>
@@ -93,6 +102,9 @@ export const LeftSidebar = () => {
             disableElevation
             fullWidth
             className={classes.quackButton}
+            onClick={() =>
+              history.push("/compose/quack", { popup: "compose-quack" })
+            }
           >
             Quack
           </RoundedButton>
@@ -101,7 +113,18 @@ export const LeftSidebar = () => {
           <AccountButton />
         </Box>
       </Box>
-      <MoreMenuPopper open={open} anchorEl={anchorEl} onClose={onClose} />
+      <MoreMenuPopper
+        open={open}
+        anchorEl={anchorEl}
+        onClose={onClose}
+        popup={
+          popup !== "compose-quack" ? (popup as "display-settings") : undefined
+        }
+      />
+      <CreateQuackModal
+        open={popup === "compose-quack"}
+        onClose={handleMClose}
+      />
     </>
   );
 };

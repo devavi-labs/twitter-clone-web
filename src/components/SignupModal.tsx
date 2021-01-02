@@ -40,6 +40,7 @@ export const SignupModal: React.FC<SignupModalProps> = ({ open, onClose }) => {
           <Logo size="xxs" className={classes.logo} />
         </>
       }
+      padding="0.5rem 2rem"
     >
       <>
         <Typography

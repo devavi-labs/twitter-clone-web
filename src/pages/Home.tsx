@@ -13,21 +13,25 @@ import { useHistory } from "react-router-dom";
 import { LoginButton, Logo, SignupButton, SignupModal } from "../components";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 
-const Home = () => {
-  const { sm, xs } = useMediaQuery();
-  const history = useHistory();
-  const {
-    location: { pathname },
-  } = history;
+interface HomeProps {
+  popup?: "signup";
+}
 
-  const [signupModalOpen, setSignupModalOpen] = useState(
-    pathname === "/signup"
-  );
+const Home: React.FC<HomeProps> = ({ popup }) => {
+  console.log(popup);
+  const { sm, xs } = useMediaQuery();
+  const history = useHistory<{ popup?: string; from?: string }>();
+
+  const [signupModalOpen, setSignupModalOpen] = useState(popup === "signup");
 
   useEffect(() => {
-    pathname === "/signup" && !signupModalOpen && setSignupModalOpen(true);
-    pathname === "/" && signupModalOpen && setSignupModalOpen(false);
-  }, [pathname, signupModalOpen]);
+    if (popup === "signup" && !signupModalOpen) {
+      setSignupModalOpen(true);
+    }
+    if (history.location.pathname === "/" && signupModalOpen) {
+      setSignupModalOpen(false);
+    }
+  }, [popup, history, signupModalOpen]);
 
   const closeSignupModal = () => {
     setSignupModalOpen(false);
@@ -124,8 +128,12 @@ const Home = () => {
         {sm && (
           <Box className={classes.bottomBox}>
             <Box className={classes.bottomBoxInner}>
-              <SignupButton onClick={() => history.push("/signup?from=/")} />
-              <LoginButton onClick={() => history.push("/login?from=/")} />
+              <SignupButton
+                onClick={() => history.push("/signup", { from: "/" })}
+              />
+              <LoginButton
+                onClick={() => history.push("/login", { from: "/" })}
+              />
             </Box>
           </Box>
         )}
@@ -177,8 +185,12 @@ const Home = () => {
               <Typography className={classes.callText}>
                 Join Quacker today.
               </Typography>
-              <SignupButton onClick={() => history.push("/signup?from=/")} />
-              <LoginButton onClick={() => history.push("/login?from=/")} />
+              <SignupButton
+                onClick={() => history.push("/signup", { from: "/" })}
+              />
+              <LoginButton
+                onClick={() => history.push("/login", { from: "/" })}
+              />
             </Box>
           </Box>
         </Box>

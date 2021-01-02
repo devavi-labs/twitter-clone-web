@@ -1,13 +1,12 @@
-import React from "react";
-import { Formik, Form, Field, FormikHelpers } from "formik";
-import * as Yup from "yup";
 import { TextField } from "@material-ui/core";
-import { LoginButton } from ".";
-import { useLoginMutation } from "../generated/graphql";
-import { mapErrors } from "../utils/mapErrors";
+import { Field, Form, Formik, FormikHelpers } from "formik";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import { TopProgressBar } from ".";
+import * as Yup from "yup";
+import { LoginButton, TopProgressBar } from ".";
+import { useLoginMutation } from "../generated/graphql";
 import { saveTokens } from "../utils/manageTokens";
+import { mapErrors } from "../utils/mapErrors";
 
 type LoginValues = {
   emailOrUsername: string;
@@ -29,10 +28,10 @@ export const LoginForm: React.FC = () => {
 
   const {
     replace,
-    location: { search },
-  } = useHistory();
-  const queries = new URLSearchParams(search);
-  const from = queries.get("from");
+    location: {
+      state: { from },
+    },
+  } = useHistory<{ from?: string }>();
 
   const handleSubmit = async (
     values: LoginValues,

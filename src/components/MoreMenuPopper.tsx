@@ -8,18 +8,20 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { BsDisplay, BsGear } from "react-icons/bs";
-import { Popper } from ".";
-import { useModal } from "../hooks/useModal";
-import { DisplaySettingsModal } from ".";
 import { useHistory } from "react-router-dom";
+import { DisplaySettingsModal, Popper } from ".";
 
 interface MoreMenuPopperProps {
   open?: boolean;
   onClose: () => any;
   anchorEl: null | HTMLElement;
+  popup?: "display-settings";
 }
 
-export const MoreMenuPopper: React.FC<MoreMenuPopperProps> = (props) => {
+export const MoreMenuPopper: React.FC<MoreMenuPopperProps> = ({
+  popup,
+  ...props
+}) => {
   const useStyles = makeStyles(
     ({ palette: { secondary, primary, text, type } }) => ({
       body: {
@@ -44,17 +46,16 @@ export const MoreMenuPopper: React.FC<MoreMenuPopperProps> = (props) => {
   );
   const classes = useStyles();
 
-  const { open, toggle, onClose } = useModal();
+  const history = useHistory();
 
   const handleDSBtnClick = () => {
     props.onClose();
-    toggle();
+    history.push("/i/display");
   };
 
-  const history = useHistory();
   const handleClose = () => {
+    history.push("/home");
     history.go(0);
-    onClose();
   };
 
   return (
@@ -79,7 +80,10 @@ export const MoreMenuPopper: React.FC<MoreMenuPopperProps> = (props) => {
           </ListItem>
         </List>
       </Popper>
-      <DisplaySettingsModal open={open} onClose={handleClose} />
+      <DisplaySettingsModal
+        open={popup === "display-settings"}
+        onClose={handleClose}
+      />
     </>
   );
 };
