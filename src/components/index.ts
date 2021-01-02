@@ -17,3 +17,5 @@ export { AccountPopper } from "./AccountPopper";
 export { DisplaySettingsModal } from "./DisplaySettingsModal";
 export { ThemeBox } from "./ThemeBox";
 export { SampleQuack } from "./SampleQuack";
+export { CreateQuack } from "./CreateQuack";
+export { CharacterLengthProgress } from "./CharacterLengthProgress";
