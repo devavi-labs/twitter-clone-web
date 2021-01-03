@@ -1,11 +1,15 @@
-import { Avatar, Box, Divider, InputBase } from "@material-ui/core";
+import { Avatar, Box, Divider, IconButton, InputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Field, Form, Formik, FormikHelpers } from "formik";
+import { IEmojiData } from "emoji-picker-react";
+import { EmojiPickerPopper } from ".";
+import { FormikHelpers, useFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
-import { RoundedButton, TopProgressBar, CharacterLengthProgress } from ".";
+import { CharacterLengthProgress, RoundedButton, TopProgressBar } from ".";
 import { useMeQuery, useQuackMutation } from "../generated/graphql";
 import { mapErrors } from "../utils/mapErrors";
+import { usePopper } from "../hooks/usePopper";
+import { GoSmiley } from "react-icons/go";
 
 type QuackValues = {
   text: string;
@@ -28,57 +32,63 @@ export const CreateQuack: React.FC<CreateQuackProps> = ({
   bottomDivider = true,
   rows = 1,
 }) => {
-  const useStyles = makeStyles(
-    ({ palette: { primary, type, text, warning, error } }) => ({
-      root: {
-        width: "100%",
-        flex: 1,
-        display: "flex",
-        marginBottom: "0.5rem",
+  const useStyles = makeStyles(({ palette: { primary, type } }) => ({
+    root: {
+      width: "100%",
+      flex: 1,
+      display: "flex",
+      marginBottom: "0.5rem",
+    },
+    left: {
+      padding: " 0.5rem 1rem",
+    },
+    avatar: {
+      width: "3rem",
+      height: "3rem",
+    },
+    right: {
+      flex: 1,
+      display: "flex",
+      flexDirection: "column",
+      paddingRight: "1rem",
+      type,
+    },
+    input: {
+      width: "100%",
+      padding: "1rem 0",
+      color: type === "dark" ? "rgba(255,255,255,0.8)" : "#000",
+      fontSize: "1.1rem",
+      margin: "1em 0",
+    },
+    footer: {
+      marginTop: "0.5rem",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    footerEnd: {
+      display: "flex",
+      alignItems: "center",
+      gap: "1rem",
+    },
+    icon: {
+      color: primary.main,
+    },
+    btn: {
+      alignSelf: "flex-end",
+      "&:disabled": {
+        backgroundColor: primary.main,
+        opacity: 0.6,
       },
-      left: {
-        padding: " 0.5rem 1rem",
-      },
-      avatar: {
-        width: "3rem",
-        height: "3rem",
-      },
-      right: {
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        paddingRight: "1rem",
-        type,
-      },
-      input: {
-        width: "100%",
-        padding: "1rem 0",
-        color: type === "dark" ? "rgba(255,255,255,0.8)" : "#000",
-        fontSize: "1.1rem",
-      },
-      footer: {
-        marginTop: "0.5rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-end",
-        gap: "1rem",
-      },
-      btn: {
-        alignSelf: "flex-end",
-        "&:disabled": {
-          backgroundColor: primary.main,
-          opacity: 0.6,
-        },
-      },
-    })
-  );
+    },
+  }));
 
   const classes = useStyles();
 
   const [{ data }] = useMeQuery();
   const [, quack] = useQuackMutation();
 
-  const handleSubmit = async (
+  const onSubmit = async (
     values: QuackValues,
     { setErrors, resetForm }: FormikHelpers<QuackValues>
   ) => {
@@ -92,65 +102,75 @@ export const CreateQuack: React.FC<CreateQuackProps> = ({
     resetForm();
   };
 
+  const formik = useFormik<QuackValues>({
+    initialValues,
+    validationSchema,
+    onSubmit,
+  });
+
+  const onEmojiClick = (event: MouseEvent, emojiObject: IEmojiData) => {
+    formik.setFieldValue("text", formik.values.text + emojiObject.emoji);
+  };
+
+  const { open, onClose, anchorEl, handleClick } = usePopper();
+
   return (
     <>
       <Box className={classes.root}>
         <Box className={classes.left}>
           <Avatar src={data?.me?.displayPicture} className={classes.avatar} />
         </Box>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ isSubmitting, errors, values }) => (
-            <Form className={classes.right}>
-              <TopProgressBar visible={isSubmitting} />
-              <Field name="text">
-                {({
-                  field,
-                  form: { touched, errors },
-                }: {
-                  field: any;
-                  form: any;
-                }) => (
-                  <InputBase
-                    placeholder="What's happening?"
-                    margin="normal"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    error={touched.text && Boolean(errors.text)}
-                    {...field}
-                    aria-autocomplete="none"
-                    className={classes.input}
-                    multiline
-                    rows={rows}
-                  />
-                )}
-              </Field>
-              {values.text && <Divider />}
-              <Box className={classes.footer}>
-                {Boolean(values.text) && (
-                  <CharacterLengthProgress length={values.text.length} />
-                )}
-                <RoundedButton
-                  type="submit"
-                  variant="contained"
-                  disabled={
-                    isSubmitting || Boolean(errors.text) || !values.text
-                  }
-                  color="primary"
-                  className={classes.btn}
-                >
-                  Quack
-                </RoundedButton>
-              </Box>
-            </Form>
-          )}
-        </Formik>
+
+        <form onSubmit={formik.handleSubmit} className={classes.right}>
+          <TopProgressBar visible={formik.isSubmitting} />
+
+          <InputBase
+            id="text"
+            name="text"
+            placeholder="What's happening?"
+            margin="dense"
+            error={formik.touched.text && Boolean(formik.errors.text)}
+            onChange={formik.handleChange}
+            value={formik.values.text}
+            aria-autocomplete="none"
+            className={classes.input}
+            multiline
+            rows={rows}
+          />
+
+          {formik.values.text && <Divider />}
+          <Box className={classes.footer}>
+            <IconButton onClick={handleClick} size="small">
+              <GoSmiley className={classes.icon} />
+            </IconButton>
+            <Box className={classes.footerEnd}>
+              {Boolean(formik.values.text) && (
+                <CharacterLengthProgress length={formik.values.text.length} />
+              )}
+              <RoundedButton
+                type="submit"
+                variant="contained"
+                disabled={
+                  formik.isSubmitting ||
+                  Boolean(formik.errors.text) ||
+                  !formik.values.text
+                }
+                color="primary"
+                className={classes.btn}
+              >
+                Quack
+              </RoundedButton>
+            </Box>
+          </Box>
+        </form>
       </Box>
       {bottomDivider && <Divider />}
+      <EmojiPickerPopper
+        open={open}
+        onClose={onClose}
+        anchorEl={anchorEl}
+        onEmojiClick={onEmojiClick}
+      />
     </>
   );
 };

@@ -2,6 +2,7 @@ dependencies:
   '@material-ui/core': 4.11.2_aef73de6374e2d7a7f5dc9d5ceec06df
   '@urql/exchange-auth': 0.1.2_graphql@15.4.0
   '@urql/exchange-graphcache': 3.3.3_graphql@15.4.0
+  emoji-picker-react: 3.2.4
   formik: 2.2.6_react@17.0.1
   graphql: 15.4.0
   jsonwebtoken: 8.5.1
@@ -5665,6 +5666,10 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-A8OG5SR/ij3SsJdWDJdkkSYUjQdCUx6APQXem0SaEePBSRg4eymGYwBkKo1Y6DU+af/Jn2dBQqDBvjnr9Vi8nQ==
+  /emoji-picker-react/3.2.4:
+    dev: false
+    resolution:
+      integrity: sha512-X9AESw1olo73kWBS25hlBcr5GQltHI6kZueV11bR5NJrrG/Dt8TrMbhSMSngs4rMxeAoVT04ST9ixI1KxPThJg==
   /emoji-regex/7.0.3:
     dev: false
     resolution:
@@ -14440,6 +14445,7 @@ specifiers:
   '@urql/exchange-graphcache': ^3.3.3
   babel-plugin-import: ^1.13.3
   customize-cra: ^1.0.0
+  emoji-picker-react: ^3.2.4
   formik: ^2.2.6
   graphql: ^15.4.0
   jsonwebtoken: ^8.5.1

@@ -23,3 +23,4 @@ export { Hero } from "./Hero";
 export { CreateQuack } from "./CreateQuack";
 export { CharacterLengthProgress } from "./CharacterLengthProgress";
 export { Drawer } from "./Drawer";
+export { EmojiPickerPopper } from "./EmojiPickerPopper";
