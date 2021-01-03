@@ -95,7 +95,7 @@ export const AppBar: React.FC<AppBarProps> = ({
         </Box>
       </Box>
       <Divider />
-      <Drawer open={open} onOpen={onOpen} onClose={onClose} />
+      {xs && <Drawer open={open} onOpen={onOpen} onClose={onClose} />}
     </>
   );
 };
