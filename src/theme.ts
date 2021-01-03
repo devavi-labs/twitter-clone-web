@@ -38,6 +38,9 @@ export const dark = createMuiTheme({
     secondary: {
       main: "#000000",
     },
+    background: {
+      paper: "#000000",
+    },
     tonalOffset: 0.3,
   },
   typography,

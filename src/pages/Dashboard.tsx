@@ -1,9 +1,18 @@
-import { Box, Divider } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
-import { useLocation } from "react-router-dom";
-import { LeftSidebar, Hero, Splash } from "../components";
+import React, { useContext, useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import {
+  DisplaySettingsModal,
+  Hero,
+  LeftSidebar,
+  RightSidebar,
+  Splash,
+} from "../components";
+import { CreateQuackModal } from "../components/CreateQuackModal";
+import { FeedContext } from "../context/feed";
 import { useUserByUsernameQuery } from "../generated/graphql";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 
 interface DashboardProps {
   popup?: "display-settings" | "compose-quack";
@@ -14,20 +23,17 @@ export const Dashboard: React.FC<DashboardProps> = ({
   popup: popupFromProps,
   feed: feedFromProps,
 }) => {
-  const useStyles = makeStyles(({ palette: { secondary } }) => ({
+  const { xs } = useMediaQuery();
+
+  const useStyles = makeStyles(() => ({
     root: {
       flex: 1,
       display: "flex",
     },
-
-    rightSidebar: {
-      flex: 3.3,
-      background: secondary.main,
-    },
   }));
 
   const classes = useStyles();
-
+  const history = useHistory();
   const { pathname, state } = useLocation<DashboardProps>();
 
   const popup = state?.popup || popupFromProps;
@@ -37,22 +43,56 @@ export const Dashboard: React.FC<DashboardProps> = ({
     variables: {
       username: pathname.slice(1),
     },
-    pause: feed === "home",
+    pause: feed !== "profile",
   });
 
-  if (fetching) {
+  const { state: feedState, setState } = useContext(FeedContext)!;
+
+  useEffect(() => {
+    setState({
+      feed: feedState?.feed,
+      username: feedState?.username,
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onDSModalClose = () => {
+    if (feedState?.username !== undefined) {
+      history.push("/" + feedState?.username);
+    } else {
+      history.push("/home");
+    }
+    history.go(0);
+  };
+
+  const onCQModalClose = () => {
+    if (feedState?.username) {
+      history.push("/" + feedState?.username);
+    } else history.push("/home");
+  };
+
+  if (fetching && !state) {
     return <Splash />;
   }
 
   return (
-    <Box component="main">
-      <Box className={classes.root}>
-        <LeftSidebar popup={popup} />
-        <Divider orientation="vertical" />
-        <Hero feed={feed} />
-        <Divider orientation="vertical" />
-        <Box component="aside" className={classes.rightSidebar}></Box>
+    <>
+      <Box component="main">
+        <Box className={classes.root}>
+          {!xs && <LeftSidebar />}
+          <Hero feed={feed} />
+          <RightSidebar />
+        </Box>
       </Box>
-    </Box>
+      <DisplaySettingsModal
+        open={popup === "display-settings"}
+        onClose={onDSModalClose}
+      />
+      <CreateQuackModal
+        open={popup === "compose-quack"}
+        onClose={onCQModalClose}
+      />
+    </>
   );
 };

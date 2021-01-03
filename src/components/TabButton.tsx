@@ -1,8 +1,9 @@
-import { ButtonProps } from "@material-ui/core";
+import { ButtonProps, IconButton, IconButtonProps } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
+import React, { useState } from "react";
 import { IconType } from "react-icons";
 import { RoundedButton } from ".";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 import { hexToRgb } from "../utils/hexToRgb";
 
 interface TabButtonProps {
@@ -12,13 +13,18 @@ interface TabButtonProps {
   isActive?: Boolean;
 }
 
-export const TabButton: React.FC<TabButtonProps & ButtonProps> = ({
+export const TabButton: React.FC<
+  TabButtonProps & ButtonProps & IconButtonProps
+> = ({
   icon: Icon,
   activeIcon: ActiveIcon,
   label,
   isActive = false,
   ...props
 }) => {
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const { md } = useMediaQuery();
   const useStyles = makeStyles(({ palette: { primary, text, type } }) => ({
     root: {
       margin: 0,
@@ -41,17 +47,41 @@ export const TabButton: React.FC<TabButtonProps & ButtonProps> = ({
     },
     icon: {
       fontSize: "1.5rem",
-      marginRight: "0.8em",
+      marginRight: !md ? "0.8em" : 0,
+      color: isActive || focused || hovered ? primary.main : text.primary,
+      transition: "color 200ms !important",
     },
   }));
 
   const classes = useStyles();
+  if (md) {
+    return (
+      <IconButton
+        {...props}
+        onMouseOver={() => setHovered(true)}
+        onMouseDown={() => setFocused(true)}
+        onMouseLeave={() => setHovered(false)}
+        onBlur={() => setFocused(false)}
+      >
+        {isActive ? (
+          <ActiveIcon className={classes.icon} />
+        ) : (
+          <Icon className={classes.icon} />
+        )}
+      </IconButton>
+    );
+  }
+
   return (
     <RoundedButton
       className={classes.root}
       disableRipple
       disableElevation
       {...props}
+      onMouseOver={() => setHovered(true)}
+      onMouseDown={() => setFocused(true)}
+      onMouseLeave={() => setHovered(false)}
+      onBlur={() => setFocused(false)}
     >
       {isActive ? (
         <ActiveIcon className={classes.icon} />

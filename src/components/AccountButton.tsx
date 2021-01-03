@@ -1,14 +1,17 @@
-import { Avatar, Typography } from "@material-ui/core";
+import { Avatar, IconButton, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { AccountPopper, RoundedButton } from ".";
 import { useMeQuery } from "../generated/graphql";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 import { usePopper } from "../hooks/usePopper";
 import { hexToRgb } from "../utils/hexToRgb";
 
 export const AccountButton = () => {
   const { open, anchorEl, handleClick, onClose } = usePopper();
+
+  const { md } = useMediaQuery();
 
   const [{ data }] = useMeQuery();
   const useStyles = makeStyles(({ palette: { primary, text, type } }) => ({
@@ -26,7 +29,11 @@ export const AccountButton = () => {
       },
     },
     body: { display: "flex", alignItems: "center" },
-    avatar: { marginRight: "0.4em", height: "3rem", width: "3rem" },
+    avatar: {
+      marginRight: md ? 0 : "0.4em",
+      height: md ? 42 : "3rem",
+      width: md ? 42 : "3rem",
+    },
     displayName: {
       color: text.primary,
       fontWeight: "bold",
@@ -44,6 +51,18 @@ export const AccountButton = () => {
     },
   }));
   const classes = useStyles();
+
+  if (md) {
+    return (
+      <>
+        <IconButton onClick={handleClick} size="small">
+          <Avatar className={classes.avatar} src={data?.me?.displayPicture} />
+        </IconButton>
+        <AccountPopper open={open} anchorEl={anchorEl} onClose={onClose} />
+      </>
+    );
+  }
+
   return (
     <>
       <RoundedButton

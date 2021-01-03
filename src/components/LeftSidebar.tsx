@@ -1,6 +1,6 @@
-import { Box, IconButton } from "@material-ui/core";
+import { Box, Fab, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
+import React, { useContext } from "react";
 import {
   BsHash,
   BsHouse,
@@ -9,29 +9,30 @@ import {
   BsPersonFill,
   BsThreeDots,
 } from "react-icons/bs";
+import { IoCreate } from "react-icons/io5";
 import { useHistory } from "react-router-dom";
 import { AccountButton, RoundedButton, TabButton } from ".";
+import { FeedContext } from "../context/feed";
+import { useMeQuery } from "../generated/graphql";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 import { usePopper } from "../hooks/usePopper";
-import { CreateQuackModal } from "./CreateQuackModal";
 import { Logo } from "./Logo";
 import { MoreMenuPopper } from "./MoreMenuPopper";
 
-interface LeftSidebarProps {
-  popup?: "display-settings" | "compose-quack";
-}
-
-export const LeftSidebar: React.FC<LeftSidebarProps> = ({ popup }) => {
-  const useStyles = makeStyles(({ palette: { secondary, type } }) => ({
+export const LeftSidebar: React.FC = () => {
+  const { md } = useMediaQuery();
+  const useStyles = makeStyles(({ palette: { secondary, type, text } }) => ({
     root: {
-      flex: 2,
+      flex: md ? 0 : 2,
       backgroundColor: secondary.main,
       display: "flex",
       flexDirection: "column",
-      paddingLeft: "4rem",
+      paddingLeft: md ? "2rem" : "4rem",
+      paddingRight: md ? "1rem" : 0,
       alignItems: "flex-start",
     },
     top: {
-      paddingRight: "2rem",
+      paddingRight: md ? 0 : "2rem",
       width: "100%",
     },
     bottom: {
@@ -40,7 +41,8 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ popup }) => {
       display: "flex",
       flexDirection: "column",
       justifyContent: "flex-end",
-      paddingRight: "0.5rem",
+      alignItems: "center",
+      paddingRight: md ? 0 : "0.5rem",
       paddingBottom: "1rem",
     },
     logo: {
@@ -57,17 +59,28 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ popup }) => {
       paddingTop: "0.8rem !important",
       paddingBottom: "0.8rem !important",
     },
+    createIcon: {
+      fontSize: "1.5rem",
+      color: "#ffffff",
+    },
   }));
 
   const classes = useStyles();
 
+  const [{ data }] = useMeQuery();
+
   const history = useHistory();
 
-  const { open, anchorEl, handleClick, onClose } = usePopper();
+  const { open, anchorEl, handleClick: handleMoreClick, onClose } = usePopper();
 
-  const handleMClose = () => {
-    history.push("/");
-  };
+  const { state } = useContext(FeedContext)!;
+
+  const onCQClick = () =>
+    history.push("/compose/quack", {
+      popup: "compose-quack",
+      feed: state?.feed,
+      username: state?.username,
+    });
 
   return (
     <>
@@ -82,49 +95,49 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ popup }) => {
               icon={BsHouse}
               activeIcon={BsHouseFill}
               isActive
+              onClick={() => history.push("/")}
             />
             <TabButton label="Explore" icon={BsHash} activeIcon={BsHash} />
             <TabButton
               label="Profile"
               icon={BsPerson}
               activeIcon={BsPersonFill}
+              onClick={() => history.push(`/${data?.me?.username}`)}
             />
             <TabButton
               label="More"
               icon={BsThreeDots}
               activeIcon={BsThreeDots}
-              onClick={handleClick}
+              onClick={handleMoreClick}
             />
           </div>
-          <RoundedButton
-            color="primary"
-            variant="contained"
-            disableElevation
-            fullWidth
-            className={classes.quackButton}
-            onClick={() =>
-              history.push("/compose/quack", { popup: "compose-quack" })
-            }
-          >
-            Quack
-          </RoundedButton>
+          {md ? (
+            <Fab
+              color="primary"
+              aria-label="compose-quack"
+              size="medium"
+              onClick={onCQClick}
+            >
+              <IoCreate className={classes.createIcon} />
+            </Fab>
+          ) : (
+            <RoundedButton
+              color="primary"
+              variant="contained"
+              disableElevation
+              fullWidth
+              className={classes.quackButton}
+              onClick={onCQClick}
+            >
+              Quack
+            </RoundedButton>
+          )}
         </Box>
         <Box className={classes.bottom}>
           <AccountButton />
         </Box>
       </Box>
-      <MoreMenuPopper
-        open={open}
-        anchorEl={anchorEl}
-        onClose={onClose}
-        popup={
-          popup !== "compose-quack" ? (popup as "display-settings") : undefined
-        }
-      />
-      <CreateQuackModal
-        open={popup === "compose-quack"}
-        onClose={handleMClose}
-      />
+      <MoreMenuPopper open={open} anchorEl={anchorEl} onClose={onClose} />
     </>
   );
 };

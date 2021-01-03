@@ -1,13 +1,16 @@
 import {
   FormControl,
   FormLabel,
+  IconButton,
   RadioGroup,
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useContext } from "react";
+import { BsArrowLeft } from "react-icons/bs";
 import { Modal } from ".";
 import { ThemeContext } from "../context/theme";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 import { hexToRgb } from "../utils/hexToRgb";
 import { RoundedButton } from "./RoundedButton";
 import { SampleQuack } from "./SampleQuack";
@@ -22,11 +25,20 @@ export const DisplaySettingsModal: React.FC<DisplaySettingsModalProps> = ({
   open,
   onClose,
 }) => {
+  const { xs } = useMediaQuery();
   const useStyles = makeStyles(({ palette: { primary, text } }) => ({
+    header: {
+      display: "flex",
+      alignItems: "center",
+      gap: "1rem",
+    },
+    backIcon: {
+      color: primary.main,
+    },
     heading: {
       fontSize: "1.3rem",
       fontWeight: "bold",
-      marginTop: "1rem",
+      marginTop: xs ? 0 : "1rem",
       color: text.primary,
       margin: "0 auto",
     },
@@ -55,43 +67,14 @@ export const DisplaySettingsModal: React.FC<DisplaySettingsModalProps> = ({
     settingsContainer: {
       width: "100%",
       display: "flex",
+      flexDirection: xs ? "column" : "row",
+      alignItems: xs ? "stretch" : "center",
       justifyContent: "center",
-      flexDirection: "row",
       flexWrap: "nowrap",
-      gap: "1rem",
+      gap: xs ? "0.5rem" : "1rem",
       background: hexToRgb(primary.main, 0.2),
       borderRadius: "1rem",
       padding: "0.5rem 1rem",
-    },
-    themeBox: {
-      width: "50%",
-      height: "60px",
-      margin: 0,
-      borderRadius: "4px",
-    },
-    selected: {
-      border: "2px solid",
-      borderColor: primary.main,
-    },
-    light: {
-      background: "#fff",
-      color: "#000",
-      fontWeight: "bold",
-    },
-    dark: {
-      background: "#000",
-      color: "rgba(255, 255, 255, 0.8)",
-      fontWeight: "bold",
-    },
-    label: {
-      fontSize: "0.9rem",
-      fontWeight: "bold",
-    },
-    radio: {
-      marginRight: "1rem",
-    },
-    icon: {
-      color: primary.main,
     },
   }));
   const classes = useStyles();
@@ -106,7 +89,20 @@ export const DisplaySettingsModal: React.FC<DisplaySettingsModalProps> = ({
       open={open}
       onClose={onClose}
       header={
-        <Typography className={classes.heading}>Customize your view</Typography>
+        xs ? (
+          <div className={classes.header}>
+            <IconButton>
+              <BsArrowLeft className={classes.backIcon} />
+            </IconButton>
+            <Typography className={classes.heading}>
+              Customize your view
+            </Typography>
+          </div>
+        ) : (
+          <Typography className={classes.heading}>
+            Customize your view
+          </Typography>
+        )
       }
       disableBackdropClick={false}
       padding="0.5rem 2rem"

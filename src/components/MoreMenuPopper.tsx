@@ -6,22 +6,19 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
+import React, { useContext } from "react";
 import { BsDisplay, BsGear } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
-import { DisplaySettingsModal, Popper } from ".";
+import { Popper } from ".";
+import { FeedContext } from "../context/feed";
 
 interface MoreMenuPopperProps {
   open?: boolean;
   onClose: () => any;
   anchorEl: null | HTMLElement;
-  popup?: "display-settings";
 }
 
-export const MoreMenuPopper: React.FC<MoreMenuPopperProps> = ({
-  popup,
-  ...props
-}) => {
+export const MoreMenuPopper: React.FC<MoreMenuPopperProps> = ({ ...props }) => {
   const useStyles = makeStyles(
     ({ palette: { secondary, primary, text, type } }) => ({
       body: {
@@ -48,14 +45,14 @@ export const MoreMenuPopper: React.FC<MoreMenuPopperProps> = ({
 
   const history = useHistory();
 
+  const { state } = useContext(FeedContext)!;
+
   const handleDSBtnClick = () => {
     props.onClose();
-    history.push("/i/display");
-  };
-
-  const handleClose = () => {
-    history.push("/home");
-    history.go(0);
+    history.push("/i/display", {
+      feed: state?.feed,
+      username: state?.username,
+    });
   };
 
   return (
@@ -80,10 +77,6 @@ export const MoreMenuPopper: React.FC<MoreMenuPopperProps> = ({
           </ListItem>
         </List>
       </Popper>
-      <DisplaySettingsModal
-        open={popup === "display-settings"}
-        onClose={handleClose}
-      />
     </>
   );
 };

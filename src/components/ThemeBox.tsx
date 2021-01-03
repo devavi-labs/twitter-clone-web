@@ -2,6 +2,7 @@ import { FormControlLabel, Radio } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 
 interface ThemeBoxProps {
   theme: "dark" | "light";
@@ -9,9 +10,10 @@ interface ThemeBoxProps {
 }
 
 export const ThemeBox: React.FC<ThemeBoxProps> = ({ theme, selected }) => {
+  const { xs } = useMediaQuery();
   const useStyles = makeStyles(({ palette: { primary, secondary, text } }) => ({
     themeBox: {
-      width: "50%",
+      width: xs ? "100%" : "50%",
       height: "60px",
       margin: 0,
       borderRadius: "4px",

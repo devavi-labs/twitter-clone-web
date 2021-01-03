@@ -33,7 +33,7 @@ export const Modal: React.FC<ModalProps & MuiModalProps> = ({
         backgroundColor: `${
           type === "dark" ? primary.light : text.primary
         } !important`,
-        opacity: 0.2,
+        opacity: "0.2 !important",
       },
       modal: {
         display: "flex",
@@ -67,7 +67,7 @@ export const Modal: React.FC<ModalProps & MuiModalProps> = ({
         width: "100%",
         display: "flex",
         alignItems: "center",
-        padding: "0.5rem 2rem",
+        padding: xs ? "0.5rem" : "0.5rem 2rem",
         opacity: type === "dark" ? 0.8 : 1,
         fontWeight: "bold",
       },
