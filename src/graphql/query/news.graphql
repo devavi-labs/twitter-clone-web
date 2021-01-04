@@ -1,0 +1,14 @@
+query News($section: String!) {
+  news(section: $section) {
+    id
+    publishedAt
+    section
+    title
+    abstract
+    author
+    url
+    shortUrl
+    thumbnailUrl
+    caption
+  }
+}
