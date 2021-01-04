@@ -13,6 +13,10 @@ interface ModalProps {
   header?: any;
   fixedHeight?: boolean;
   padding?: string;
+  top?: string | number;
+  left?: string | number;
+  bottom?: string | number;
+  right?: string | number;
 }
 
 export const Modal: React.FC<ModalProps & MuiModalProps> = ({
@@ -22,6 +26,10 @@ export const Modal: React.FC<ModalProps & MuiModalProps> = ({
   fixedHeight,
   padding,
   children,
+  top,
+  left,
+  bottom,
+  right,
   ...props
 }) => {
   const rootRef = React.useRef(null);
@@ -35,6 +43,11 @@ export const Modal: React.FC<ModalProps & MuiModalProps> = ({
       justifyContent: "center",
     },
     paper: {
+      position: "absolute",
+      top: xs ? undefined : top,
+      left: xs ? undefined : left,
+      bottom: xs ? undefined : bottom,
+      right: xs ? undefined : right,
       backgroundColor: secondary.main,
       width: "100%",
       maxWidth: "600px",

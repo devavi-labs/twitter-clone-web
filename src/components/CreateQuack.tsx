@@ -1,6 +1,6 @@
 import { Avatar, Box, Divider, IconButton, InputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { IEmojiData } from "emoji-picker-react";
+import { BaseEmoji } from "emoji-mart";
 import { EmojiPickerPopper } from ".";
 import { FormikHelpers, useFormik } from "formik";
 import React from "react";
@@ -108,8 +108,8 @@ export const CreateQuack: React.FC<CreateQuackProps> = ({
     onSubmit,
   });
 
-  const onEmojiClick = (event: MouseEvent, emojiObject: IEmojiData) => {
-    formik.setFieldValue("text", formik.values.text + emojiObject.emoji);
+  const onEmojiSelect = (emoji: BaseEmoji) => {
+    formik.setFieldValue("text", formik.values.text + emoji.native);
   };
 
   const { open, onClose, anchorEl, handleClick } = usePopper();
@@ -169,7 +169,7 @@ export const CreateQuack: React.FC<CreateQuackProps> = ({
         open={open}
         onClose={onClose}
         anchorEl={anchorEl}
-        onEmojiClick={onEmojiClick}
+        onSelect={onEmojiSelect}
       />
     </>
   );

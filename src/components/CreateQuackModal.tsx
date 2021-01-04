@@ -24,6 +24,7 @@ export const CreateQuackModal: React.FC<CreateQuackModalProps> = ({
           </IconButton>
         </>
       }
+      top="4%"
     >
       <>
         <Divider />

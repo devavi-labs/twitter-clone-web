@@ -2,7 +2,7 @@ dependencies:
   '@material-ui/core': 4.11.2_aef73de6374e2d7a7f5dc9d5ceec06df
   '@urql/exchange-auth': 0.1.2_graphql@15.4.0
   '@urql/exchange-graphcache': 3.3.3_graphql@15.4.0
-  emoji-picker-react: 3.2.4
+  emoji-mart: 3.0.0_react@17.0.1
   formik: 2.2.6_react@17.0.1
   graphql: 15.4.0
   jsonwebtoken: 8.5.1
@@ -20,6 +20,7 @@ devDependencies:
   '@graphql-codegen/typescript-operations': 1.17.13_graphql@15.4.0
   '@graphql-codegen/typescript-urql': 2.0.3_graphql@15.4.0
   '@types/customize-cra': 1.0.0
+  '@types/emoji-mart': 3.0.4
   '@types/node': 12.19.11
   '@types/react': 16.14.2
   '@types/react-dom': 16.9.10
@@ -2703,6 +2704,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-jcY+o4oX8H6ZoPKvNCJh88/4kV6vv+1d0ZfrYRjc5pTLBoRTcEPaAI8bUN3J7fDK0s2zBtkPnVpazVjbfyaJ4w==
+  /@types/emoji-mart/3.0.4:
+    dependencies:
+      '@types/react': 16.14.2
+    dev: true
+    resolution:
+      integrity: sha512-Uqegqi54lXzz1qlDnLYEbFlUXY46auTVwbeOO8mj+9maGu2WBx/lGnmLKg7WS4CC5lB8Q6ch8K5VPBR9bDjWgg==
   /@types/eslint/7.2.6:
     dependencies:
       '@types/estree': 0.0.45
@@ -5666,10 +5673,16 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-A8OG5SR/ij3SsJdWDJdkkSYUjQdCUx6APQXem0SaEePBSRg4eymGYwBkKo1Y6DU+af/Jn2dBQqDBvjnr9Vi8nQ==
-  /emoji-picker-react/3.2.4:
+  /emoji-mart/3.0.0_react@17.0.1:
+    dependencies:
+      '@babel/runtime': 7.12.5
+      prop-types: 15.7.2
+      react: 17.0.1
     dev: false
+    peerDependencies:
+      react: ^0.14.0 || ^15.0.0-0 || ^16.0.0
     resolution:
-      integrity: sha512-X9AESw1olo73kWBS25hlBcr5GQltHI6kZueV11bR5NJrrG/Dt8TrMbhSMSngs4rMxeAoVT04ST9ixI1KxPThJg==
+      integrity: sha512-r5DXyzOLJttdwRYfJmPq/XL3W5tiAE/VsRnS0Hqyn27SqPA/GOYwVUSx50px/dXdJyDSnvmoPbuJ/zzhwSaU4A==
   /emoji-regex/7.0.3:
     dev: false
     resolution:
@@ -14436,6 +14449,7 @@ specifiers:
   '@graphql-codegen/typescript-urql': ^2.0.3
   '@material-ui/core': ^4.11.2
   '@types/customize-cra': ^1.0.0
+  '@types/emoji-mart': ^3.0.4
   '@types/node': ^12.0.0
   '@types/react': ^16.9.53
   '@types/react-dom': ^16.9.8
@@ -14445,7 +14459,7 @@ specifiers:
   '@urql/exchange-graphcache': ^3.3.3
   babel-plugin-import: ^1.13.3
   customize-cra: ^1.0.0
-  emoji-picker-react: ^3.2.4
+  emoji-mart: ^3.0.0
   formik: ^2.2.6
   graphql: ^15.4.0
   jsonwebtoken: ^8.5.1

@@ -1,13 +1,5 @@
-aside.emoji-picker-react {
+.emoji-mart-light {
   background: #ffffff !important;
   -webkit-box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.2) !important;
   box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.2) !important;
-}
-
-aside.emoji-picker-react input {
-  border-color: rgba(0, 0, 0, 0.2) !important;
-}
-
-aside.emoji-picker-react .emoji-group::before {
-  background-color: #ffffff !important;
 }
