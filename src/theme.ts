@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { unstable_createMuiStrictModeTheme as createMuiTheme } from "@material-ui/core/styles";
 import { TypographyOptions } from "@material-ui/core/styles/createTypography";
 
 const typography: TypographyOptions = {
