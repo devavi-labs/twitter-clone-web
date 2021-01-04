@@ -56,7 +56,7 @@ export const CreateQuack: React.FC<CreateQuackProps> = ({
     input: {
       width: "100%",
       padding: "1rem 0",
-      color: type === "dark" ? "rgba(255,255,255,0.8)" : "#000",
+      color: type === "dark" ? "#e6e6e6" : "#000",
       fontSize: "1.1rem",
       margin: "1em 0",
     },
