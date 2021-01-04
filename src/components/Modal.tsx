@@ -4,6 +4,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
+import { Backdrop } from ".";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 
 interface ModalProps {
@@ -27,52 +28,44 @@ export const Modal: React.FC<ModalProps & MuiModalProps> = ({
 
   const { xs } = useMediaQuery();
 
-  const useStyles = makeStyles(
-    ({ palette: { primary, secondary, text, type } }) => ({
-      backdrop: {
-        backgroundColor: `${
-          type === "dark" ? primary.light : text.primary
-        } !important`,
-        opacity: "0.2 !important",
-      },
-      modal: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      },
-      paper: {
-        backgroundColor: secondary.main,
-        width: "100%",
-        maxWidth: "600px",
-        height: xs ? "100%" : fixedHeight ? "95%" : "auto",
-        maxHeight: xs ? "100%" : "95%",
-        borderRadius: xs ? "none" : "20px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+  const useStyles = makeStyles(({ palette: { secondary, type } }) => ({
+    modal: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    paper: {
+      backgroundColor: secondary.main,
+      width: "100%",
+      maxWidth: "600px",
+      height: xs ? "100%" : fixedHeight ? "95%" : "auto",
+      maxHeight: xs ? "100%" : "95%",
+      borderRadius: xs ? "none" : "20px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      outline: "none",
+      "&:focus": {
         outline: "none",
-        "&:focus": {
-          outline: "none",
-        },
       },
-      body: {
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: padding || "0.5rem",
-        overflowY: "auto",
-      },
-      header: {
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        padding: xs ? "0.5rem" : "0.5rem 2rem",
-        opacity: type === "dark" ? 0.8 : 1,
-        fontWeight: "bold",
-      },
-    })
-  );
+    },
+    body: {
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      padding: padding || "0.5rem",
+      overflowY: "auto",
+    },
+    header: {
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+      padding: xs ? "0.5rem" : "0.5rem 2rem",
+      opacity: type === "dark" ? 0.8 : 1,
+      fontWeight: "bold",
+    },
+  }));
 
   const classes = useStyles();
 
@@ -90,9 +83,7 @@ export const Modal: React.FC<ModalProps & MuiModalProps> = ({
         disableEnforceFocus
         container={() => rootRef.current}
         className={classes.modal}
-        BackdropProps={{
-          className: classes.backdrop,
-        }}
+        BackdropComponent={Backdrop}
         {...props}
       >
         <div className={classes.paper}>

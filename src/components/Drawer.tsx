@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { BsDisplay, BsGear, BsPerson, BsX } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
+import { Backdrop } from ".";
 import { useMeQuery } from "../generated/graphql";
 
 interface DrawerProps {
@@ -23,82 +24,68 @@ interface DrawerProps {
 }
 
 export const Drawer: React.FC<DrawerProps> = ({ open, onOpen, onClose }) => {
-  const useStyles = makeStyles(
-    ({
-      palette: {
-        primary,
-        text,
-        type,
-        background: { paper },
-      },
-    }) => ({
-      backdrop: {
-        backgroundColor: `${
-          type === "dark" ? primary.light : text.primary
-        } !important`,
-        opacity: "0.2 !important",
-      },
-      root: {
-        minWidth: "70vw",
-        minHeight: "100%",
-        background: paper,
-      },
-      header: {
-        width: "100%",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "0 0.8rem",
-      },
-      heading: {
-        fontSize: "1.1rem",
-        fontWeight: "bold",
-      },
-      closeIcon: {
-        color: primary.main,
-      },
-      profile: {
-        padding: "0.5rem 0.8rem",
-      },
-      avatar: {
-        height: 36,
-        width: 36,
-      },
-      displayName: {
-        fontWeight: "bold",
-        marginTop: "0.4rem",
-      },
-      username: {
-        opactiy: 0.6,
-      },
-      follow: {
-        display: "flex",
-        gap: "1rem",
-        marginTop: "1rem",
-      },
-      followText: {
-        display: "flex",
-        gap: "0.2rem",
-        fontSize: "0.9rem",
-      },
-      followStat: {
-        fontSize: "0.9rem",
-        fontWeight: "bold",
-      },
-      listIcon: {
-        fontSize: "1rem",
-      },
-      listText: {
-        marginLeft: "-2rem",
-        textTransform: "capitalize",
-        fontSize: "0.9rem",
-      },
-      logoutText: {
-        textTransform: "capitalize",
-        fontSize: "0.9rem",
-      },
-    })
-  );
+  const useStyles = makeStyles(({ palette: { primary,
+      background: { paper } } }) => ({
+    root: {
+      minWidth: "70vw",
+      minHeight: "100%",
+      background: paper,
+    },
+    header: {
+      width: "100%",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: "0 0.8rem",
+    },
+    heading: {
+      fontSize: "1.1rem",
+      fontWeight: "bold",
+    },
+    closeIcon: {
+      color: primary.main,
+    },
+    profile: {
+      padding: "0.5rem 0.8rem",
+    },
+    avatar: {
+      height: 36,
+      width: 36,
+    },
+    displayName: {
+      fontWeight: "bold",
+      marginTop: "0.4rem",
+    },
+    username: {
+      opactiy: 0.6,
+    },
+    follow: {
+      display: "flex",
+      gap: "1rem",
+      marginTop: "1rem",
+    },
+    followText: {
+      display: "flex",
+      gap: "0.2rem",
+      fontSize: "0.9rem",
+    },
+    followStat: {
+      fontSize: "0.9rem",
+      fontWeight: "bold",
+    },
+    listIcon: {
+      fontSize: "1rem",
+    },
+    listText: {
+      marginLeft: "-2rem",
+      textTransform: "capitalize",
+      fontSize: "0.9rem",
+    },
+    logoutText: {
+      textTransform: "capitalize",
+      fontSize: "0.9rem",
+    },
+  }));
   const classes = useStyles();
   const [{ data }] = useMeQuery();
   const history = useHistory();
@@ -108,9 +95,7 @@ export const Drawer: React.FC<DrawerProps> = ({ open, onOpen, onClose }) => {
       open={open}
       onClose={onClose}
       onOpen={onOpen}
-      BackdropProps={{
-        className: classes.backdrop,
-      }}
+      BackdropComponent={Backdrop}
     >
       <div className={classes.root}>
         <div className={classes.header}>
