@@ -3,7 +3,11 @@ fragment RegularQuack on Quack {
   createdAt
   text
   truncatedText
-  urls
+  links
+  hashtags
+  mentions {
+    ...RegularUser
+  }
   quackedByUser {
     ...RegularUser
   }
@@ -12,7 +16,11 @@ fragment RegularQuack on Quack {
     createdAt
     text
     truncatedText
-    urls
+    links
+    hashtags
+    mentions {
+      ...RegularUser
+    }
     quackedByUser {
       ...RegularUser
     }

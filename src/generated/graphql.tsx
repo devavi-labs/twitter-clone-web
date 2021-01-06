@@ -19,8 +19,9 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   news?: Maybe<Array<News>>;
-  quacks?: Maybe<Array<Quack>>;
-  quacksForMe?: Maybe<Array<Quack>>;
+  quackById?: Maybe<Quack>;
+  quacksForMe?: Maybe<PaginatedQuacks>;
+  search: SearchResponse;
   me?: Maybe<User>;
   userById?: Maybe<User>;
   userByEmail?: Maybe<User>;
@@ -33,9 +34,23 @@ export type QueryNewsArgs = {
 };
 
 
+export type QueryQuackByIdArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type QueryQuacksForMeArgs = {
-  offset?: Maybe<Scalars['Int']>;
+  lastIndex?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
+};
+
+
+export type QuerySearchArgs = {
+  lastIndex?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  fromFollowing?: Maybe<Scalars['Boolean']>;
+  type?: Maybe<Scalars['String']>;
+  query: Scalars['String'];
 };
 
 
@@ -55,7 +70,7 @@ export type QueryUserByUsernameArgs = {
 
 export type News = {
   __typename?: 'News';
-  id: Scalars['Float'];
+  id: Scalars['Int'];
   publishedAt: Scalars['DateTime'];
   section: Scalars['String'];
   title: Scalars['String'];
@@ -70,15 +85,17 @@ export type News = {
 
 export type Quack = {
   __typename?: 'Quack';
-  id: Scalars['String'];
+  id: Scalars['Float'];
   createdAt: Scalars['DateTime'];
   isVisible: Scalars['Boolean'];
   text: Scalars['String'];
   truncatedText?: Maybe<Scalars['String']>;
-  urls?: Maybe<Array<Scalars['String']>>;
-  quackedByUserId: Scalars['String'];
+  links?: Maybe<Array<Scalars['String']>>;
+  mentions?: Maybe<Array<User>>;
+  hashtags?: Maybe<Array<Scalars['String']>>;
+  quackedByUserId: Scalars['Float'];
   quackedByUser: User;
-  inReplyToQuackId?: Maybe<Scalars['String']>;
+  inReplyToQuackId?: Maybe<Scalars['Int']>;
   inReplyToQuack?: Maybe<Quack>;
   replies?: Maybe<Array<Quack>>;
   requacks?: Maybe<Array<Requack>>;
@@ -89,7 +106,7 @@ export type Quack = {
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['String'];
+  id: Scalars['Int'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
   displayName: Scalars['String'];
@@ -102,28 +119,57 @@ export type User = {
   quacks?: Maybe<Array<Quack>>;
   requacks?: Maybe<Array<Requack>>;
   likes?: Maybe<Array<Like>>;
-  followers?: Maybe<Array<User>>;
-  followings?: Maybe<Array<User>>;
+  followers?: Maybe<Array<Follow>>;
+  followings?: Maybe<Array<Follow>>;
   haveIBlockedThisUser?: Maybe<Scalars['Boolean']>;
   amIBlockedByThisUser?: Maybe<Scalars['Boolean']>;
+  followStatus?: Maybe<Scalars['Boolean']>;
+  followBackStatus?: Maybe<Scalars['Boolean']>;
 };
 
 export type Requack = {
   __typename?: 'Requack';
-  id: Scalars['Float'];
-  quackId: Scalars['String'];
+  id: Scalars['Int'];
+  quackId: Scalars['Float'];
   quack: Quack;
-  userId: Scalars['String'];
+  userId: Scalars['Float'];
   user: User;
 };
 
 export type Like = {
   __typename?: 'Like';
   id: Scalars['Float'];
-  quackId: Scalars['String'];
+  quackId: Scalars['Float'];
   quack: Quack;
-  userId: Scalars['String'];
+  userId: Scalars['Float'];
   user: User;
+};
+
+export type Follow = {
+  __typename?: 'Follow';
+  id: Scalars['Float'];
+  userId: Scalars['Float'];
+  user: User;
+  followerId: Scalars['Float'];
+  follower: User;
+};
+
+export type PaginatedQuacks = {
+  __typename?: 'PaginatedQuacks';
+  quacks?: Maybe<Array<Quack>>;
+  hasMore: Scalars['Boolean'];
+};
+
+export type SearchResponse = {
+  __typename?: 'SearchResponse';
+  paginatedUsers?: Maybe<PaginatedUsers>;
+  paginatedQuacks?: Maybe<PaginatedQuacks>;
+};
+
+export type PaginatedUsers = {
+  __typename?: 'PaginatedUsers';
+  users?: Maybe<Array<User>>;
+  hasMore: Scalars['Boolean'];
 };
 
 export type Mutation = {
@@ -150,27 +196,27 @@ export type Mutation = {
 
 
 export type MutationBlockArgs = {
-  userId: Scalars['String'];
+  userId: Scalars['Float'];
 };
 
 
 export type MutationUnblockArgs = {
-  userId: Scalars['String'];
+  userId: Scalars['Float'];
 };
 
 
 export type MutationFollowArgs = {
-  userId: Scalars['String'];
+  userId: Scalars['Float'];
 };
 
 
 export type MutationUnfollowArgs = {
-  userId: Scalars['String'];
+  userId: Scalars['Float'];
 };
 
 
 export type MutationLikeArgs = {
-  quackId: Scalars['String'];
+  quackId: Scalars['Float'];
 };
 
 
@@ -185,7 +231,7 @@ export type MutationDeleteQuackArgs = {
 
 
 export type MutationRequackArgs = {
-  quackId: Scalars['String'];
+  quackId: Scalars['Float'];
 };
 
 
@@ -240,7 +286,7 @@ export type FieldError = {
 
 export type QuackInput = {
   text: Scalars['String'];
-  inReplyToQuackId?: Maybe<Scalars['String']>;
+  inReplyToQuackId?: Maybe<Scalars['Int']>;
 };
 
 export type UserResponse = {
@@ -265,14 +311,20 @@ export type RegularFieldErrorFragment = (
 
 export type RegularQuackFragment = (
   { __typename?: 'Quack' }
-  & Pick<Quack, 'id' | 'createdAt' | 'text' | 'truncatedText' | 'urls' | 'requackStatus' | 'likeStatus'>
-  & { quackedByUser: (
+  & Pick<Quack, 'id' | 'createdAt' | 'text' | 'truncatedText' | 'links' | 'hashtags' | 'requackStatus' | 'likeStatus'>
+  & { mentions?: Maybe<Array<(
+    { __typename?: 'User' }
+    & RegularUserFragment
+  )>>, quackedByUser: (
     { __typename?: 'User' }
     & RegularUserFragment
   ), inReplyToQuack?: Maybe<(
     { __typename?: 'Quack' }
-    & Pick<Quack, 'id' | 'createdAt' | 'text' | 'truncatedText' | 'urls' | 'requackStatus' | 'likeStatus'>
-    & { quackedByUser: (
+    & Pick<Quack, 'id' | 'createdAt' | 'text' | 'truncatedText' | 'links' | 'hashtags' | 'requackStatus' | 'likeStatus'>
+    & { mentions?: Maybe<Array<(
+      { __typename?: 'User' }
+      & RegularUserFragment
+    )>>, quackedByUser: (
       { __typename?: 'User' }
       & RegularUserFragment
     ), replies?: Maybe<Array<(
@@ -301,15 +353,30 @@ export type RegularUserFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'displayName' | 'username' | 'displayPicture' | 'coverPicture' | 'emailVerified' | 'amIDeactivated'>
   & { followers?: Maybe<Array<(
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'displayName' | 'username' | 'emailVerified' | 'displayPicture'>
+    { __typename?: 'Follow' }
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'displayName' | 'username' | 'emailVerified' | 'displayPicture' | 'coverPicture'>
+    ), follower: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'displayName' | 'username' | 'emailVerified' | 'displayPicture' | 'coverPicture'>
+    ) }
   )>>, followings?: Maybe<Array<(
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'displayName' | 'username' | 'emailVerified' | 'displayPicture'>
+    { __typename?: 'Follow' }
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'displayName' | 'username' | 'emailVerified' | 'displayPicture' | 'coverPicture'>
+    ), follower: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'displayName' | 'username' | 'emailVerified' | 'displayPicture' | 'coverPicture'>
+    ) }
   )>>, quacks?: Maybe<Array<(
     { __typename?: 'Quack' }
-    & Pick<Quack, 'id' | 'text' | 'truncatedText' | 'urls' | 'isVisible'>
-    & { likes?: Maybe<Array<(
+    & Pick<Quack, 'id' | 'text' | 'truncatedText' | 'links' | 'hashtags' | 'isVisible' | 'likeStatus' | 'requackStatus'>
+    & { mentions?: Maybe<Array<(
+      { __typename?: 'User' }
+      & ShortUserFragment
+    )>>, likes?: Maybe<Array<(
       { __typename?: 'Like' }
       & Pick<Like, 'id'>
     )>>, requacks?: Maybe<Array<(
@@ -323,8 +390,11 @@ export type RegularUserFragment = (
     { __typename?: 'Requack' }
     & { quack: (
       { __typename?: 'Quack' }
-      & Pick<Quack, 'id' | 'text' | 'truncatedText' | 'urls' | 'isVisible'>
-      & { likes?: Maybe<Array<(
+      & Pick<Quack, 'id' | 'text' | 'truncatedText' | 'links' | 'hashtags' | 'isVisible' | 'likeStatus' | 'requackStatus'>
+      & { mentions?: Maybe<Array<(
+        { __typename?: 'User' }
+        & ShortUserFragment
+      )>>, likes?: Maybe<Array<(
         { __typename?: 'Like' }
         & Pick<Like, 'id'>
       )>>, requacks?: Maybe<Array<(
@@ -339,8 +409,11 @@ export type RegularUserFragment = (
     { __typename?: 'Like' }
     & { quack: (
       { __typename?: 'Quack' }
-      & Pick<Quack, 'id' | 'text' | 'truncatedText' | 'urls' | 'isVisible'>
-      & { likes?: Maybe<Array<(
+      & Pick<Quack, 'id' | 'text' | 'truncatedText' | 'links' | 'hashtags' | 'isVisible' | 'likeStatus' | 'requackStatus'>
+      & { mentions?: Maybe<Array<(
+        { __typename?: 'User' }
+        & ShortUserFragment
+      )>>, likes?: Maybe<Array<(
         { __typename?: 'Like' }
         & Pick<Like, 'id'>
       )>>, requacks?: Maybe<Array<(
@@ -364,6 +437,11 @@ export type RegularUserResponseFragment = (
     { __typename?: 'FieldError' }
     & RegularFieldErrorFragment
   )>> }
+);
+
+export type ShortUserFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'username' | 'displayName' | 'displayPicture' | 'coverPicture' | 'emailVerified' | 'followStatus' | 'followBackStatus'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -444,6 +522,34 @@ export type NewsQuery = (
   )>> }
 );
 
+export type QuackByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type QuackByIdQuery = (
+  { __typename?: 'Query' }
+  & { quackById?: Maybe<(
+    { __typename?: 'Quack' }
+    & RegularQuackFragment
+  )> }
+);
+
+export type QuacksForMeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QuacksForMeQuery = (
+  { __typename?: 'Query' }
+  & { quacksForMe?: Maybe<(
+    { __typename?: 'PaginatedQuacks' }
+    & Pick<PaginatedQuacks, 'hasMore'>
+    & { quacks?: Maybe<Array<(
+      { __typename?: 'Quack' }
+      & RegularQuackFragment
+    )>> }
+  )> }
+);
+
 export type UserByEmailQueryVariables = Exact<{
   email: Scalars['String'];
 }>;
@@ -483,6 +589,18 @@ export type UserByUsernameQuery = (
   )> }
 );
 
+export const ShortUserFragmentDoc = gql`
+    fragment ShortUser on User {
+  id
+  username
+  displayName
+  displayPicture
+  coverPicture
+  emailVerified
+  followStatus
+  followBackStatus
+}
+    `;
 export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
   id
@@ -492,25 +610,51 @@ export const RegularUserFragmentDoc = gql`
   coverPicture
   emailVerified
   followers {
-    id
-    displayName
-    username
-    emailVerified
-    displayPicture
+    user {
+      id
+      displayName
+      username
+      emailVerified
+      displayPicture
+      coverPicture
+    }
+    follower {
+      id
+      displayName
+      username
+      emailVerified
+      displayPicture
+      coverPicture
+    }
   }
   followings {
-    id
-    displayName
-    username
-    emailVerified
-    displayPicture
+    user {
+      id
+      displayName
+      username
+      emailVerified
+      displayPicture
+      coverPicture
+    }
+    follower {
+      id
+      displayName
+      username
+      emailVerified
+      displayPicture
+      coverPicture
+    }
   }
   amIDeactivated
   quacks {
     id
     text
     truncatedText
-    urls
+    links
+    hashtags
+    mentions {
+      ...ShortUser
+    }
     isVisible
     likes {
       id
@@ -521,13 +665,19 @@ export const RegularUserFragmentDoc = gql`
     replies {
       id
     }
+    likeStatus
+    requackStatus
   }
   requacks {
     quack {
       id
       text
       truncatedText
-      urls
+      links
+      hashtags
+      mentions {
+        ...ShortUser
+      }
       isVisible
       likes {
         id
@@ -538,6 +688,8 @@ export const RegularUserFragmentDoc = gql`
       replies {
         id
       }
+      likeStatus
+      requackStatus
     }
   }
   likes {
@@ -545,7 +697,11 @@ export const RegularUserFragmentDoc = gql`
       id
       text
       truncatedText
-      urls
+      links
+      hashtags
+      mentions {
+        ...ShortUser
+      }
       isVisible
       likes {
         id
@@ -556,17 +712,23 @@ export const RegularUserFragmentDoc = gql`
       replies {
         id
       }
+      likeStatus
+      requackStatus
     }
   }
 }
-    `;
+    ${ShortUserFragmentDoc}`;
 export const RegularQuackFragmentDoc = gql`
     fragment RegularQuack on Quack {
   id
   createdAt
   text
   truncatedText
-  urls
+  links
+  hashtags
+  mentions {
+    ...RegularUser
+  }
   quackedByUser {
     ...RegularUser
   }
@@ -575,7 +737,11 @@ export const RegularQuackFragmentDoc = gql`
     createdAt
     text
     truncatedText
-    urls
+    links
+    hashtags
+    mentions {
+      ...RegularUser
+    }
     quackedByUser {
       ...RegularUser
     }
@@ -701,6 +867,31 @@ export const NewsDocument = gql`
 
 export function useNewsQuery(options: Omit<Urql.UseQueryArgs<NewsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<NewsQuery>({ query: NewsDocument, ...options });
+};
+export const QuackByIdDocument = gql`
+    query QuackById($id: Int!) {
+  quackById(id: $id) {
+    ...RegularQuack
+  }
+}
+    ${RegularQuackFragmentDoc}`;
+
+export function useQuackByIdQuery(options: Omit<Urql.UseQueryArgs<QuackByIdQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<QuackByIdQuery>({ query: QuackByIdDocument, ...options });
+};
+export const QuacksForMeDocument = gql`
+    query QuacksForMe {
+  quacksForMe {
+    quacks {
+      ...RegularQuack
+    }
+    hasMore
+  }
+}
+    ${RegularQuackFragmentDoc}`;
+
+export function useQuacksForMeQuery(options: Omit<Urql.UseQueryArgs<QuacksForMeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<QuacksForMeQuery>({ query: QuacksForMeDocument, ...options });
 };
 export const UserByEmailDocument = gql`
     query UserByEmail($email: String!) {

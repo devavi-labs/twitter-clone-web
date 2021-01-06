@@ -1,0 +1,5 @@
+query QuackById($id: Int!) {
+  quackById(id: $id) {
+    ...RegularQuack
+  }
+}

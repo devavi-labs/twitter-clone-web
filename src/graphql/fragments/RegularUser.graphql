@@ -6,25 +6,51 @@ fragment RegularUser on User {
   coverPicture
   emailVerified
   followers {
-    id
-    displayName
-    username
-    emailVerified
-    displayPicture
+    user {
+      id
+      displayName
+      username
+      emailVerified
+      displayPicture
+      coverPicture
+    }
+    follower {
+      id
+      displayName
+      username
+      emailVerified
+      displayPicture
+      coverPicture
+    }
   }
   followings {
-    id
-    displayName
-    username
-    emailVerified
-    displayPicture
+    user {
+      id
+      displayName
+      username
+      emailVerified
+      displayPicture
+      coverPicture
+    }
+    follower {
+      id
+      displayName
+      username
+      emailVerified
+      displayPicture
+      coverPicture
+    }
   }
   amIDeactivated
   quacks {
     id
     text
     truncatedText
-    urls
+    links
+    hashtags
+    mentions {
+      ...ShortUser
+    }
     isVisible
     likes {
       id
@@ -35,13 +61,19 @@ fragment RegularUser on User {
     replies {
       id
     }
+    likeStatus
+    requackStatus
   }
   requacks {
     quack {
       id
       text
       truncatedText
-      urls
+      links
+      hashtags
+      mentions {
+        ...ShortUser
+      }
       isVisible
       likes {
         id
@@ -52,6 +84,8 @@ fragment RegularUser on User {
       replies {
         id
       }
+      likeStatus
+      requackStatus
     }
   }
   likes {
@@ -59,7 +93,11 @@ fragment RegularUser on User {
       id
       text
       truncatedText
-      urls
+      links
+      hashtags
+      mentions {
+        ...ShortUser
+      }
       isVisible
       likes {
         id
@@ -70,6 +108,8 @@ fragment RegularUser on User {
       replies {
         id
       }
+      likeStatus
+      requackStatus
     }
   }
 }
