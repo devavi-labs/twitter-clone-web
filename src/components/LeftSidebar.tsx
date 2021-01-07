@@ -1,4 +1,4 @@
-import { Box, Fab, IconButton } from "@material-ui/core";
+import { Box, Fab, IconButton, Drawer } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useContext } from "react";
 import {
@@ -23,7 +23,10 @@ export const LeftSidebar: React.FC = () => {
   const { md } = useMediaQuery();
   const useStyles = makeStyles(({ palette: { secondary, type, text } }) => ({
     root: {
-      flex: md ? 0 : 2,
+      width: md ? 100 : "24%",
+    },
+    paper: {
+      width: md ? 100 : "24%",
       backgroundColor: secondary.main,
       display: "flex",
       flexDirection: "column",
@@ -84,7 +87,13 @@ export const LeftSidebar: React.FC = () => {
 
   return (
     <>
-      <Box component="aside" className={classes.root}>
+      <Drawer
+        className={classes.root}
+        variant="permanent"
+        anchor="left"
+        classes={{ paper: classes.paper }}
+        disablePortal
+      >
         <Box className={classes.top}>
           <IconButton onClick={() => history.push("/home")}>
             <Logo size="xxs" className={classes.logo} />
@@ -136,7 +145,7 @@ export const LeftSidebar: React.FC = () => {
         <Box className={classes.bottom}>
           <AccountButton />
         </Box>
-      </Box>
+      </Drawer>
       <MoreMenuPopper open={open} anchorEl={anchorEl} onClose={onClose} />
     </>
   );

@@ -45,6 +45,7 @@ export const Popper: React.FC<PopperProps> = ({
       placement="top"
       anchorEl={anchorEl}
       transition
+      style={{ zIndex: 1500 }}
     >
       {({ TransitionProps }) => (
         <ClickAwayListener onClickAway={onClose}>
