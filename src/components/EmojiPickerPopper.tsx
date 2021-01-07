@@ -24,6 +24,7 @@ export const EmojiPickerPopper: React.FC<
   const useStyles = makeStyles(() => ({
     root: {
       bottom: "100% !important",
+      zIndex: 999999,
     },
   }));
 
@@ -70,7 +71,6 @@ export const EmojiPickerPopper: React.FC<
       open={open}
       placement="bottom-start"
       anchorEl={anchorEl}
-      disablePortal
       transition
       className={classes.root}
     >
