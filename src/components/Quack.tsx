@@ -127,21 +127,24 @@ export const Quack: React.FC<QuackProps> = ({
   }));
   const classes = useStyles();
 
-  const { setOpen, setUser, setAnchorEl, setTimeout: setTO } = React.useContext(
+  const { setOpen, setUser, setAnchorEl } = React.useContext(
     UserPopperContext
   )!;
+
+  let timeout: NodeJS.Timeout;
 
   const handlePopperOpen = (
     event: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
     setAnchorEl(event.currentTarget);
     setUser(quack?.quackedByUser!);
-
-    const timeout = setTimeout(() => {
+    timeout = setTimeout(() => {
       setOpen(true);
     }, 2000);
+  };
 
-    setTO(timeout);
+  const handleMouseOut = () => {
+    clearTimeout(timeout);
   };
 
   return (
@@ -165,6 +168,7 @@ export const Quack: React.FC<QuackProps> = ({
                 user={quack?.quackedByUser}
                 variant={variant}
                 onMouseOver={handlePopperOpen}
+                onMouseLeave={handleMouseOut}
               />
             )}
             <DisplayName
@@ -173,6 +177,7 @@ export const Quack: React.FC<QuackProps> = ({
               link
               direction={variant === "open" ? "vertical" : "horizontal"}
               onMouseOver={handlePopperOpen}
+              onMouseLeave={handleMouseOut}
             />
             {variant !== "open" && <ShortDateTime time={quack?.createdAt} />}
           </Box>
