@@ -12,6 +12,7 @@ export interface UserPopperContextType {
   setUser: React.Dispatch<
     React.SetStateAction<RegularUserFragment | ShortUserFragment | null>
   >;
+  setTimeout: React.Dispatch<React.SetStateAction<NodeJS.Timeout | null>>;
 }
 
 export const UserPopperContext = createContext<UserPopperContextType | null>(
@@ -19,16 +20,33 @@ export const UserPopperContext = createContext<UserPopperContextType | null>(
 );
 
 export const UserPopperContextProvider: FC = ({ children }) => {
-  const { open, setOpen, onClose } = usePopper();
+  const { open, setOpen, onClose: onPClose } = usePopper();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [timeout, setTimeout] = useState<null | NodeJS.Timeout>(null);
 
   const [user, setUser] = useState<
     RegularUserFragment | ShortUserFragment | null
   >(null);
 
+  const onClose = () => {
+    if (timeout !== null) {
+      clearTimeout(timeout);
+    }
+    onPClose();
+  };
+
   return (
     <UserPopperContext.Provider
-      value={{ open, setOpen, anchorEl, setAnchorEl, onClose, user, setUser }}
+      value={{
+        open,
+        setOpen,
+        anchorEl,
+        setAnchorEl,
+        onClose,
+        user,
+        setUser,
+        setTimeout,
+      }}
     >
       {children}
     </UserPopperContext.Provider>

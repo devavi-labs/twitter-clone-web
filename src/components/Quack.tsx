@@ -5,11 +5,11 @@ import {
   FullDateTime,
   LinkCard,
   QuackContent,
+  QuackOptionButton,
   QuackStats,
   ReplyingSubheader,
   ShortDateTime,
   UserAvatar,
-  QuackOptionButton,
 } from ".";
 import { UserPopperContext } from "../context/userPopper";
 import { RegularQuackFragment, ShortQuackFragment } from "../generated/graphql";
@@ -127,7 +127,7 @@ export const Quack: React.FC<QuackProps> = ({
   }));
   const classes = useStyles();
 
-  const { setOpen, setUser, setAnchorEl } = React.useContext(
+  const { setOpen, setUser, setAnchorEl, setTimeout: setTO } = React.useContext(
     UserPopperContext
   )!;
 
@@ -136,7 +136,12 @@ export const Quack: React.FC<QuackProps> = ({
   ) => {
     setAnchorEl(event.currentTarget);
     setUser(quack?.quackedByUser!);
-    setOpen(true);
+
+    const timeout = setTimeout(() => {
+      setOpen(true);
+    }, 2000);
+
+    setTO(timeout);
   };
 
   return (
@@ -167,6 +172,7 @@ export const Quack: React.FC<QuackProps> = ({
               username={quack?.quackedByUser?.username}
               link
               direction={variant === "open" ? "vertical" : "horizontal"}
+              onMouseOver={handlePopperOpen}
             />
             {variant !== "open" && <ShortDateTime time={quack?.createdAt} />}
           </Box>

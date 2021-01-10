@@ -1,4 +1,4 @@
-import { Link, Typography } from "@material-ui/core";
+import { BoxProps, Link, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { BiBadgeCheck } from "react-icons/bi";
@@ -13,13 +13,14 @@ type DisplayNameProps = {
   link?: boolean | null | undefined;
 };
 
-const DisplayName: React.FC<DisplayNameProps> = ({
+const DisplayName: React.FC<DisplayNameProps & BoxProps> = ({
   displayName,
   username,
   verified = false,
   size = "sm",
   direction = "horizontal",
   link = true,
+  ...props
 }) => {
   const useStyles = makeStyles(({ palette: { text, primary, type } }) => ({
     names: {
@@ -52,7 +53,7 @@ const DisplayName: React.FC<DisplayNameProps> = ({
 
   return (
     <div className={classes.names}>
-      <C className={classes.primaryText} href={`/${username}`}>
+      <C className={classes.primaryText} href={`/${username}`} {...props}>
         {displayName}
         {verified && <BiBadgeCheck className={classes.verifiedBadge} />}
       </C>
