@@ -7,7 +7,6 @@ export const parse = (text: string) => {
   const _: (string | JSX.Element)[] = text.split("");
 
   let i = 0;
-  console.log(text);
   entities.forEach((e) => {
     if ("url" in e) {
       _[e.indices[0] - i] = <Link link={e.url} />;
