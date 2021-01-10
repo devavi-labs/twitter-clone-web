@@ -1,20 +1,20 @@
-import {
-  Box,
-  Divider,
-  IconButton,
-  Link,
-  ListItem,
-  Typography,
-} from "@material-ui/core";
+import { Box, Divider, ListItem, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { BiBadgeCheck } from "react-icons/bi";
-import { BsThreeDots } from "react-icons/bs";
-import { LinkCard, QuackContent, QuackStats, UserAvatar } from ".";
+import {
+  FullDateTime,
+  LinkCard,
+  QuackContent,
+  QuackStats,
+  ReplyingSubheader,
+  ShortDateTime,
+  UserAvatar,
+  QuackOptionButton,
+} from ".";
 import { UserPopperContext } from "../context/userPopper";
 import { RegularQuackFragment, ShortQuackFragment } from "../generated/graphql";
 import { useMediaQuery } from "../hooks/useMediaQuery";
-import { formatDate, formatTime } from "../utils/formatDateTime";
+import { DisplayName } from "./DisplayName";
 import { EngageButton } from "./EngageButton";
 
 interface QuackProps {
@@ -30,17 +30,9 @@ export const Quack: React.FC<QuackProps> = ({
   showBar,
   variant = "contained",
 }) => {
-  const truncatedTextStyle = {
-    display: "inline-block",
-    maxWidth: "10rem",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  } as const;
-
   const { xs } = useMediaQuery();
 
-  const useStyles = makeStyles(({ palette: { primary, text, type } }) => ({
+  const useStyles = makeStyles(({ palette: { text, type } }) => ({
     root: {
       display: "flex",
       alignItems: "flex-start",
@@ -115,41 +107,6 @@ export const Quack: React.FC<QuackProps> = ({
       display: "flex",
       alignItems: "center",
     },
-    names: {
-      display: "flex",
-      flexDirection: variant === "open" ? "column" : "row",
-      alignItems: variant === "open" ? "flex-start" : "center",
-      gap: variant === "open" ? 0 : "0.2rem",
-    },
-    primaryText: {
-      color: text.primary,
-      opacity: 0.9,
-      fontSize: "0.9rem",
-      fontWeight: "bold",
-      ...truncatedTextStyle,
-    },
-    verifiedBadge: {
-      marginLeft: "0.2rem",
-      color: type === "dark" ? text.primary : primary.main,
-      fontSize: "1.2rem",
-    },
-    secondaryText: {
-      color: text.secondary,
-      fontSize: "0.8rem",
-      ...truncatedTextStyle,
-    },
-    highlightedUsername: {
-      color: primary.main,
-      fontWeight: "bold",
-      opacity: "1 !important",
-    },
-    time: {
-      color: text.primary,
-      fontSize: variant === "open" ? "0.9rem" : "0.8rem",
-      opacity: 0.6,
-      ...truncatedTextStyle,
-      margin: variant === "open" ? "0.4rem 0" : 0,
-    },
     content: {
       paddingRight: "2rem",
       paddingTop: variant === "open" ? "1rem" : 0,
@@ -159,13 +116,7 @@ export const Quack: React.FC<QuackProps> = ({
       fontSize: variant === "open" ? "1.1rem" : "0.9rem",
       opacity: 0.9,
     },
-    optionsButton: {
-      opacity: 0.8,
-      width: 36,
-      height: 36,
-      padding: 8,
-      margin: 0,
-    },
+
     footer: {
       display: "flex",
       justifyContent: variant === "open" ? "space-around" : "space-between",
@@ -211,44 +162,18 @@ export const Quack: React.FC<QuackProps> = ({
                 onMouseOver={handlePopperOpen}
               />
             )}
-            <div className={classes.names}>
-              <Link
-                className={classes.primaryText}
-                href={`/${quack?.quackedByUser?.username}`}
-              >
-                {quack?.quackedByUser?.displayName}
-                {quack?.quackedByUser?.emailVerified && (
-                  <BiBadgeCheck className={classes.verifiedBadge} />
-                )}
-              </Link>
-
-              <Typography className={classes.secondaryText}>
-                @{quack?.quackedByUser?.username}
-              </Typography>
-            </div>
-            {variant !== "open" && (
-              <Typography className={classes.time}>
-                {" "}
-                · {formatDate(quack?.createdAt as any)}
-              </Typography>
-            )}
+            <DisplayName
+              displayName={quack?.quackedByUser?.displayName}
+              username={quack?.quackedByUser?.username}
+              link
+              direction={variant === "open" ? "vertical" : "horizontal"}
+            />
+            {variant !== "open" && <ShortDateTime time={quack?.createdAt} />}
           </Box>
-          <IconButton className={classes.optionsButton}>
-            <BsThreeDots />
-          </IconButton>
+          <QuackOptionButton quack={quack} />
         </Box>
         {inReplyTo && (
-          <Box>
-            <Typography className={classes.secondaryText}>
-              Replying to{" "}
-              <Link
-                className={classes.highlightedUsername}
-                href={`/${inReplyTo?.quackedByUser?.username}`}
-              >
-                @{inReplyTo?.quackedByUser?.username}
-              </Link>
-            </Typography>
-          </Box>
+          <ReplyingSubheader username={inReplyTo?.quackedByUser?.username} />
         )}
         <Box className={classes.content}>
           <Typography paragraph className={classes.text}>
@@ -270,11 +195,7 @@ export const Quack: React.FC<QuackProps> = ({
         )}
         {variant === "open" && (
           <>
-            <Typography className={classes.time}>
-              {formatTime(quack?.createdAt as any)}
-              {" · "}
-              {formatDate(quack?.createdAt as any, false)}
-            </Typography>
+            <FullDateTime time={quack?.createdAt} />
             <Divider />
           </>
         )}

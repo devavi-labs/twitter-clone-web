@@ -38,3 +38,8 @@ export { UserPopper } from "./UserPopper";
 export { Stat } from "./Stat";
 export { UserAvatar } from "./UserAvatar";
 export { FollowButton } from "./FollowButton";
+export { DisplayName } from "./DisplayName";
+export { ReplyingSubheader } from "./ReplyingSubheader";
+export { ShortDateTime } from "./ShortDateTime";
+export { FullDateTime } from "./FullDateTime";
+export { QuackOptionButton } from "./QuackOptionButton";
