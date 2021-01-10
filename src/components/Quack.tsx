@@ -141,7 +141,7 @@ export const Quack: React.FC<QuackProps> = ({
       setUser(quack?.quackedByUser!);
       timeout = setTimeout(() => {
         setOpen(true);
-      }, 2000);
+      }, 3000);
     }
     return;
   };
