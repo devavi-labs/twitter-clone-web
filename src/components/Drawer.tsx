@@ -7,7 +7,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  SwipeableDrawer,
+  Drawer as MuiDrawer,
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,77 +24,82 @@ interface DrawerProps {
 }
 
 export const Drawer: React.FC<DrawerProps> = ({ open, onOpen, onClose }) => {
-  const useStyles = makeStyles(({ palette: { primary,
-      background: { paper } } }) => ({
-    root: {
-      minWidth: "70vw",
-      minHeight: "100%",
-      background: paper,
-    },
-    header: {
-      width: "100%",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: "0 0.8rem",
-    },
-    heading: {
-      fontSize: "1.1rem",
-      fontWeight: "bold",
-    },
-    closeIcon: {
-      color: primary.main,
-    },
-    profile: {
-      padding: "0.5rem 0.8rem",
-    },
-    avatar: {
-      height: 36,
-      width: 36,
-    },
-    displayName: {
-      fontWeight: "bold",
-      marginTop: "0.4rem",
-    },
-    username: {
-      opactiy: 0.6,
-    },
-    follow: {
-      display: "flex",
-      gap: "1rem",
-      marginTop: "1rem",
-    },
-    followText: {
-      display: "flex",
-      gap: "0.2rem",
-      fontSize: "0.9rem",
-    },
-    followStat: {
-      fontSize: "0.9rem",
-      fontWeight: "bold",
-    },
-    listIcon: {
-      fontSize: "1rem",
-    },
-    listText: {
-      marginLeft: "-2rem",
-      textTransform: "capitalize",
-      fontSize: "0.9rem",
-    },
-    logoutText: {
-      textTransform: "capitalize",
-      fontSize: "0.9rem",
-    },
-  }));
+  const useStyles = makeStyles(
+    ({
+      palette: {
+        primary,
+        background: { paper },
+      },
+    }) => ({
+      root: {
+        minWidth: "70vw",
+        minHeight: "100%",
+        background: paper,
+      },
+      header: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "0 0.8rem",
+      },
+      heading: {
+        fontSize: "1.1rem",
+        fontWeight: "bold",
+      },
+      closeIcon: {
+        color: primary.main,
+      },
+      profile: {
+        padding: "0.5rem 0.8rem",
+      },
+      avatar: {
+        height: 36,
+        width: 36,
+      },
+      displayName: {
+        fontWeight: "bold",
+        marginTop: "0.4rem",
+      },
+      username: {
+        opactiy: 0.6,
+      },
+      follow: {
+        display: "flex",
+        gap: "1rem",
+        marginTop: "1rem",
+      },
+      followText: {
+        display: "flex",
+        gap: "0.2rem",
+        fontSize: "0.9rem",
+      },
+      followStat: {
+        fontSize: "0.9rem",
+        fontWeight: "bold",
+      },
+      listIcon: {
+        fontSize: "1rem",
+      },
+      listText: {
+        marginLeft: "-2rem",
+        textTransform: "capitalize",
+        fontSize: "0.9rem",
+      },
+      logoutText: {
+        textTransform: "capitalize",
+        fontSize: "0.9rem",
+      },
+    })
+  );
   const classes = useStyles();
   const [{ data }] = useMeQuery();
   const history = useHistory();
   return (
-    <SwipeableDrawer
+    <MuiDrawer
       anchor="left"
       open={open}
       onClose={onClose}
-      onOpen={onOpen}
       BackdropComponent={Backdrop}
     >
       <div className={classes.root}>
@@ -169,6 +174,6 @@ export const Drawer: React.FC<DrawerProps> = ({ open, onOpen, onClose }) => {
           </ListItem>
         </List>
       </div>
-    </SwipeableDrawer>
+    </MuiDrawer>
   );
 };
