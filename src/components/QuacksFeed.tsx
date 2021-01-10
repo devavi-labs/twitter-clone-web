@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { Quack, UserPopper } from ".";
 import { useQuacksForMeQuery } from "../generated/graphql";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 import { transform } from "../utils/quackTransformer";
 
 export const QuacksFeed = () => {
@@ -11,6 +12,8 @@ export const QuacksFeed = () => {
   }));
 
   const classes = useStyles();
+
+  const { xs } = useMediaQuery();
 
   const [{ data }] = useQuacksForMeQuery();
 
@@ -34,7 +37,7 @@ export const QuacksFeed = () => {
             );
           })}
         </List>
-        <UserPopper />
+        {!xs && <UserPopper />}
       </>
     );
 

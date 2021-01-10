@@ -136,15 +136,21 @@ export const Quack: React.FC<QuackProps> = ({
   const handlePopperOpen = (
     event: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
-    setAnchorEl(event.currentTarget);
-    setUser(quack?.quackedByUser!);
-    timeout = setTimeout(() => {
-      setOpen(true);
-    }, 2000);
+    if (!xs) {
+      setAnchorEl(event.currentTarget);
+      setUser(quack?.quackedByUser!);
+      timeout = setTimeout(() => {
+        setOpen(true);
+      }, 2000);
+    }
+    return;
   };
 
   const handleMouseOut = () => {
-    clearTimeout(timeout);
+    if (!xs) {
+      clearTimeout(timeout);
+    }
+    return;
   };
 
   return (
