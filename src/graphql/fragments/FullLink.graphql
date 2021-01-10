@@ -1,0 +1,10 @@
+fragment FullLink on Link {
+  id
+  title
+  description
+  url
+  exactUrl
+  favicon
+  image
+  author
+}

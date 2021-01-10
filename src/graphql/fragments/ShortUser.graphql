@@ -5,6 +5,14 @@ fragment ShortUser on User {
   displayPicture
   coverPicture
   emailVerified
+  amIBlockedByThisUser
+  haveIBlockedThisUser
   followStatus
   followBackStatus
+  followers {
+    id
+  }
+  followings {
+    id
+  }
 }

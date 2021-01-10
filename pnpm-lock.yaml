@@ -2,15 +2,20 @@ dependencies:
   '@material-ui/core': 4.11.2_aef73de6374e2d7a7f5dc9d5ceec06df
   '@urql/exchange-auth': 0.1.2_graphql@15.4.0
   '@urql/exchange-graphcache': 3.3.3_graphql@15.4.0
+  date-fns: 2.16.1
   emoji-mart: 3.0.0_react@17.0.1
   formik: 2.2.6_react@17.0.1
   graphql: 15.4.0
   jsonwebtoken: 8.5.1
+  lodash: 4.17.20
+  numeral: 2.0.6
   react: 17.0.1
   react-dom: 17.0.1_react@17.0.1
   react-icons: 4.1.0_react@17.0.1
   react-router-dom: 5.2.0_react@17.0.1
   react-scripts: 4.0.1_typescript@4.1.3
+  regexify-string: 1.0.5
+  twitter-text: 3.1.0
   typescript: 4.1.3
   urql: 1.11.4_graphql@15.4.0+react@17.0.1
   yup: 0.32.8
@@ -22,9 +27,11 @@ devDependencies:
   '@types/customize-cra': 1.0.0
   '@types/emoji-mart': 3.0.4
   '@types/node': 12.19.11
+  '@types/numeral': 0.0.29
   '@types/react': 16.14.2
   '@types/react-dom': 16.9.10
   '@types/react-router-dom': 5.1.7
+  '@types/twitter-text': 3.1.0
   '@types/yup': 0.29.11
   babel-plugin-import: 1.13.3
   customize-cra: 1.0.0
@@ -2805,6 +2812,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
+  /@types/numeral/0.0.29:
+    dev: true
+    resolution:
+      integrity: sha512-uf5Rlq4FWJhaz4GSplEcenC40hTINy+efewZXULqXrSdddibcN2yPKQBjQ8K5kXk12Wnu6GdjB1/P5ovJso6Vg==
   /@types/parse-json/4.0.0:
     resolution:
       integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
@@ -2868,6 +2879,10 @@ packages:
   /@types/tapable/1.0.6:
     resolution:
       integrity: sha512-W+bw9ds02rAQaMvaLYxAbJ6cvguW/iJXNT6lTssS1ps6QdrMKttqEAMEG/b5CR8TZl3/L7/lH0ZV5nNR1LXikA==
+  /@types/twitter-text/3.1.0:
+    dev: true
+    resolution:
+      integrity: sha512-AOMDM8MTYygW9net4TPFtgpbMowCkKETAzCC3jYhrolDdHd1yBgIYAao+L455lqg2aWRGEI0v5lHTw/aNBJuhg==
   /@types/uglify-js/3.11.1:
     dependencies:
       source-map: 0.6.1
@@ -5231,6 +5246,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
+  /date-fns/2.16.1:
+    dev: false
+    engines:
+      node: '>=0.11'
+    resolution:
+      integrity: sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
   /de-indent/1.0.2:
     dev: true
     optional: true
@@ -9803,6 +9824,10 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
+  /numeral/2.0.6:
+    dev: false
+    resolution:
+      integrity: sha1-StCAk21EPCVhrtnyGX7//iX05QY=
   /nwsapi/2.2.0:
     dev: false
     resolution:
@@ -11770,6 +11795,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-jbD/FT0+9MBU2XAZluI7w2OBs1RBi6p9M83nkoZayQXXU9e8Robt69FcZc7wU4eJD/YFTjn1JdCk3rbMJajz8Q==
+  /regexify-string/1.0.5:
+    dev: false
+    resolution:
+      integrity: sha512-ExFC1+ayUKWBuEAX1TyUAIr3v5s75/x29703PtXyP0rfsuOSAslqKwRc0AbwKosY6GSj/wJGxRkL9trWcdQY7A==
   /regexp.prototype.flags/1.3.0:
     dependencies:
       define-properties: 1.1.3
@@ -13409,6 +13438,19 @@ packages:
   /tweetnacl/0.14.5:
     resolution:
       integrity: sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
+  /twemoji-parser/11.0.2:
+    dev: false
+    resolution:
+      integrity: sha512-5kO2XCcpAql6zjdLwRwJjYvAZyDy3+Uj7v1ipBzLthQmDL7Ce19bEqHr3ImSNeoSW2OA8u02XmARbXHaNO8GhA==
+  /twitter-text/3.1.0:
+    dependencies:
+      '@babel/runtime': 7.12.5
+      core-js: 2.6.12
+      punycode: 1.4.1
+      twemoji-parser: 11.0.2
+    dev: false
+    resolution:
+      integrity: sha512-nulfUi3FN6z0LUjYipJid+eiwXvOLb8Ass7Jy/6zsXmZK3URte043m8fL3FyDzrK+WLpyqhHuR/TcARTN/iuGQ==
   /type-check/0.3.2:
     dependencies:
       prelude-ls: 1.1.2
@@ -14451,24 +14493,31 @@ specifiers:
   '@types/customize-cra': ^1.0.0
   '@types/emoji-mart': ^3.0.4
   '@types/node': ^12.0.0
+  '@types/numeral': ^0.0.29
   '@types/react': ^16.9.53
   '@types/react-dom': ^16.9.8
   '@types/react-router-dom': ^5.1.6
+  '@types/twitter-text': ^3.1.0
   '@types/yup': ^0.29.11
   '@urql/exchange-auth': ^0.1.2
   '@urql/exchange-graphcache': ^3.3.3
   babel-plugin-import: ^1.13.3
   customize-cra: ^1.0.0
+  date-fns: ^2.16.1
   emoji-mart: ^3.0.0
   formik: ^2.2.6
   graphql: ^15.4.0
   jsonwebtoken: ^8.5.1
+  lodash: ^4.17.20
+  numeral: ^2.0.6
   react: ^17.0.1
   react-app-rewired: ^2.1.8
   react-dom: ^17.0.1
   react-icons: ^4.1.0
   react-router-dom: ^5.2.0
   react-scripts: 4.0.1
+  regexify-string: ^1.0.5
+  twitter-text: ^3.1.0
   typescript: ^4.0.3
   urql: ^1.11.4
   yup: ^0.32.8

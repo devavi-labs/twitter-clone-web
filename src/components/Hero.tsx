@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { AppBar, CreateQuack } from ".";
 import { useUserByUsernameQuery } from "../generated/graphql";
 import { useMediaQuery } from "../hooks/useMediaQuery";
+import { QuacksFeed } from ".";
 
 interface HeroProps {
   feed?: "home" | "profile";
@@ -50,7 +51,6 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps }) => {
 
   return (
     <Box className={classes.root}>
-      <Divider orientation="vertical" />
       <Box className={classes.subRoot}>
         <AppBar
           title={title}
@@ -58,6 +58,7 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps }) => {
           backButton={Boolean(subtitle)}
         />
         {feed === "home" && !xs && <CreateQuack />}
+        <QuacksFeed />
       </Box>
       <Divider orientation="vertical" />
     </Box>

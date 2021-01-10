@@ -1,4 +1,4 @@
-fragment RegularQuack on Quack {
+fragment ShortQuack on Quack {
   id
   createdAt
   text
@@ -14,25 +14,39 @@ fragment RegularQuack on Quack {
     ...ShortUser
   }
   inReplyToQuack {
-    ...ShortQuack
-  }
-  replies {
     id
+    createdAt
+    truncatedText
+    links {
+      ...FullLink
+    }
+    hashtags
+    mentions {
+      ...ShortUser
+    }
     quackedByUser {
       ...ShortUser
     }
+    replies {
+      id
+    }
+    requacks {
+      id
+    }
+    likes {
+      id
+    }
+    requackStatus
+    likeStatus
+  }
+  replies {
+    id
   }
   requacks {
     id
-    user {
-      ...ShortUser
-    }
   }
   likes {
     id
-    user {
-      ...ShortUser
-    }
   }
   requackStatus
   likeStatus

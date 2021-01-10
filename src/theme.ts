@@ -45,3 +45,6 @@ export const dark = createMuiTheme({
   },
   typography,
 });
+
+export const LikeColor = "#ff0088";
+export const RequackColor = "#108510";

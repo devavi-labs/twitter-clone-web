@@ -6,110 +6,41 @@ fragment RegularUser on User {
   coverPicture
   emailVerified
   followers {
+    id
     user {
-      id
-      displayName
-      username
-      emailVerified
-      displayPicture
-      coverPicture
+      ...ShortUser
     }
     follower {
-      id
-      displayName
-      username
-      emailVerified
-      displayPicture
-      coverPicture
+      ...ShortUser
     }
   }
   followings {
+    id
     user {
-      id
-      displayName
-      username
-      emailVerified
-      displayPicture
-      coverPicture
+      ...ShortUser
     }
     follower {
-      id
-      displayName
-      username
-      emailVerified
-      displayPicture
-      coverPicture
+      ...ShortUser
     }
   }
   amIDeactivated
   quacks {
-    id
-    text
-    truncatedText
-    links
-    hashtags
-    mentions {
-      ...ShortUser
-    }
-    isVisible
-    likes {
-      id
-    }
-    requacks {
-      id
-    }
-    replies {
-      id
-    }
-    likeStatus
-    requackStatus
+    ...ShortQuack
   }
   requacks {
+    id
     quack {
-      id
-      text
-      truncatedText
-      links
-      hashtags
-      mentions {
-        ...ShortUser
-      }
-      isVisible
-      likes {
-        id
-      }
-      requacks {
-        id
-      }
-      replies {
-        id
-      }
-      likeStatus
-      requackStatus
+      ...ShortQuack
     }
   }
   likes {
+    id
     quack {
-      id
-      text
-      truncatedText
-      links
-      hashtags
-      mentions {
-        ...ShortUser
-      }
-      isVisible
-      likes {
-        id
-      }
-      requacks {
-        id
-      }
-      replies {
-        id
-      }
-      likeStatus
-      requackStatus
+      ...ShortQuack
     }
   }
+  amIBlockedByThisUser
+  haveIBlockedThisUser
+  followStatus
+  followBackStatus
 }
