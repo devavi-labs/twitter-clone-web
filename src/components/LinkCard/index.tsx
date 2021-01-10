@@ -44,7 +44,8 @@ const LinkCard: React.FC<LinkCardProps> = ({
       backgroundSize: xs ? "cover" : "contain",
       backgroundPosition: xs ? "center" : "",
       borderTopLeftRadius: "0.6rem",
-      borderBottomLeftRadius: "0.6rem",
+      borderBottomLeftRadius: xs ? "0.6rem" : 0,
+      borderTopRightRadius: xs ? 0 : "0.6rem",
     },
     content: {
       flex: xs ? 2 : 8,
