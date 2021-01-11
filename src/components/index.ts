@@ -43,3 +43,4 @@ export { ReplyingSubheader } from "./ReplyingSubheader";
 export { ShortDateTime } from "./ShortDateTime";
 export { FullDateTime } from "./FullDateTime";
 export { QuackOptionButton } from "./QuackOptionButton";
+export { QuackOptionPopper } from "./QuackOptionPopper";

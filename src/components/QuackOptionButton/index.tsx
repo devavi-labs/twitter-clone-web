@@ -6,6 +6,8 @@ import {
   RegularQuackFragment,
   ShortQuackFragment,
 } from "../../generated/graphql";
+import { QuackOptionPopper } from "..";
+import { usePopper } from "../../hooks/usePopper";
 
 type QuackOptionButtonProps = {
   quack: RegularQuackFragment | ShortQuackFragment;
@@ -22,10 +24,21 @@ const QuackOptionButton: React.FC<QuackOptionButtonProps> = ({ quack }) => {
     },
   }));
   const classes = useStyles();
+
+  const { open, handleClick, anchorEl, onClose } = usePopper();
+
   return (
-    <IconButton className={classes.optionsButton}>
-      <BsThreeDots />
-    </IconButton>
+    <>
+      <IconButton className={classes.optionsButton} onClick={handleClick}>
+        <BsThreeDots />
+      </IconButton>
+      <QuackOptionPopper
+        open={open}
+        anchorEl={anchorEl}
+        onClose={onClose}
+        quack={quack}
+      />
+    </>
   );
 };
 
