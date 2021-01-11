@@ -27,6 +27,7 @@
     "yup": "^0.32.8"
   },
   "scripts": {
+    "dev": "concurrently \"pnpm start\" \"cd ../../node/twitter-clone-backend && pnpm start\"",
     "start": "react-app-rewired start",
     "build": "react-scripts build",
     "test": "react-scripts test",
