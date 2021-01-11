@@ -1,7 +1,6 @@
 import { Link, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { truncatedTextStyle } from "../../utils/truncatedTextStyle";
 
 type ReplyingSubheaderProps = {
   username?: string | null | undefined;
@@ -16,7 +15,6 @@ const ReplyingSubheader: React.FC<ReplyingSubheaderProps> = ({
     root: {
       color: text.secondary,
       fontSize: size === "xs" ? "0.75rem" : size === "sm" ? "0.8rem" : "0.9rem",
-      ...truncatedTextStyle(),
     },
     username: {
       color: primary.main,
