@@ -208,17 +208,17 @@ export type Mutation = {
 
 
 export type MutationBlockArgs = {
-  userId: Scalars['Float'];
+  userId: Scalars['Int'];
 };
 
 
 export type MutationUnblockArgs = {
-  userId: Scalars['Float'];
+  userId: Scalars['Int'];
 };
 
 
 export type MutationFollowArgs = {
-  userId: Scalars['Float'];
+  userId: Scalars['Int'];
 };
 
 
@@ -228,7 +228,7 @@ export type MutationUnfollowArgs = {
 
 
 export type MutationLikeArgs = {
-  quackId: Scalars['Float'];
+  quackId: Scalars['Int'];
 };
 
 
@@ -238,12 +238,12 @@ export type MutationQuackArgs = {
 
 
 export type MutationDeleteQuackArgs = {
-  quackId: Scalars['String'];
+  quackId: Scalars['Int'];
 };
 
 
 export type MutationRequackArgs = {
-  quackId: Scalars['Float'];
+  quackId: Scalars['Int'];
 };
 
 
