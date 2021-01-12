@@ -7,8 +7,17 @@ import {
   SignupMutation,
 } from "../generated/graphql";
 import { betterUpdateQuery } from "./betterUpdateQuery";
+import { quacksPagination } from "./quacksPagination";
 
 export const cacheExchange = CE({
+  keys: {
+    PaginatedQuacks: () => null,
+  },
+  resolvers: {
+    Query: {
+      quacksForMe: quacksPagination(),
+    },
+  },
   updates: {
     Mutation: {
       logout: (result, _, cache) => {

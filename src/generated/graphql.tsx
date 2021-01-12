@@ -478,6 +478,26 @@ export type ShortUserFragment = (
   )>> }
 );
 
+export type DeleteQuackMutationVariables = Exact<{
+  quackId: Scalars['Int'];
+}>;
+
+
+export type DeleteQuackMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteQuack'>
+);
+
+export type LikeMutationVariables = Exact<{
+  quackId: Scalars['Int'];
+}>;
+
+
+export type LikeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'like'>
+);
+
 export type LoginMutationVariables = Exact<{
   emailOrUsername: Scalars['String'];
   password: Scalars['String'];
@@ -519,6 +539,16 @@ export type QuackMutation = (
   ) }
 );
 
+export type RequackMutationVariables = Exact<{
+  quackId: Scalars['Int'];
+}>;
+
+
+export type RequackMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'requack'>
+);
+
 export type SignupMutationVariables = Exact<{
   input: UserInput;
 }>;
@@ -539,7 +569,7 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & RegularUserFragment
+    & ShortUserFragment
   )> }
 );
 
@@ -569,7 +599,10 @@ export type QuackByIdQuery = (
   )> }
 );
 
-export type QuacksForMeQueryVariables = Exact<{ [key: string]: never; }>;
+export type QuacksForMeQueryVariables = Exact<{
+  limit?: Maybe<Scalars['Int']>;
+  lastIndex?: Maybe<Scalars['Int']>;
+}>;
 
 
 export type QuacksForMeQuery = (
@@ -822,6 +855,24 @@ export const RegularUserResponseFragmentDoc = gql`
 }
     ${RegularUserFragmentDoc}
 ${RegularFieldErrorFragmentDoc}`;
+export const DeleteQuackDocument = gql`
+    mutation DeleteQuack($quackId: Int!) {
+  deleteQuack(quackId: $quackId)
+}
+    `;
+
+export function useDeleteQuackMutation() {
+  return Urql.useMutation<DeleteQuackMutation, DeleteQuackMutationVariables>(DeleteQuackDocument);
+};
+export const LikeDocument = gql`
+    mutation Like($quackId: Int!) {
+  like(quackId: $quackId)
+}
+    `;
+
+export function useLikeMutation() {
+  return Urql.useMutation<LikeMutation, LikeMutationVariables>(LikeDocument);
+};
 export const LoginDocument = gql`
     mutation Login($emailOrUsername: String!, $password: String!) {
   login(emailOrUsername: $emailOrUsername, password: $password) {
@@ -859,6 +910,15 @@ ${RegularFieldErrorFragmentDoc}`;
 export function useQuackMutation() {
   return Urql.useMutation<QuackMutation, QuackMutationVariables>(QuackDocument);
 };
+export const RequackDocument = gql`
+    mutation Requack($quackId: Int!) {
+  requack(quackId: $quackId)
+}
+    `;
+
+export function useRequackMutation() {
+  return Urql.useMutation<RequackMutation, RequackMutationVariables>(RequackDocument);
+};
 export const SignupDocument = gql`
     mutation Signup($input: UserInput!) {
   signup(input: $input) {
@@ -873,10 +933,10 @@ export function useSignupMutation() {
 export const MeDocument = gql`
     query Me {
   me {
-    ...RegularUser
+    ...ShortUser
   }
 }
-    ${RegularUserFragmentDoc}`;
+    ${ShortUserFragmentDoc}`;
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
@@ -913,8 +973,8 @@ export function useQuackByIdQuery(options: Omit<Urql.UseQueryArgs<QuackByIdQuery
   return Urql.useQuery<QuackByIdQuery>({ query: QuackByIdDocument, ...options });
 };
 export const QuacksForMeDocument = gql`
-    query QuacksForMe {
-  quacksForMe {
+    query QuacksForMe($limit: Int, $lastIndex: Int) {
+  quacksForMe(limit: $limit, lastIndex: $lastIndex) {
     quacks {
       ...RegularQuack
     }

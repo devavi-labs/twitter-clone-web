@@ -1,5 +1,5 @@
-query QuacksForMe {
-  quacksForMe {
+query QuacksForMe($limit: Int, $lastIndex: Int) {
+  quacksForMe(limit: $limit, lastIndex: $lastIndex) {
     quacks {
       ...RegularQuack
     }
