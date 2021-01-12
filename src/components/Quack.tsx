@@ -159,8 +159,8 @@ export const Quack: React.FC<QuackProps> = ({
     return;
   };
 
-  const [, like] = useLikeMutation();
-  const [, requack] = useRequackMutation();
+  const [{ fetching: likeLoading }, like] = useLikeMutation();
+  const [{ fetching: requackLoading }, requack] = useRequackMutation();
   // const [, deleteQuack] = useDeleteQuackMutation();
 
   const handleLike = async () => {
@@ -258,6 +258,7 @@ export const Quack: React.FC<QuackProps> = ({
             status={quack?.requackStatus}
             size={variant === "open" ? "md" : "sm"}
             onClick={handleRequack}
+            loading={requackLoading}
           />
           <EngageButton
             type="like"
@@ -265,6 +266,7 @@ export const Quack: React.FC<QuackProps> = ({
             status={quack?.likeStatus}
             size={variant === "open" ? "md" : "sm"}
             onClick={handleLike}
+            loading={likeLoading}
           />
           <EngageButton type="share" size={variant === "open" ? "md" : "sm"} />
         </Box>
