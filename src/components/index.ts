@@ -45,3 +45,4 @@ export { FullDateTime } from "./FullDateTime";
 export { QuackOptionButton } from "./QuackOptionButton";
 export { QuackOptionPopper } from "./QuackOptionPopper";
 export { CircularProgressBar } from "./CircularProgressBar";
+export { Toast } from "./Toast";
