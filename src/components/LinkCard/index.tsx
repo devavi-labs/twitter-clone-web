@@ -1,7 +1,6 @@
 import { Box, Button, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 type LinkCardProps = {
   image?: string | null | undefined;
@@ -16,8 +15,6 @@ const LinkCard: React.FC<LinkCardProps> = ({
   description,
   url,
 }) => {
-  const { xs } = useMediaQuery();
-
   const useStyles = makeStyles(() => ({
     root: {
       width: "100%",
@@ -27,28 +24,24 @@ const LinkCard: React.FC<LinkCardProps> = ({
     },
     innerRoot: {
       display: "flex",
-      flexDirection: xs ? "column" : "row",
+      flexDirection: "column",
       alignItems: "flex-start",
       textAlign: "left",
       textTransform: "none",
     },
     right: {
-      flex: xs ? 8 : 2,
-      width: xs ? "100%" : "initial",
+      flex: 8,
+      width: "100%",
     },
     cardImage: {
-      overflow: "hidden",
-      height: xs ? 140 : 0,
-      paddingTop: xs ? 0 : "100%",
-      backgroundImage: `url(${image})`,
-      backgroundSize: xs ? "cover" : "contain",
-      backgroundPosition: xs ? "center" : "",
+      maxHeight: 260,
+      width: "100%",
+      objectFit: "cover",
       borderTopLeftRadius: "0.6rem",
-      borderBottomLeftRadius: xs ? 0 : "0.6rem",
-      borderTopRightRadius: xs ? "0.6rem" : 0,
+      borderTopRightRadius: "0.6rem",
     },
     content: {
-      flex: xs ? 2 : 8,
+      flex: 2,
       padding: "0.8rem",
       display: "flex",
       flexDirection: "column",
@@ -80,7 +73,7 @@ const LinkCard: React.FC<LinkCardProps> = ({
     >
       {image && (
         <Box className={classes.right}>
-          <div className={classes.cardImage} />
+          <img src={image} alt={title || ""} className={classes.cardImage} />
         </Box>
       )}
       <Box className={classes.content}>
