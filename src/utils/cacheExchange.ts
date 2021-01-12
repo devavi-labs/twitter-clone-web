@@ -1,13 +1,16 @@
 import { cacheExchange as CE } from "@urql/exchange-graphcache";
 import {
+  LikeMutationVariables,
   LoginMutation,
   LogoutMutation,
   MeDocument,
   MeQuery,
+  RequackMutationVariables,
   SignupMutation,
 } from "../generated/graphql";
 import { betterUpdateQuery } from "./betterUpdateQuery";
 import { quacksPagination } from "./quacksPagination";
+import { updateLikeOrRequack } from "./updateLikeOrRequack";
 
 export const cacheExchange = CE({
   keys: {
@@ -59,6 +62,20 @@ export const cacheExchange = CE({
             }
           }
         );
+      },
+      like: (_, args, cache, __) => {
+        updateLikeOrRequack({
+          type: "like",
+          args: args as LikeMutationVariables,
+          cache,
+        });
+      },
+      requack: (_, args, cache, __) => {
+        updateLikeOrRequack({
+          type: "requack",
+          args: args as RequackMutationVariables,
+          cache,
+        });
       },
     },
   },

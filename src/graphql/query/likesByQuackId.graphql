@@ -1,0 +1,5 @@
+query LikesByQuackId($quackId: Int!) {
+  likesByQuackId(quackId: $quackId) {
+    ...RegularLike
+  }
+}

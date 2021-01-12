@@ -47,8 +47,8 @@ export const QuackStats: React.FC<QuackStatsProps> = ({ quack }) => {
 
   if (
     (quack?.replies && quack.replies.length > 0) ||
-    (quack?.requacks && quack.requacks.length > 0) ||
-    (quack?.likes && quack.likes.length > 0)
+    (quack?.requacks && quack.requacks > 0) ||
+    (quack?.likes && quack.likes > 0)
   ) {
     return (
       <>
@@ -63,20 +63,20 @@ export const QuackStats: React.FC<QuackStatsProps> = ({ quack }) => {
               </Typography>
             </Link>
           )}
-          {quack?.requacks && quack.requacks.length > 0 && (
+          {quack?.requacks && quack.requacks > 0 && (
             <Link className={classes.stat}>
               <Typography component="span" className={classes.primaryText}>
-                {quack.requacks.length}
+                {quack.requacks || 0}
               </Typography>
               <Typography component="span" className={classes.secondaryText}>
                 Requacks
               </Typography>
             </Link>
           )}
-          {quack?.likes && quack.likes.length > 0 && (
+          {quack?.likes && quack.likes > 0 && (
             <Link className={classes.stat}>
               <Typography component="span" className={classes.primaryText}>
-                {quack.likes.length}
+                {quack.likes || 0}
               </Typography>
               <Typography component="span" className={classes.secondaryText}>
                 Likes

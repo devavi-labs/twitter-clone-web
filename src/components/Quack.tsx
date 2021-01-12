@@ -12,7 +12,13 @@ import {
   UserAvatar,
 } from ".";
 import { UserPopperContext } from "../context/userPopper";
-import { RegularQuackFragment, ShortQuackFragment } from "../generated/graphql";
+import {
+  RegularQuackFragment,
+  ShortQuackFragment,
+  // useDeleteQuackMutation,
+  useLikeMutation,
+  useRequackMutation,
+} from "../generated/graphql";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { DisplayName } from "./DisplayName";
 import { EngageButton } from "./EngageButton";
@@ -153,6 +159,29 @@ export const Quack: React.FC<QuackProps> = ({
     return;
   };
 
+  const [, like] = useLikeMutation();
+  const [, requack] = useRequackMutation();
+  // const [, deleteQuack] = useDeleteQuackMutation();
+
+  const handleLike = async () => {
+    const { error } = await like({ quackId: quack?.id });
+    if (error) {
+      console.log(error.message);
+    }
+  };
+  const handleRequack = async () => {
+    const { error } = await requack({ quackId: quack?.id });
+    if (error) {
+      console.log(error.message);
+    }
+  };
+  // const handleDelete = async () => {
+  //   const { error } = await deleteQuack({ quackId: quack?.id });
+  //   if (error) {
+  //     console.log(error.message);
+  //   }
+  // };
+
   return (
     <ListItem tabIndex={variant !== "open" ? 0 : -1} className={classes.root}>
       {variant !== "open" && (
@@ -225,15 +254,17 @@ export const Quack: React.FC<QuackProps> = ({
           />
           <EngageButton
             type="requack"
-            engagements={quack?.requacks?.length}
+            engagements={quack?.requacks || 0}
             status={quack?.requackStatus}
             size={variant === "open" ? "md" : "sm"}
+            onClick={handleRequack}
           />
           <EngageButton
             type="like"
-            engagements={quack?.likes?.length}
+            engagements={quack?.likes || 0}
             status={quack?.likeStatus}
             size={variant === "open" ? "md" : "sm"}
+            onClick={handleLike}
           />
           <EngageButton type="share" size={variant === "open" ? "md" : "sm"} />
         </Box>

@@ -1,0 +1,5 @@
+query LikesByUserId($userId: Int!) {
+  likesByUserId(userId: $userId) {
+    ...RegularLike
+  }
+}

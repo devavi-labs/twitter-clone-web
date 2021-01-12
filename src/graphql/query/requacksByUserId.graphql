@@ -1,0 +1,5 @@
+query RequacksByUserId($userId: Int!) {
+  requacksByUserId(userId: $userId) {
+    ...RegularRequack
+  }
+}

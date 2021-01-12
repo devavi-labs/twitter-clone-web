@@ -22,18 +22,8 @@ fragment RegularQuack on Quack {
       ...ShortUser
     }
   }
-  requacks {
-    id
-    user {
-      ...ShortUser
-    }
-  }
-  likes {
-    id
-    user {
-      ...ShortUser
-    }
-  }
+  requacks
+  likes
   requackStatus
   likeStatus
 }

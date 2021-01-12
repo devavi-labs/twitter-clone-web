@@ -1,0 +1,9 @@
+fragment RegularRequack on Requack {
+  id
+  user {
+    ...ShortUser
+  }
+  quack {
+    ...ShortQuack
+  }
+}

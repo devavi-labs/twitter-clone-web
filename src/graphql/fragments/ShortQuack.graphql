@@ -30,24 +30,16 @@ fragment ShortQuack on Quack {
     replies {
       id
     }
-    requacks {
-      id
-    }
-    likes {
-      id
-    }
+    requacks
+    likes
     requackStatus
     likeStatus
   }
   replies {
     id
   }
-  requacks {
-    id
-  }
-  likes {
-    id
-  }
+  requacks
+  likes
   requackStatus
   likeStatus
 }
