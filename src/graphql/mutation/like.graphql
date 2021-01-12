@@ -1,0 +1,3 @@
+mutation Like($quackId: Int!) {
+  like(quackId: $quackId)
+}

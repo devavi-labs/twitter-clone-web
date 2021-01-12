@@ -1,0 +1,3 @@
+mutation Requack($quackId: Int!) {
+  requack(quackId: $quackId)
+}
