@@ -1,16 +1,16 @@
 import {
   Box,
+  CircularProgress,
   IconButton,
   IconButtonProps,
-  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import numeral from "numeral";
 import React from "react";
 import { AiOutlineRetweet } from "react-icons/ai";
-import { BsBoxArrowUp, BsChat, BsHeartFill, BsHeart } from "react-icons/bs";
-import { RequackColor, LikeColor } from "../theme";
+import { BsBoxArrowUp, BsChat, BsHeart, BsHeartFill } from "react-icons/bs";
+import { LikeColor, RequackColor } from "../theme";
 import { hexToRgb } from "../utils/hexToRgb";
-import numeral from "numeral";
 
 interface EngageButtonProps {
   type: "reply" | "requack" | "like" | "share";
@@ -18,6 +18,7 @@ interface EngageButtonProps {
   status?: boolean;
   size?: "sm" | "md";
   loading?: boolean;
+  done?: boolean;
 }
 
 export const EngageButton: React.FC<
@@ -28,6 +29,7 @@ export const EngageButton: React.FC<
   status,
   size = "sm",
   loading = false,
+  done = false,
   onClick,
 }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -92,7 +94,7 @@ export const EngageButton: React.FC<
       >
         {loading ? (
           <CircularProgress
-            size={size === "sm" ? 18 : 20}
+            size={size === "sm" ? 16 : 18}
             className={classes.icon}
           />
         ) : (
