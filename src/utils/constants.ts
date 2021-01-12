@@ -11,3 +11,5 @@ export const REST_ENDPOINT =
 export const GRAPHQL_ENDPOINt = REST_ENDPOINT + "/graphql";
 
 export const LOCAL_THEME = "lt";
+
+export const DOMAIN = process.env.DOMAIN || "http://localhost:3000";

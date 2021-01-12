@@ -6,9 +6,11 @@ import {
   LinkCard,
   QuackContent,
   QuackOptionButton,
+  QuackSharePopper,
   QuackStats,
   ReplyingSubheader,
   ShortDateTime,
+  Toast,
   UserAvatar,
 } from ".";
 import { UserPopperContext } from "../context/userPopper";
@@ -19,7 +21,10 @@ import {
   useLikeMutation,
   useRequackMutation,
 } from "../generated/graphql";
+import { useClipboard } from "../hooks/useClipboard";
+import { useDisclosure } from "../hooks/useDisclosure";
 import { useMediaQuery } from "../hooks/useMediaQuery";
+import { usePopper } from "../hooks/usePopper";
 import { DisplayName } from "./DisplayName";
 import { EngageButton } from "./EngageButton";
 
@@ -182,95 +187,128 @@ export const Quack: React.FC<QuackProps> = ({
   //   }
   // };
 
-  return (
-    <ListItem tabIndex={variant !== "open" ? 0 : -1} className={classes.root}>
-      {variant !== "open" && (
-        <Box className={classes.left}>
-          {showBar && <div className={classes.connectingBar} />}
+  const {
+    open: toastOpen,
+    setOpen: settoastOpen,
+    onClose: onSnackbarClose,
+  } = useDisclosure();
+  const [toastMesage, settoastMesage] = React.useState("");
 
-          <UserAvatar
-            user={quack?.quackedByUser}
-            variant={variant}
-            onMouseOver={handlePopperOpen}
-          />
-        </Box>
-      )}
-      <Box className={classes.right}>
-        <Box className={classes.header}>
-          <Box className={classes.textInfo}>
-            {variant === "open" && (
-              <UserAvatar
-                user={quack?.quackedByUser}
-                variant={variant}
+  const { open, handleClick, anchorEl, onClose } = usePopper();
+  const [copy, copied] = useClipboard();
+
+  React.useEffect(() => {
+    if (copied && !toastOpen) {
+      settoastOpen(true);
+      settoastMesage("Link copied");
+    }
+  }, [copied, toastOpen, settoastOpen]);
+
+  return (
+    <>
+      <ListItem tabIndex={variant !== "open" ? 0 : -1} className={classes.root}>
+        {variant !== "open" && (
+          <Box className={classes.left}>
+            {showBar && <div className={classes.connectingBar} />}
+
+            <UserAvatar
+              user={quack?.quackedByUser}
+              variant={variant}
+              onMouseOver={handlePopperOpen}
+            />
+          </Box>
+        )}
+        <Box className={classes.right}>
+          <Box className={classes.header}>
+            <Box className={classes.textInfo}>
+              {variant === "open" && (
+                <UserAvatar
+                  user={quack?.quackedByUser}
+                  variant={variant}
+                  onMouseOver={handlePopperOpen}
+                  onMouseLeave={handleMouseOut}
+                />
+              )}
+              <DisplayName
+                displayName={quack?.quackedByUser?.displayName}
+                username={quack?.quackedByUser?.username}
+                link
+                direction={variant === "open" ? "vertical" : "horizontal"}
                 onMouseOver={handlePopperOpen}
                 onMouseLeave={handleMouseOut}
               />
-            )}
-            <DisplayName
-              displayName={quack?.quackedByUser?.displayName}
-              username={quack?.quackedByUser?.username}
-              link
-              direction={variant === "open" ? "vertical" : "horizontal"}
-              onMouseOver={handlePopperOpen}
-              onMouseLeave={handleMouseOut}
-            />
-            {variant !== "open" && <ShortDateTime time={quack?.createdAt} />}
+              {variant !== "open" && <ShortDateTime time={quack?.createdAt} />}
+            </Box>
+            <QuackOptionButton quack={quack} />
           </Box>
-          <QuackOptionButton quack={quack} />
-        </Box>
-        {inReplyTo && (
-          <ReplyingSubheader username={inReplyTo?.quackedByUser?.username} />
-        )}
-        <Box className={classes.content}>
-          <Typography paragraph className={classes.text}>
-            <QuackContent
-              text={quack?.text}
-              mentions={quack?.mentions}
-              hashtags={quack?.hashtags}
-              links={quack?.links?.map((link) => link.url)}
+          {inReplyTo && (
+            <ReplyingSubheader username={inReplyTo?.quackedByUser?.username} />
+          )}
+          <Box className={classes.content}>
+            <Typography paragraph className={classes.text}>
+              <QuackContent
+                text={quack?.text}
+                mentions={quack?.mentions}
+                hashtags={quack?.hashtags}
+                links={quack?.links?.map((link) => link.url)}
+              />
+            </Typography>
+          </Box>
+          {quack?.links &&
+            quack?.links?.length > 0 &&
+            quack?.links[0].title && (
+              <LinkCard
+                title={quack?.links[0].title}
+                description={quack?.links[0].description}
+                image={quack?.links[0].image}
+                url={quack?.links[0].url}
+              />
+            )}
+          {variant === "open" && (
+            <>
+              <FullDateTime time={quack?.createdAt} />
+              <Divider />
+            </>
+          )}
+          {variant === "open" && <QuackStats quack={quack} />}
+          <Box className={classes.footer}>
+            <EngageButton
+              type="reply"
+              engagements={quack?.replies?.length}
+              size={variant === "open" ? "md" : "sm"}
             />
-          </Typography>
+            <EngageButton
+              type="requack"
+              engagements={quack?.requacks || 0}
+              status={quack?.requackStatus}
+              size={variant === "open" ? "md" : "sm"}
+              onClick={handleRequack}
+              loading={requackLoading}
+            />
+            <EngageButton
+              type="like"
+              engagements={quack?.likes || 0}
+              status={quack?.likeStatus}
+              size={variant === "open" ? "md" : "sm"}
+              onClick={handleLike}
+              loading={likeLoading}
+            />
+            <EngageButton
+              type="share"
+              size={variant === "open" ? "md" : "sm"}
+              onClick={handleClick}
+            />
+            <QuackSharePopper
+              open={open}
+              anchorEl={anchorEl}
+              onClose={onClose}
+              quack={quack}
+              onCopy={copy}
+            />
+          </Box>
         </Box>
-        {quack?.links && quack?.links?.length > 0 && quack?.links[0].title && (
-          <LinkCard
-            title={quack?.links[0].title}
-            description={quack?.links[0].description}
-            image={quack?.links[0].image}
-            url={quack?.links[0].url}
-          />
-        )}
-        {variant === "open" && (
-          <>
-            <FullDateTime time={quack?.createdAt} />
-            <Divider />
-          </>
-        )}
-        {variant === "open" && <QuackStats quack={quack} />}
-        <Box className={classes.footer}>
-          <EngageButton
-            type="reply"
-            engagements={quack?.replies?.length}
-            size={variant === "open" ? "md" : "sm"}
-          />
-          <EngageButton
-            type="requack"
-            engagements={quack?.requacks || 0}
-            status={quack?.requackStatus}
-            size={variant === "open" ? "md" : "sm"}
-            onClick={handleRequack}
-            loading={requackLoading}
-          />
-          <EngageButton
-            type="like"
-            engagements={quack?.likes || 0}
-            status={quack?.likeStatus}
-            size={variant === "open" ? "md" : "sm"}
-            onClick={handleLike}
-            loading={likeLoading}
-          />
-          <EngageButton type="share" size={variant === "open" ? "md" : "sm"} />
-        </Box>
-      </Box>
-    </ListItem>
+      </ListItem>
+      <Toast open={toastOpen} message={toastMesage} onClose={onSnackbarClose} />
+    </>
   );
 };
