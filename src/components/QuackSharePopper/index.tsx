@@ -13,7 +13,7 @@ import {
   RegularQuackFragment,
   ShortQuackFragment,
 } from "../../generated/graphql";
-import { DOMAIN } from "../../utils/constants";
+import { REACT_APP_DOMAIN } from "../../utils/constants";
 import { useClipboard } from "../../hooks/useClipboard";
 import { ToastContext } from "../../context/toast";
 
@@ -53,7 +53,7 @@ const QuackSharePopper: React.FC<QuackSharePopperProps> = ({
   }));
   const classes = useStyles();
 
-  const link = `${DOMAIN}/${quack?.quackedByUser?.username}/status/${quack?.id}`;
+  const link = `${REACT_APP_DOMAIN}/${quack?.quackedByUser?.username}/status/${quack?.id}`;
 
   const copy = useClipboard();
 
