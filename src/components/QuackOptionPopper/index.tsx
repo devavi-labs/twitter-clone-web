@@ -64,9 +64,7 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
   const [{ data }] = useMeQuery();
 
   const { handleOpen: handleToastOpen } = useContext(ToastContext)!;
-  const { handleOpen: handleDialogOpen, onClose } = useContext(
-    ConfirmDialogContext
-  )!;
+  const { handleOpen: handleDialogOpen } = useContext(ConfirmDialogContext)!;
 
   const [loading, setLoading] = React.useState(false);
 
@@ -74,8 +72,6 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
 
   const handleDelete = async () => {
     setLoading(true);
-    onClose && onClose();
-
     const { error, data } = await deleteQuack({ quackId: quack?.id! });
 
     if (data && data.deleteQuack) {

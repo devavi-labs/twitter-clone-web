@@ -84,9 +84,19 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   }));
   const classes = useStyles();
 
-  // React.useEffect(() => {
-  //   alert(`danger = ${danger}`);
-  // }, []);
+  const handleCancel = () => {
+    if (onCancel) {
+      onCancel?.call({});
+      onClose?.call({});
+    } else {
+      onClose?.call({});
+    }
+  };
+
+  const handleConfirm = () => {
+    onConfirm?.call({});
+    onClose?.call({});
+  };
 
   return (
     <Dialog
@@ -114,7 +124,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       <DialogActions className={classes.actions}>
         <RoundedButton
           variant="contained"
-          onClick={onCancel}
+          onClick={handleCancel}
           className={classes.cancelButton}
           fullWidth
           disableRipple
@@ -123,7 +133,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         </RoundedButton>
         <RoundedButton
           variant="contained"
-          onClick={onConfirm}
+          onClick={handleConfirm}
           className={classes.confirmButton}
           fullWidth
           disableRipple
