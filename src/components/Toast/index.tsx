@@ -20,6 +20,7 @@ const Toast: React.FC<ToastProps> = (props) => {
       classes={{ root: classes.root }}
       {...props}
       TransitionComponent={Grow}
+      autoHideDuration={4000}
     />
   );
 };
