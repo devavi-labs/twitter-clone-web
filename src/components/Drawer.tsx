@@ -169,7 +169,7 @@ export const Drawer: React.FC<DrawerProps> = ({ open, onOpen, onClose }) => {
             <ListItemText className={classes.listText}>Display</ListItemText>
           </ListItem>
           <Divider />
-          <ListItem component={Button}>
+          <ListItem component={Button} onClick={() => history.push("/logout")}>
             <ListItemText className={classes.logoutText}>Logout</ListItemText>
           </ListItem>
         </List>

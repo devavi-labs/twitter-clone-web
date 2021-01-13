@@ -3,6 +3,7 @@ import { ProtectedRoute } from "./components";
 import { Dashboard } from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import { Logout } from "./pages/Logout";
 
 export const Routes = () => {
   return (
@@ -21,6 +22,12 @@ export const Routes = () => {
           ProtectedComponent={<Login />}
           redirectPath="/home"
           reverse
+        />
+        <ProtectedRoute
+          path="/logout"
+          exact
+          ProtectedComponent={<Logout />}
+          redirectPath="/login"
         />
         <ProtectedRoute
           path="/home"

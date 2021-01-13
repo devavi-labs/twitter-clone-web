@@ -9,8 +9,9 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { BsCheck } from "react-icons/bs";
+import { useHistory } from "react-router-dom";
 import { Popper } from ".";
-import { useLogoutMutation, useMeQuery } from "../generated/graphql";
+import { useMeQuery } from "../generated/graphql";
 
 interface AccountPopperProps {
   open?: boolean;
@@ -57,7 +58,7 @@ export const AccountPopper: React.FC<AccountPopperProps> = ({
   }));
   const classes = useStyles();
 
-  const [{ fetching }, logout] = useLogoutMutation();
+  const history = useHistory();
 
   return (
     <Popper open={open} onClose={onClose} anchorEl={anchorEl} minWidth="300px">
@@ -80,8 +81,7 @@ export const AccountPopper: React.FC<AccountPopperProps> = ({
         <ListItem
           component={Button}
           className={classes.body}
-          onClick={() => logout()}
-          disabled={fetching}
+          onClick={() => history.push("/logout")}
         >
           <Typography className={classes.logoutText}>
             Log out @{data?.me?.username}
