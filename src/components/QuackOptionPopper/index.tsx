@@ -13,7 +13,8 @@ import {
   BsFillPersonPlusFill,
   BsTrashFill,
 } from "react-icons/bs";
-import { ConfirmDialog, Popper, TopProgressBar } from "..";
+import { Popper, TopProgressBar } from "..";
+import { ConfirmDialogContext } from "../../context/confimDialog";
 import { ToastContext } from "../../context/toast";
 import {
   RegularQuackFragment,
@@ -21,7 +22,6 @@ import {
   useDeleteQuackMutation,
   useMeQuery,
 } from "../../generated/graphql";
-import { useConfirmationDialog } from "../../hooks/useConfirmationDialog";
 
 type QuackOptionPopperProps = {
   open?: boolean;
@@ -63,22 +63,10 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
   const classes = useStyles();
   const [{ data }] = useMeQuery();
 
-  const {
-    title,
-    setTitle,
-    content,
-    setContent,
-    open,
-
-    handleOpen,
-    onClose,
-    confirmLabel,
-    setConfirmLabel,
-    confirmAction,
-    setConfirmAction,
-  } = useConfirmationDialog();
-
   const { handleOpen: handleToastOpen } = useContext(ToastContext)!;
+  const { handleOpen: handleDialogOpen, onClose } = useContext(
+    ConfirmDialogContext
+  )!;
 
   const [loading, setLoading] = React.useState(false);
 
@@ -86,7 +74,7 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
 
   const handleDelete = async () => {
     setLoading(true);
-    onClose();
+    onClose && onClose();
 
     const { error, data } = await deleteQuack({ quackId: quack?.id! });
 
@@ -102,14 +90,15 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
   };
 
   const handleDeleteConfirmation = () => {
-    setTitle("Delete Quack?");
-    setContent(
-      "This can’t be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from Quacker search results. "
-    );
-    setConfirmLabel("Delete");
-    setConfirmAction(() => handleDelete);
     props.onClose();
-    handleOpen();
+    handleDialogOpen({
+      title: "Delete Quack?",
+      content: `This can’t be undone and it will be removed from your profile, 
+      the timeline of any accounts that follow you,
+      and from Quacker search results.`,
+      confirmLabel: "Delete",
+      onConfirm: handleDelete,
+    });
   };
 
   return (
@@ -164,14 +153,6 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
           )}
         </List>
       </Popper>
-      <ConfirmDialog
-        open={open}
-        onClose={onClose}
-        confirmLabel={confirmLabel}
-        onConfirm={confirmAction}
-        title={title}
-        content={content}
-      />
     </>
   );
 };

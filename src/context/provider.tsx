@@ -4,6 +4,7 @@ import { FeedContext, FeedState } from "./feed";
 import { ThemeContext } from "./theme";
 import { UserPopperContextProvider } from "./userPopper";
 import { ToastContextProvider } from "./toast";
+import { ConfirmDialogContextProvider } from "./confimDialog";
 
 export const ContextProvider: React.FC = ({ children }) => {
   const { theme, toggleTheme } = useLocalTheme();
@@ -15,7 +16,9 @@ export const ContextProvider: React.FC = ({ children }) => {
         value={{ state: feedState, setState: setFeedState }}
       >
         <UserPopperContextProvider>
-          <ToastContextProvider>{children}</ToastContextProvider>
+          <ConfirmDialogContextProvider>
+            <ToastContextProvider>{children}</ToastContextProvider>
+          </ConfirmDialogContextProvider>
         </UserPopperContextProvider>
       </FeedContext.Provider>
     </ThemeContext.Provider>

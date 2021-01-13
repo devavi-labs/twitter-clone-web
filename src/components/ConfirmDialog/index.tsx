@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { Backdrop, RoundedButton } from "..";
 
-type ConfirmDialogProps = {
+export type ConfirmDialogProps = {
   title: string;
   content: string;
   open: boolean;
