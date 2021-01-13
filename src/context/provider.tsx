@@ -3,6 +3,7 @@ import { useLocalTheme } from "../hooks/useLocalTheme";
 import { FeedContext, FeedState } from "./feed";
 import { ThemeContext } from "./theme";
 import { UserPopperContextProvider } from "./userPopper";
+import { ToastContextProvider } from "./toast";
 
 export const ContextProvider: React.FC = ({ children }) => {
   const { theme, toggleTheme } = useLocalTheme();
@@ -13,7 +14,9 @@ export const ContextProvider: React.FC = ({ children }) => {
       <FeedContext.Provider
         value={{ state: feedState, setState: setFeedState }}
       >
-        <UserPopperContextProvider>{children}</UserPopperContextProvider>
+        <UserPopperContextProvider>
+          <ToastContextProvider>{children}</ToastContextProvider>
+        </UserPopperContextProvider>
       </FeedContext.Provider>
     </ThemeContext.Provider>
   );
