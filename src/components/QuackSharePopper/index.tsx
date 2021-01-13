@@ -6,7 +6,7 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
+import React, { useContext } from "react";
 import { BsLink45Deg } from "react-icons/bs";
 import { Popper } from "..";
 import {
@@ -14,18 +14,18 @@ import {
   ShortQuackFragment,
 } from "../../generated/graphql";
 import { DOMAIN } from "../../utils/constants";
+import { useClipboard } from "../../hooks/useClipboard";
+import { ToastContext } from "../../context/toast";
 
 type QuackSharePopperProps = {
   open?: boolean;
   onClose: () => any;
   anchorEl: null | HTMLElement;
   quack?: RegularQuackFragment | ShortQuackFragment | null | undefined;
-  onCopy: (text: string) => Promise<void>;
 };
 
 const QuackSharePopper: React.FC<QuackSharePopperProps> = ({
   quack,
-  onCopy,
   ...props
 }) => {
   const useStyles = makeStyles(({ palette: { text } }) => ({
@@ -52,12 +52,27 @@ const QuackSharePopper: React.FC<QuackSharePopperProps> = ({
     },
   }));
   const classes = useStyles();
+
   const link = `${DOMAIN}/${quack?.quackedByUser?.username}/status/${quack?.id}`;
+
+  const copy = useClipboard();
+
+  const { handleOpen } = useContext(ToastContext)!;
+
+  const handleCopy = async () => {
+    props.onClose();
+    if (await copy(link)) {
+      handleOpen("Link copied");
+    } else {
+      handleOpen("Couldn't copy link");
+    }
+  };
+
   return (
     <>
       <Popper {...props}>
         <List className={classes.body}>
-          <ListItem component={Button} onClick={() => onCopy && onCopy(link)}>
+          <ListItem component={Button} onClick={handleCopy}>
             <div className={classes.item}>
               <ListItemIcon>
                 <BsLink45Deg className={classes.icon} />

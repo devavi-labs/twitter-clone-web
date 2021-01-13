@@ -10,7 +10,6 @@ import {
   QuackStats,
   ReplyingSubheader,
   ShortDateTime,
-  Toast,
   UserAvatar,
 } from ".";
 import { UserPopperContext } from "../context/userPopper";
@@ -20,8 +19,6 @@ import {
   useLikeMutation,
   useRequackMutation,
 } from "../generated/graphql";
-import { useClipboard } from "../hooks/useClipboard";
-import { useDisclosure } from "../hooks/useDisclosure";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { usePopper } from "../hooks/usePopper";
 import { DisplayName } from "./DisplayName";
@@ -180,22 +177,7 @@ export const Quack: React.FC<QuackProps> = ({
     }
   };
 
-  const {
-    open: toastOpen,
-    setOpen: settoastOpen,
-    onClose: onSnackbarClose,
-  } = useDisclosure();
-  const [toastMesage, settoastMesage] = React.useState("");
-
   const { open, handleClick, anchorEl, onClose } = usePopper();
-  const [copy, copied] = useClipboard();
-
-  React.useEffect(() => {
-    if (copied && !toastOpen) {
-      settoastOpen(true);
-      settoastMesage("Link copied");
-    }
-  }, [copied, toastOpen, settoastOpen]);
 
   return (
     <>
@@ -296,12 +278,10 @@ export const Quack: React.FC<QuackProps> = ({
               anchorEl={anchorEl}
               onClose={onClose}
               quack={quack}
-              onCopy={copy}
             />
           </Box>
         </Box>
       </ListItem>
-      <Toast open={toastOpen} message={toastMesage} onClose={onSnackbarClose} />
     </>
   );
 };
