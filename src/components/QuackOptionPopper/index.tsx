@@ -6,7 +6,7 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
+import React, { useContext } from "react";
 import {
   BsDashCircleFill,
   BsFillPersonDashFill,
@@ -14,6 +14,7 @@ import {
   BsTrashFill,
 } from "react-icons/bs";
 import { ConfirmDialog, Popper, TopProgressBar } from "..";
+import { ToastContext } from "../../context/toast";
 import {
   RegularQuackFragment,
   ShortQuackFragment,
@@ -21,8 +22,6 @@ import {
   useMeQuery,
 } from "../../generated/graphql";
 import { useConfirmationDialog } from "../../hooks/useConfirmationDialog";
-import { useDisclosure } from "../../hooks/useDisclosure";
-import { Toast } from "../Toast";
 
 type QuackOptionPopperProps = {
   open?: boolean;
@@ -79,6 +78,8 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
     setConfirmAction,
   } = useConfirmationDialog();
 
+  const { handleOpen: handleToastOpen } = useContext(ToastContext)!;
+
   const [loading, setLoading] = React.useState(false);
 
   const [, deleteQuack] = useDeleteQuackMutation();
@@ -90,13 +91,11 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
     const { error, data } = await deleteQuack({ quackId: quack?.id! });
 
     if (data && data.deleteQuack) {
-      setToastMessage("Quack deleted");
-      setToastOpen(true);
+      handleToastOpen("Quack deleted");
     }
 
     if (error) {
-      setToastMessage("Couldn't delete quack");
-      setToastOpen(true);
+      handleToastOpen("Couldn't delete quack");
     }
 
     setLoading(false);
@@ -112,13 +111,6 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
     props.onClose();
     handleOpen();
   };
-
-  const {
-    open: toastOpen,
-    setOpen: setToastOpen,
-    onClose: onToastClose,
-  } = useDisclosure();
-  const [toastMessage, setToastMessage] = React.useState("");
 
   return (
     <>
@@ -180,7 +172,6 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
         title={title}
         content={content}
       />
-      <Toast open={toastOpen} message={toastMessage} onClose={onToastClose} />
     </>
   );
 };
