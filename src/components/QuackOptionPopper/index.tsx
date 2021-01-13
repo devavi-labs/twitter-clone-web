@@ -8,17 +8,21 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import {
+  BsDashCircleFill,
   BsFillPersonDashFill,
   BsFillPersonPlusFill,
-  BsDashCircleFill,
   BsTrashFill,
 } from "react-icons/bs";
-import { Popper } from "..";
+import { ConfirmDialog, Popper, TopProgressBar } from "..";
 import {
   RegularQuackFragment,
   ShortQuackFragment,
+  useDeleteQuackMutation,
   useMeQuery,
 } from "../../generated/graphql";
+import { useConfirmationDialog } from "../../hooks/useConfirmationDialog";
+import { useDisclosure } from "../../hooks/useDisclosure";
+import { Toast } from "../Toast";
 
 type QuackOptionPopperProps = {
   open?: boolean;
@@ -59,12 +63,70 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
   }));
   const classes = useStyles();
   const [{ data }] = useMeQuery();
+
+  const {
+    title,
+    setTitle,
+    content,
+    setContent,
+    open,
+
+    handleOpen,
+    onClose,
+    confirmLabel,
+    setConfirmLabel,
+    confirmAction,
+    setConfirmAction,
+  } = useConfirmationDialog();
+
+  const [loading, setLoading] = React.useState(false);
+
+  const [, deleteQuack] = useDeleteQuackMutation();
+
+  const handleDelete = async () => {
+    setLoading(true);
+    onClose();
+
+    const { error, data } = await deleteQuack({ quackId: quack?.id! });
+
+    if (data && data.deleteQuack) {
+      setToastMessage("Quack deleted");
+      setToastOpen(true);
+    }
+
+    if (error) {
+      setToastMessage("Couldn't delete quack");
+      setToastOpen(true);
+    }
+
+    setLoading(false);
+  };
+
+  const handleDeleteConfirmation = () => {
+    setTitle("Delete Quack?");
+    setContent(
+      "This can’t be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from Quacker search results. "
+    );
+    setConfirmLabel("Delete");
+    setConfirmAction(() => handleDelete);
+    props.onClose();
+    handleOpen();
+  };
+
+  const {
+    open: toastOpen,
+    setOpen: setToastOpen,
+    onClose: onToastClose,
+  } = useDisclosure();
+  const [toastMessage, setToastMessage] = React.useState("");
+
   return (
     <>
+      {loading && <TopProgressBar />}
       <Popper {...props}>
         <List className={classes.body}>
           {data?.me?.id === quack?.quackedByUser?.id ? (
-            <ListItem component={Button}>
+            <ListItem component={Button} onClick={handleDeleteConfirmation}>
               <div className={classes.item}>
                 <ListItemIcon>
                   <BsTrashFill
@@ -110,6 +172,15 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
           )}
         </List>
       </Popper>
+      <ConfirmDialog
+        open={open}
+        onClose={onClose}
+        confirmLabel={confirmLabel}
+        onConfirm={confirmAction}
+        title={title}
+        content={content}
+      />
+      <Toast open={toastOpen} message={toastMessage} onClose={onToastClose} />
     </>
   );
 };

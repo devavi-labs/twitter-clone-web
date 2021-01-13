@@ -68,18 +68,23 @@ export const QuacksFeed = () => {
         >
           <Divider />
           {data.quacksForMe.quacks.map((quack, index) => {
-            const { main, inReplyTo, reply } = transform(quack);
-            return (
-              <React.Fragment key={index}>
-                <Quack
-                  quack={main}
-                  inReplyTo={inReplyTo}
-                  showBar={reply ? "bottom" : undefined}
-                />
-                {reply && <Quack quack={reply} showBar="top" variant="reply" />}
-                <Divider />
-              </React.Fragment>
-            );
+            if (quack) {
+              const { main, inReplyTo, reply } = transform(quack);
+              return (
+                <React.Fragment key={index}>
+                  <Quack
+                    quack={main}
+                    inReplyTo={inReplyTo}
+                    showBar={reply ? "bottom" : undefined}
+                  />
+                  {reply && (
+                    <Quack quack={reply} showBar="top" variant="reply" />
+                  )}
+                  <Divider />
+                </React.Fragment>
+              );
+            }
+            return <></>;
           })}
         </InfiniteScroll>
         {!xs && <UserPopper />}

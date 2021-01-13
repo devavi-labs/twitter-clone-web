@@ -1,5 +1,6 @@
 import { cacheExchange as CE } from "@urql/exchange-graphcache";
 import {
+  DeleteQuackMutationVariables,
   LikeMutationVariables,
   LoginMutation,
   LogoutMutation,
@@ -62,6 +63,13 @@ export const cacheExchange = CE({
             }
           }
         );
+      },
+      deleteQuack: (_, args, cache) => {
+        const _key = cache.keyOfEntity({
+          __typename: "Quack",
+          id: (args as DeleteQuackMutationVariables).quackId,
+        });
+        cache.invalidate(_key);
       },
       like: (_, args, cache, __) => {
         updateLikeOrRequack({

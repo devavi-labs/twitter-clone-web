@@ -17,7 +17,6 @@ import { UserPopperContext } from "../context/userPopper";
 import {
   RegularQuackFragment,
   ShortQuackFragment,
-  // useDeleteQuackMutation,
   useLikeMutation,
   useRequackMutation,
 } from "../generated/graphql";
@@ -166,7 +165,6 @@ export const Quack: React.FC<QuackProps> = ({
 
   const [{ fetching: likeLoading }, like] = useLikeMutation();
   const [{ fetching: requackLoading }, requack] = useRequackMutation();
-  // const [, deleteQuack] = useDeleteQuackMutation();
 
   const handleLike = async () => {
     const { error } = await like({ quackId: quack?.id });
@@ -174,18 +172,13 @@ export const Quack: React.FC<QuackProps> = ({
       console.log(error.message);
     }
   };
+
   const handleRequack = async () => {
     const { error } = await requack({ quackId: quack?.id });
     if (error) {
       console.log(error.message);
     }
   };
-  // const handleDelete = async () => {
-  //   const { error } = await deleteQuack({ quackId: quack?.id });
-  //   if (error) {
-  //     console.log(error.message);
-  //   }
-  // };
 
   const {
     open: toastOpen,

@@ -47,3 +47,4 @@ export { QuackOptionPopper } from "./QuackOptionPopper";
 export { CircularProgressBar } from "./CircularProgressBar";
 export { Toast } from "./Toast";
 export { QuackSharePopper } from "./QuackSharePopper";
+export { ConfirmDialog } from "./ConfirmDialog";
