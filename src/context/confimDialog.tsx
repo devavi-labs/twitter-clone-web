@@ -17,7 +17,8 @@ export const ConfirmDialogContextProvider: FC = ({ children }) => {
   const [cancelLabel, setCancelLabel] = useState<string | undefined>();
   const [confirmLabel, setConfirmLabel] = useState<string | undefined>();
   const [open, setOpen] = useState(false);
-  const [danger, setDanger] = useState(true);
+  const [danger, setDanger] = useState(false);
+  const [includeLogo, setIncludeLogo] = useState(false);
 
   const onClose = () => setOpen(false);
 
@@ -32,6 +33,7 @@ export const ConfirmDialogContextProvider: FC = ({ children }) => {
     onCancel,
     onConfirm,
     danger,
+    includeLogo,
   }: ConfirmDialogOpenProps) => {
     setTitle(title);
     setContent(content);
@@ -39,7 +41,10 @@ export const ConfirmDialogContextProvider: FC = ({ children }) => {
     confirmLabel ? setConfirmLabel(confirmLabel) : setConfirmLabel(undefined);
     onCancel ? setOnCancel(() => onCancel) : setOnCancel(() => onClose);
     onConfirm ? setOnConfirm(() => onConfirm) : setOnConfirm(() => onClose);
-    danger ? setDanger(danger) : setDanger(true);
+    danger !== undefined ? setDanger(danger) : setDanger(true);
+    includeLogo !== undefined
+      ? setIncludeLogo(includeLogo)
+      : setIncludeLogo(false);
     setOpen(true);
   };
 
@@ -54,6 +59,7 @@ export const ConfirmDialogContextProvider: FC = ({ children }) => {
         onCancel,
         onConfirm,
         danger,
+        includeLogo,
         open,
         onClose,
       }}

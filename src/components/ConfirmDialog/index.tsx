@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { Backdrop, RoundedButton } from "..";
+import { Backdrop, RoundedButton, Logo } from "..";
 
 export type ConfirmDialogProps = {
   title: string;
@@ -19,6 +19,7 @@ export type ConfirmDialogProps = {
   onCancel?: () => any;
   onConfirm?: () => any;
   danger?: boolean;
+  includeLogo?: boolean;
 };
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
@@ -31,6 +32,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   confirmLabel = "Confirm",
   cancelLabel = "Cancel",
   danger = true,
+  includeLogo = false,
 }) => {
   const useStyles = makeStyles(({ palette: { primary, error } }) => ({
     root: {
@@ -51,7 +53,9 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       alignItems: "center",
       padding: "0.5rem",
     },
-
+    logo: {
+      marginTop: "1rem",
+    },
     contentText: {
       textAlign: "center",
       fontSize: "0.9rem",
@@ -80,6 +84,10 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   }));
   const classes = useStyles();
 
+  // React.useEffect(() => {
+  //   alert(`danger = ${danger}`);
+  // }, []);
+
   return (
     <Dialog
       open={open}
@@ -93,6 +101,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         paper: classes.paper,
       }}
     >
+      {includeLogo && <Logo className={classes.logo} />}
       <DialogTitle id="confirmation-dialog-title">{title}</DialogTitle>
       <DialogContent>
         <DialogContentText
