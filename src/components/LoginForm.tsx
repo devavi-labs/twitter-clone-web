@@ -28,9 +28,7 @@ export const LoginForm: React.FC = () => {
 
   const {
     replace,
-    location: {
-      state: { from },
-    },
+    location: { state },
   } = useHistory<{ from?: string }>();
 
   const handleSubmit = async (
@@ -42,7 +40,7 @@ export const LoginForm: React.FC = () => {
     if (data?.login.user) {
       saveTokens(data?.login.accessToken!, data?.login.refreshToken!);
 
-      if (from) return replace(from);
+      if (state?.from) return replace(state.from);
       else return replace("/");
     }
 
