@@ -1,4 +1,4 @@
-import { Avatar, IconButton } from "@material-ui/core";
+import { Avatar, Chip, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { BsThreeDots } from "react-icons/bs";
@@ -61,6 +61,14 @@ const Profile: React.FC<ProfileProps> = ({ user, loading }) => {
         borderColor: primary.main,
       },
     },
+    labels: {
+      display: "flex",
+      alignItems: "flex-end",
+      gap: "0.4rem",
+    },
+    fbChip: {
+      fontSize: "0.7rem",
+    },
     stats: { display: "flex", gap: "0.5rem", margin: "0.4rem 0" },
   }));
   const classes = useStyles();
@@ -101,14 +109,23 @@ const Profile: React.FC<ProfileProps> = ({ user, loading }) => {
               )}
             </div>
           </div>
-          <DisplayName
-            displayName={user?.displayName}
-            username={user?.username}
-            verified={user?.emailVerified}
-            direction="vertical"
-            size="lg"
-            link={false}
-          />
+          <div className={classes.labels}>
+            <DisplayName
+              displayName={user?.displayName}
+              username={user?.username}
+              verified={user?.emailVerified}
+              direction="vertical"
+              size="lg"
+              link={false}
+            />
+            {user?.followBackStatus === true && (
+              <Chip
+                label="Follows you"
+                className={classes.fbChip}
+                size="small"
+              />
+            )}
+          </div>
           <div className={classes.stats}>
             <Stat label="following" stat={user?.followings || 0} />
             <Stat label="followers" stat={user?.followers || 0} />
