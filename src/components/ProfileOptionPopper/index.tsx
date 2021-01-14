@@ -76,7 +76,7 @@ const ProfileOptionPopper: React.FC<ProfileOptionPopperProps> = ({
                 <BsLink45Deg className={classes.icon} />
               </ListItemIcon>
               <ListItemText className={classes.text}>
-                Copy link to this quack
+                Copy link to profile
               </ListItemText>
             </div>
           </ListItem>
