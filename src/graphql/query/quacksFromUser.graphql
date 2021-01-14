@@ -1,0 +1,8 @@
+query QuacksFromUser($userId: Int!, $limit: Int, $lastIndex: Int) {
+  quacksFromUser(userId: $userId, limit: $limit, lastIndex: $lastIndex) {
+    hasMore
+    quacks {
+      ...RegularQuack
+    }
+  }
+}

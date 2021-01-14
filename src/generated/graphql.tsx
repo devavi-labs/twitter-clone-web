@@ -635,6 +635,25 @@ export type QuacksForMeQuery = (
   )> }
 );
 
+export type QuacksFromUserQueryVariables = Exact<{
+  userId: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  lastIndex?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type QuacksFromUserQuery = (
+  { __typename?: 'Query' }
+  & { quacksFromUser?: Maybe<(
+    { __typename?: 'PaginatedQuacks' }
+    & Pick<PaginatedQuacks, 'hasMore'>
+    & { quacks?: Maybe<Array<(
+      { __typename?: 'Quack' }
+      & RegularQuackFragment
+    )>> }
+  )> }
+);
+
 export type RequacksByQuackIdQueryVariables = Exact<{
   quackId: Scalars['Int'];
   limit?: Maybe<Scalars['Int']>;
@@ -1024,6 +1043,20 @@ export const QuacksForMeDocument = gql`
 
 export function useQuacksForMeQuery(options: Omit<Urql.UseQueryArgs<QuacksForMeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<QuacksForMeQuery>({ query: QuacksForMeDocument, ...options });
+};
+export const QuacksFromUserDocument = gql`
+    query QuacksFromUser($userId: Int!, $limit: Int, $lastIndex: Int) {
+  quacksFromUser(userId: $userId, limit: $limit, lastIndex: $lastIndex) {
+    hasMore
+    quacks {
+      ...RegularQuack
+    }
+  }
+}
+    ${RegularQuackFragmentDoc}`;
+
+export function useQuacksFromUserQuery(options: Omit<Urql.UseQueryArgs<QuacksFromUserQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<QuacksFromUserQuery>({ query: QuacksFromUserDocument, ...options });
 };
 export const RequacksByQuackIdDocument = gql`
     query RequacksByQuackId($quackId: Int!, $limit: Int, $lastIndex: Int) {

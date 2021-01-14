@@ -5,16 +5,24 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { CircularProgressBar, Quack, UserPopper } from ".";
 import {
   QuacksForMeQueryVariables,
+  RegularQuackFragment,
   useQuacksForMeQuery,
+  useQuacksFromUserQuery,
 } from "../generated/graphql";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { transform } from "../utils/quackTransformer";
 
 type QuacksFeedProps = {
   viewQuacks?: boolean;
+  fromUser?: boolean;
+  userId?: number;
 };
 
-export const QuacksFeed: React.FC<QuacksFeedProps> = ({ viewQuacks }) => {
+export const QuacksFeed: React.FC<QuacksFeedProps> = ({
+  viewQuacks,
+  fromUser,
+  userId,
+}) => {
   const useStyles = makeStyles(() => ({
     root: {},
     loading: {
@@ -35,33 +43,68 @@ export const QuacksFeed: React.FC<QuacksFeedProps> = ({ viewQuacks }) => {
     lastIndex: null,
   });
 
-  const [{ data, fetching }] = useQuacksForMeQuery({
-    variables,
-    pause: !viewQuacks,
+  const [
+    { data: quacksFromUser, fetching: fetchingFromUser },
+  ] = useQuacksFromUserQuery({
+    variables: {
+      userId: userId!,
+      ...variables,
+    },
+    pause: !fromUser || !userId,
   });
 
-  if (fetching) {
+  const [{ data: quacksForMe, fetching: fetchingForMe }] = useQuacksForMeQuery({
+    variables,
+    pause: !viewQuacks || fromUser,
+  });
+
+  const [quacks, setQuacks] = React.useState<RegularQuackFragment[]>([]);
+  const [hasMore, setHasMore] = React.useState(false);
+
+  React.useEffect(() => {
+    if (
+      fromUser &&
+      quacksFromUser?.quacksFromUser &&
+      quacksFromUser.quacksFromUser?.quacks !== quacks
+    ) {
+      setQuacks(quacksFromUser.quacksFromUser.quacks as RegularQuackFragment[]);
+      setHasMore(quacksFromUser.quacksFromUser.hasMore);
+    }
+
+    if (
+      !fromUser &&
+      quacksForMe?.quacksForMe &&
+      quacksForMe.quacksForMe.quacks !== quacks
+    ) {
+      setQuacks(quacksForMe.quacksForMe.quacks as RegularQuackFragment[]);
+      setHasMore(quacksForMe.quacksForMe.hasMore);
+    }
+  }, [
+    fromUser,
+    quacks,
+    quacksForMe?.quacksForMe,
+    quacksFromUser?.quacksFromUser,
+  ]);
+
+  if (fetchingForMe || fetchingFromUser) {
     return (
       <div className={classes.loading}>
         <CircularProgressBar />
       </div>
     );
-  } else if (data?.quacksForMe?.quacks && data?.quacksForMe.quacks.length > 0)
+  } else if (quacks && quacks.length > 0)
     return (
       <div>
         <InfiniteScroll
           className={classes.root}
-          dataLength={data?.quacksForMe?.quacks?.length}
+          dataLength={quacks?.length}
           next={() =>
             setVariables((v) => ({
               ...v,
-              lastIndex:
-                data?.quacksForMe?.quacks &&
-                data?.quacksForMe?.quacks[data?.quacksForMe?.quacks?.length - 1]
-                  .id,
+              lastIndex: quacks && quacks[quacks?.length - 1].id,
             }))
           }
-          hasMore={data?.quacksForMe?.hasMore}
+          hasMore={hasMore}
           loader={
             <div className={classes.loading}>
               <CircularProgressBar />
@@ -74,7 +117,7 @@ export const QuacksFeed: React.FC<QuacksFeedProps> = ({ viewQuacks }) => {
           }
         >
           <Divider />
-          {data.quacksForMe.quacks.map((quack, index) => {
+          {quacks?.map((quack, index) => {
             if (quack) {
               const { main, inReplyTo, reply } = transform(quack);
               return (

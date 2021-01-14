@@ -90,7 +90,11 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps }) => {
             onViewQuacks={() => setViewQuacks(true)}
           />
         )}
-        <QuacksFeed viewQuacks={viewQuacks} />
+        <QuacksFeed
+          viewQuacks={viewQuacks}
+          fromUser={feed === "profile"}
+          userId={data?.userByUsername?.id}
+        />
       </Box>
       <Divider orientation="vertical" />
     </Box>
