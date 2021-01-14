@@ -54,15 +54,9 @@ const QuackSharePopper: React.FC<QuackSharePopperProps> = ({
 
   const copy = useClipboard();
 
-  const { handleOpen } = useContext(ToastContext)!;
-
   const handleCopy = async () => {
     props.onClose();
-    if (await copy(link)) {
-      handleOpen("Link copied");
-    } else {
-      handleOpen("Couldn't copy link");
-    }
+    await copy(link);
   };
 
   return (
