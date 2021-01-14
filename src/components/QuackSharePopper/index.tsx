@@ -6,13 +6,12 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useContext } from "react";
+import React from "react";
 import { BsLink45Deg } from "react-icons/bs";
 import { Popper } from "..";
 import { RegularQuackFragment } from "../../generated/graphql";
-import { REACT_APP_DOMAIN } from "../../utils/constants";
 import { useClipboard } from "../../hooks/useClipboard";
-import { ToastContext } from "../../context/toast";
+import { REACT_APP_DOMAIN } from "../../utils/constants";
 
 type QuackSharePopperProps = {
   open?: boolean;
