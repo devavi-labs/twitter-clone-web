@@ -2,7 +2,7 @@ import { Box, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { AppBar, CreateQuack } from ".";
+import { AppBar, CreateQuack, Profile } from ".";
 import { useUserByUsernameQuery } from "../generated/graphql";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { QuacksFeed } from ".";
@@ -34,7 +34,7 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps }) => {
   const feed = state?.feed || feedFromProps;
   const username = state?.username || pathname.slice(1);
 
-  const [{ data }] = useUserByUsernameQuery({
+  const [{ data, fetching }] = useUserByUsernameQuery({
     variables: { username },
     pause: feed !== "profile",
   });
@@ -58,6 +58,9 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps }) => {
           backButton={Boolean(subtitle)}
         />
         {feed === "home" && !xs && <CreateQuack />}
+        {feed === "profile" && (
+          <Profile user={data?.userByUsername} loading={fetching} />
+        )}
         <QuacksFeed />
       </Box>
       <Divider orientation="vertical" />

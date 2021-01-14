@@ -49,3 +49,5 @@ export { Toast } from "./Toast";
 export { QuackSharePopper } from "./QuackSharePopper";
 export { ConfirmDialog } from "./ConfirmDialog";
 export { BlockButton } from "./BlockButton";
+export { Profile } from "./Profile";
+export { ProfileOptionPopper } from "./ProfileOptionPopper";
