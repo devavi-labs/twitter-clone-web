@@ -1,14 +1,14 @@
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { RegularUserFragment } from "../../generated/graphql";
-import { useConditionalFollow } from "../../hooks/useConditionalFollow";
+import { useConditionalBlock } from "../../hooks/useConditionalBlock";
 import { RoundedButton } from "../RoundedButton";
 
-type FollowButtonProps = {
+type BlockButtonProps = {
   user: RegularUserFragment | null;
 };
 
-const FollowButton: React.FC<FollowButtonProps> = ({ user }) => {
+const BlockButton: React.FC<BlockButtonProps> = ({ user }) => {
   const useStyles = makeStyles(({ palette: { error } }) => ({
     red: {
       backgroundColor: error.main,
@@ -22,34 +22,34 @@ const FollowButton: React.FC<FollowButtonProps> = ({ user }) => {
   }));
   const classes = useStyles();
 
-  const [follow, fetching] = useConditionalFollow();
+  const [block, fetching] = useConditionalBlock();
 
-  if (user?.followStatus === null) {
+  if (user?.haveIBlockedThisUser === null) {
     return <></>;
   }
 
-  if (!user?.followStatus) {
+  if (!user?.haveIBlockedThisUser) {
     return (
       <RoundedButton
         variant="outlined"
         color="primary"
-        onClick={() => follow(user)}
+        onClick={() => block(user)}
         disabled={fetching}
       >
-        {fetching ? "Following" : "Follow"}
+        {fetching ? "Blocking" : "Block"}
       </RoundedButton>
     );
   }
 
-  if (user?.followStatus) {
+  if (user?.haveIBlockedThisUser) {
     return (
       <RoundedButton
         variant="contained"
         className={classes.red}
-        onClick={() => follow(user)}
+        onClick={() => block(user)}
         disabled={fetching}
       >
-        {fetching ? "Unfollowing" : "Unfollow"}
+        {fetching ? "Unblocking" : "Unblock"}
       </RoundedButton>
     );
   }
@@ -57,4 +57,4 @@ const FollowButton: React.FC<FollowButtonProps> = ({ user }) => {
   return <></>;
 };
 
-export { FollowButton };
+export { BlockButton };

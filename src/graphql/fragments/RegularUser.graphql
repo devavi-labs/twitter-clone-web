@@ -5,40 +5,10 @@ fragment RegularUser on User {
   displayPicture
   coverPicture
   emailVerified
-  followers {
-    id
-    user {
-      ...ShortUser
-    }
-    follower {
-      ...ShortUser
-    }
-  }
-  followings {
-    id
-    user {
-      ...ShortUser
-    }
-    follower {
-      ...ShortUser
-    }
-  }
+  followers
+  followings
   amIDeactivated
-  quacks {
-    ...ShortQuack
-  }
-  requacks {
-    id
-    quack {
-      ...ShortQuack
-    }
-  }
-  likes {
-    id
-    quack {
-      ...ShortQuack
-    }
-  }
+  quacks
   amIBlockedByThisUser
   haveIBlockedThisUser
   followStatus

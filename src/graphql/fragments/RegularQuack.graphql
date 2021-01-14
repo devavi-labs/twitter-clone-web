@@ -8,19 +8,56 @@ fragment RegularQuack on Quack {
   }
   hashtags
   mentions {
-    ...ShortUser
+    ...RegularUser
   }
   quackedByUser {
-    ...ShortUser
+    ...RegularUser
   }
   inReplyToQuack {
-    ...ShortQuack
+    id
+    createdAt
+    text
+    truncatedText
+    links {
+      ...FullLink
+    }
+    hashtags
+    mentions {
+      ...RegularUser
+    }
+    quackedByUser {
+      ...RegularUser
+    }
+    inReplyToQuack {
+      id
+      quackedByUser {
+        username
+      }
+    }
+    requacks
+    likes
+    requackStatus
+    likeStatus
   }
   replies {
     id
-    quackedByUser {
-      ...ShortUser
+    createdAt
+    text
+    truncatedText
+    links {
+      ...FullLink
     }
+    hashtags
+    mentions {
+      ...RegularUser
+    }
+    quackedByUser {
+      ...RegularUser
+    }
+    requacks
+    likes
+    requackStatus
+    likeStatus
   }
   requacks
   likes

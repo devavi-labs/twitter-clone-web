@@ -46,7 +46,7 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps }) => {
 
   const subtitle =
     feed === "profile" && Boolean(data?.userByUsername)
-      ? `${data?.userByUsername?.quacks?.length} Quacks`
+      ? `${data?.userByUsername?.quacks} Quacks`
       : "";
 
   return (

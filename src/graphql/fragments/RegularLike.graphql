@@ -1,9 +1,0 @@
-fragment RegularLike on Like {
-  id
-  user {
-    ...ShortUser
-  }
-  quack {
-    ...ShortQuack
-  }
-}

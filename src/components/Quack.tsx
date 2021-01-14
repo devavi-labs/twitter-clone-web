@@ -15,7 +15,6 @@ import {
 import { UserPopperContext } from "../context/userPopper";
 import {
   RegularQuackFragment,
-  ShortQuackFragment,
   useLikeMutation,
   useRequackMutation,
 } from "../generated/graphql";
@@ -25,8 +24,8 @@ import { DisplayName } from "./DisplayName";
 import { EngageButton } from "./EngageButton";
 
 interface QuackProps {
-  quack: RegularQuackFragment | ShortQuackFragment;
-  inReplyTo?: RegularQuackFragment | ShortQuackFragment;
+  quack: RegularQuackFragment;
+  inReplyTo?: RegularQuackFragment;
   showBar?: "top" | "bottom";
   variant?: "contained" | "open" | "reply";
 }

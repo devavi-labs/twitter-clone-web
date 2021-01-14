@@ -1,5 +1,8 @@
-query LikesByUserId($userId: Int!) {
-  likesByUserId(userId: $userId) {
-    ...RegularLike
+query LikesByUserId($userId: Int!, $limit: Int, $lastIndex: Int) {
+  likesByUserId(userId: $userId, limit: $limit, lastIndex: $lastIndex) {
+    hasMore
+    quacks {
+      ...RegularQuack
+    }
   }
 }

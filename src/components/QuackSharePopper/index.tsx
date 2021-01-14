@@ -9,10 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import React, { useContext } from "react";
 import { BsLink45Deg } from "react-icons/bs";
 import { Popper } from "..";
-import {
-  RegularQuackFragment,
-  ShortQuackFragment,
-} from "../../generated/graphql";
+import { RegularQuackFragment } from "../../generated/graphql";
 import { REACT_APP_DOMAIN } from "../../utils/constants";
 import { useClipboard } from "../../hooks/useClipboard";
 import { ToastContext } from "../../context/toast";
@@ -21,7 +18,7 @@ type QuackSharePopperProps = {
   open?: boolean;
   onClose: () => any;
   anchorEl: null | HTMLElement;
-  quack?: RegularQuackFragment | ShortQuackFragment | null | undefined;
+  quack?: RegularQuackFragment | null | undefined;
 };
 
 const QuackSharePopper: React.FC<QuackSharePopperProps> = ({

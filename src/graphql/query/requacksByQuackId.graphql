@@ -1,5 +1,8 @@
-query RequacksByQuackId($quackId: Int!) {
-  requacksByQuackId(quackId: $quackId) {
-    ...RegularRequack
+query RequacksByQuackId($quackId: Int!, $limit: Int, $lastIndex: Int) {
+  requacksByQuackId(quackId: $quackId, limit: $limit, lastIndex: $lastIndex) {
+    hasMore
+    users {
+      ...RegularUser
+    }
   }
 }

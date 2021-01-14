@@ -1,8 +1,8 @@
 query QuacksForMe($limit: Int, $lastIndex: Int) {
   quacksForMe(limit: $limit, lastIndex: $lastIndex) {
+    hasMore
     quacks {
       ...RegularQuack
     }
-    hasMore
   }
 }

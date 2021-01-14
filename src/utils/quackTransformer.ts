@@ -1,15 +1,17 @@
-import { RegularQuackFragment, ShortQuackFragment } from "../generated/graphql";
+import { RegularQuackFragment } from "../generated/graphql";
 
 interface TransformedQuack {
-  inReplyTo?: RegularQuackFragment | ShortQuackFragment;
-  main: RegularQuackFragment | ShortQuackFragment;
-  reply?: RegularQuackFragment | ShortQuackFragment;
+  inReplyTo?: RegularQuackFragment;
+  main: RegularQuackFragment;
+  reply?: RegularQuackFragment;
 }
 
 export const transform = (quack: RegularQuackFragment): TransformedQuack => {
   return {
-    inReplyTo: quack.inReplyToQuack?.inReplyToQuack as ShortQuackFragment,
-    main: quack.inReplyToQuack || quack,
+    inReplyTo: quack.inReplyToQuack?.inReplyToQuack as RegularQuackFragment,
+    main:
+      (quack.inReplyToQuack as RegularQuackFragment) ||
+      (quack as RegularQuackFragment),
     reply: quack.inReplyToQuack ? quack : undefined,
   };
 };

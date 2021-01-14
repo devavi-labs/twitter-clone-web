@@ -1,13 +1,10 @@
 import { Avatar, IconButton, IconButtonProps } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import {
-  RegularUserFragment,
-  ShortUserFragment,
-} from "../../generated/graphql";
+import { RegularUserFragment } from "../../generated/graphql";
 
 type UserAvatarProps = {
-  user?: RegularUserFragment | ShortUserFragment | null;
+  user?: RegularUserFragment | null;
   variant?: "open" | "contained" | "reply";
 };
 

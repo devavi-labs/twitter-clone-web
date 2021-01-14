@@ -1,6 +1,10 @@
 import { cacheExchange as CE } from "@urql/exchange-graphcache";
 import {
+  BlockMutation,
+  BlockMutationVariables,
   DeleteQuackMutationVariables,
+  FollowMutation,
+  FollowMutationVariables,
   LikeMutationVariables,
   LoginMutation,
   LogoutMutation,
@@ -8,9 +12,15 @@ import {
   MeQuery,
   RequackMutationVariables,
   SignupMutation,
+  UnblockMutation,
+  UnblockMutationVariables,
+  UnfollowMutation,
+  UnfollowMutationVariables,
 } from "../generated/graphql";
 import { betterUpdateQuery } from "./betterUpdateQuery";
 import { quacksPagination } from "./quacksPagination";
+import { updateBlockOrUnblock } from "./updateBlockOrUnblock";
+import { updateFollowOrUnfollow } from "./updateFollowOrUnfollow";
 import { updateLikeOrRequack } from "./updateLikeOrRequack";
 
 export const cacheExchange = CE({
@@ -83,6 +93,38 @@ export const cacheExchange = CE({
           type: "requack",
           args: args as RequackMutationVariables,
           cache,
+        });
+      },
+      follow: (data, args, cache) => {
+        updateFollowOrUnfollow<FollowMutation, FollowMutationVariables>({
+          type: "follow",
+          cache,
+          args: args as FollowMutationVariables,
+          data: data as FollowMutation,
+        });
+      },
+      unfollow: (data, args, cache) => {
+        updateFollowOrUnfollow<UnfollowMutation, UnfollowMutationVariables>({
+          type: "unfollow",
+          cache,
+          args: args as UnfollowMutationVariables,
+          data: data as UnfollowMutation,
+        });
+      },
+      block: (data, args, cache) => {
+        updateBlockOrUnblock({
+          type: "block",
+          cache,
+          args: args as BlockMutationVariables,
+          data: data as BlockMutation,
+        });
+      },
+      unblock: (data, args, cache) => {
+        updateBlockOrUnblock({
+          type: "unblock",
+          cache,
+          args: args as UnblockMutationVariables,
+          data: data as UnblockMutation,
         });
       },
     },

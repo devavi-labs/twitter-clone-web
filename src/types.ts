@@ -1,8 +1,8 @@
-import { ShortUserFragment } from "./generated/graphql";
+import { RegularUserFragment } from "./generated/graphql";
 
 export interface QuackContentType {
   text: string;
   hashtags?: string[] | null | undefined;
-  mentions?: ShortUserFragment[] | null | undefined;
+  mentions?: RegularUserFragment[] | null | undefined;
   links?: string[] | null | undefined;
 }

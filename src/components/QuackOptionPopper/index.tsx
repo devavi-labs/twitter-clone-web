@@ -18,16 +18,18 @@ import { ConfirmDialogContext } from "../../context/confimDialog";
 import { ToastContext } from "../../context/toast";
 import {
   RegularQuackFragment,
-  ShortQuackFragment,
+  RegularUserFragment,
   useDeleteQuackMutation,
   useMeQuery,
 } from "../../generated/graphql";
+import { useConditionalBlock } from "../../hooks/useConditionalBlock";
+import { useConditionalFollow } from "../../hooks/useConditionalFollow";
 
 type QuackOptionPopperProps = {
   open?: boolean;
   onClose: () => any;
   anchorEl: null | HTMLElement;
-  quack?: RegularQuackFragment | ShortQuackFragment | null | undefined;
+  quack?: RegularQuackFragment | null | undefined;
 };
 
 const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
@@ -97,6 +99,20 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
     });
   };
 
+  const [follow, followLoading] = useConditionalFollow();
+
+  const handleConditionalFollow = () => {
+    props.onClose();
+    follow(quack?.quackedByUser as RegularUserFragment);
+  };
+
+  const [block, blockLoading] = useConditionalBlock();
+
+  const handleConditionalBlock = () => {
+    props.onClose();
+    block(quack?.quackedByUser as RegularUserFragment);
+  };
+
   return (
     <>
       {loading && <TopProgressBar />}
@@ -117,7 +133,11 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
             </ListItem>
           ) : (
             <>
-              <ListItem component={Button}>
+              <ListItem
+                component={Button}
+                onClick={handleConditionalFollow}
+                disabled={followLoading}
+              >
                 <div className={classes.item}>
                   <ListItemIcon>
                     {quack?.quackedByUser?.followStatus ? (
@@ -127,19 +147,29 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
                     )}
                   </ListItemIcon>
                   <ListItemText className={classes.text}>
-                    {quack?.quackedByUser?.followStatus ? "Unfollow" : "Follow"}{" "}
+                    {quack?.quackedByUser?.followStatus
+                      ? followLoading
+                        ? "Unfollowing"
+                        : "Unfollow"
+                      : followLoading
+                      ? "Following"
+                      : "Follow"}{" "}
                     @{quack?.quackedByUser?.username}
                   </ListItemText>
                 </div>
               </ListItem>
-              <ListItem component={Button}>
+              <ListItem component={Button} onClick={handleConditionalBlock}>
                 <div className={classes.item}>
                   <ListItemIcon>
                     <BsDashCircleFill className={classes.icon} />
                   </ListItemIcon>
                   <ListItemText className={classes.text}>
-                    {quack?.quackedByUser?.haveIBlockedThisUser === true
-                      ? "Unblock"
+                    {quack?.quackedByUser?.haveIBlockedThisUser
+                      ? blockLoading
+                        ? "Unblocking"
+                        : "Unblock"
+                      : blockLoading
+                      ? "Blocking"
                       : "Block"}{" "}
                     @{quack?.quackedByUser?.username}
                   </ListItemText>

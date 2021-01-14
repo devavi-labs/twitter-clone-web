@@ -125,13 +125,13 @@ export const Drawer: React.FC<DrawerProps> = ({ open, onOpen, onClose }) => {
           <div className={classes.follow}>
             <Typography className={classes.followText}>
               <Typography className={classes.followStat}>
-                {data?.me?.followings?.length}
+                {data?.me?.followings}
               </Typography>
               Following
             </Typography>
             <Typography className={classes.followText}>
               <Typography className={classes.followStat}>
-                {data?.me?.followers?.length}
+                {data?.me?.followers}
               </Typography>
               Followers
             </Typography>

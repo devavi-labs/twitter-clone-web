@@ -1,10 +1,10 @@
 import { Box, Divider, Link, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { RegularQuackFragment, ShortQuackFragment } from "../generated/graphql";
+import { RegularQuackFragment } from "../generated/graphql";
 
 interface QuackStatsProps {
-  quack?: RegularQuackFragment | ShortQuackFragment;
+  quack?: RegularQuackFragment;
 }
 
 export const QuackStats: React.FC<QuackStatsProps> = ({ quack }) => {

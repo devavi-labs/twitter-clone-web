@@ -1,10 +1,8 @@
 import { Chip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { Popper, Stat } from "..";
+import { Popper, Stat, BlockButton, FollowButton, UserAvatar } from "..";
 import { UserPopperContext } from "../../context/userPopper";
-import { FollowButton } from "../FollowButton";
-import { UserAvatar } from "../UserAvatar";
 
 const UserPopper: React.FC = () => {
   const { open, onClose, anchorEl, user } = React.useContext(
@@ -77,7 +75,11 @@ const UserPopper: React.FC = () => {
         <div className={classes.root}>
           <div className={classes.header}>
             <UserAvatar user={user} />
-            <FollowButton user={user} />
+            {user?.haveIBlockedThisUser ? (
+              <BlockButton user={user} />
+            ) : (
+              <FollowButton user={user} />
+            )}
           </div>
           <div className={classes.profile}>
             <span className={classes.displayName}>{user?.displayName}</span>
@@ -92,8 +94,8 @@ const UserPopper: React.FC = () => {
               )}
             </div>
             <div className={classes.stats}>
-              <Stat label="following" stat={user?.followings?.length || 0} />
-              <Stat label="followers" stat={user?.followers?.length || 0} />
+              <Stat label="following" stat={user?.followings || 0} />
+              <Stat label="followers" stat={user?.followers || 0} />
             </div>
           </div>
         </div>
