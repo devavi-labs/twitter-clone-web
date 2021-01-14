@@ -2,7 +2,7 @@ import { Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Quack, UserPopper, CircularProgressBar } from ".";
+import { CircularProgressBar, Quack, UserPopper } from ".";
 import {
   QuacksForMeQueryVariables,
   useQuacksForMeQuery,
@@ -10,7 +10,11 @@ import {
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { transform } from "../utils/quackTransformer";
 
-export const QuacksFeed = () => {
+type QuacksFeedProps = {
+  viewQuacks?: boolean;
+};
+
+export const QuacksFeed: React.FC<QuacksFeedProps> = ({ viewQuacks }) => {
   const useStyles = makeStyles(() => ({
     root: {},
     loading: {
@@ -31,7 +35,10 @@ export const QuacksFeed = () => {
     lastIndex: null,
   });
 
-  const [{ data, fetching }] = useQuacksForMeQuery({ variables });
+  const [{ data, fetching }] = useQuacksForMeQuery({
+    variables,
+    pause: !viewQuacks,
+  });
 
   if (fetching) {
     return (

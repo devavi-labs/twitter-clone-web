@@ -49,6 +49,30 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps }) => {
       ? `${data?.userByUsername?.quacks} Quacks`
       : "";
 
+  const [viewQuacks, setViewQuacks] = React.useState(false);
+
+  React.useEffect(() => {
+    if (feed === "home" && !viewQuacks) {
+      setViewQuacks(true);
+    }
+
+    if (feed === "profile" && !viewQuacks) {
+      if (
+        !data?.userByUsername?.amIBlockedByThisUser &&
+        !data?.userByUsername?.haveIBlockedThisUser &&
+        !data?.userByUsername?.amIDeactivated
+      ) {
+        setViewQuacks(true);
+      }
+    }
+  }, [
+    data?.userByUsername?.amIBlockedByThisUser,
+    data?.userByUsername?.amIDeactivated,
+    data?.userByUsername?.haveIBlockedThisUser,
+    feed,
+    viewQuacks,
+  ]);
+
   return (
     <Box className={classes.root}>
       <Box className={classes.subRoot}>
@@ -59,9 +83,14 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps }) => {
         />
         {feed === "home" && !xs && <CreateQuack />}
         {feed === "profile" && (
-          <Profile user={data?.userByUsername} loading={fetching} />
+          <Profile
+            user={data?.userByUsername}
+            loading={fetching}
+            viewQuacks={viewQuacks}
+            onViewQuacks={() => setViewQuacks(true)}
+          />
         )}
-        <QuacksFeed />
+        <QuacksFeed viewQuacks={viewQuacks} />
       </Box>
       <Divider orientation="vertical" />
     </Box>
