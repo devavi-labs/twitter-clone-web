@@ -18,6 +18,8 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ error }) => {
       gap: "1rem",
       margin: "1rem 0",
       color: text.secondary,
+      padding: "1rem",
+      textAlign: "center",
     },
     icon: {
       fontSize: "2.5rem",
