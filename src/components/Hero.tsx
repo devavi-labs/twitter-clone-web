@@ -2,17 +2,16 @@ import { Box, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { AppBar, CreateQuack, Profile } from ".";
+import { AppBar, ProfileFeed, QuacksFeed } from ".";
 import { useUserByUsernameQuery } from "../generated/graphql";
 import { useMediaQuery } from "../hooks/useMediaQuery";
-import { QuacksFeed } from ".";
 
 interface HeroProps {
   feed?: "home" | "profile";
 }
 
 export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps }) => {
-  const { md, xs } = useMediaQuery();
+  const { md } = useMediaQuery();
   const useStyles = makeStyles(({ palette: { secondary } }) => ({
     root: {
       flex: md ? 5 : 4.7,
@@ -22,6 +21,9 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps }) => {
     subRoot: {
       flex: 1,
       maxWidth: md ? 600 : "auto",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "stretch",
     },
   }));
   const classes = useStyles();
@@ -49,30 +51,6 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps }) => {
       ? `${data?.userByUsername?.quacks} Quacks`
       : "";
 
-  const [viewQuacks, setViewQuacks] = React.useState(false);
-
-  React.useEffect(() => {
-    if (feed === "home" && !viewQuacks) {
-      setViewQuacks(true);
-    }
-
-    if (feed === "profile" && !viewQuacks) {
-      if (
-        !data?.userByUsername?.amIBlockedByThisUser &&
-        !data?.userByUsername?.haveIBlockedThisUser &&
-        !data?.userByUsername?.amIDeactivated
-      ) {
-        setViewQuacks(true);
-      }
-    }
-  }, [
-    data?.userByUsername?.amIBlockedByThisUser,
-    data?.userByUsername?.amIDeactivated,
-    data?.userByUsername?.haveIBlockedThisUser,
-    feed,
-    viewQuacks,
-  ]);
-
   return (
     <Box className={classes.root}>
       <Box className={classes.subRoot}>
@@ -81,20 +59,14 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps }) => {
           subtitle={subtitle}
           backButton={Boolean(subtitle)}
         />
-        {feed === "home" && !xs && <CreateQuack />}
-        {feed === "profile" && (
-          <Profile
-            user={data?.userByUsername}
-            loading={fetching}
-            viewQuacks={viewQuacks}
-            onViewQuacks={() => setViewQuacks(true)}
-          />
+
+        {feed === "home" ? (
+          <QuacksFeed />
+        ) : feed === "profile" ? (
+          <ProfileFeed user={data?.userByUsername} loading={fetching} />
+        ) : (
+          <></>
         )}
-        <QuacksFeed
-          viewQuacks={viewQuacks}
-          fromUser={feed === "profile"}
-          userId={data?.userByUsername?.id}
-        />
       </Box>
       <Divider orientation="vertical" />
     </Box>
