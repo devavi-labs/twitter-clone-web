@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import numeral from "numeral";
 import React from "react";
 import { AiOutlineRetweet } from "react-icons/ai";
-import { BsBoxArrowUp, BsChat, BsHeart, BsHeartFill } from "react-icons/bs";
+import { BsUpload, BsChat, BsHeart, BsHeartFill } from "react-icons/bs";
 import { LikeColor, RequackColor } from "../theme";
 import { hexToRgb } from "../utils/hexToRgb";
 
@@ -51,7 +51,7 @@ export const EngageButton: React.FC<
       Icon = status ? BsHeartFill : BsHeart;
       break;
     case "share":
-      Icon = BsBoxArrowUp;
+      Icon = BsUpload;
       break;
     default:
       Icon = BsChat;
