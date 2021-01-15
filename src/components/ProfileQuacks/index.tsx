@@ -7,9 +7,10 @@ import { PaginatedQuacks } from "..";
 
 type ProfileQuacksProps = {
   userId: number;
+  loading?: boolean;
 };
 
-const ProfileQuacks: React.FC<ProfileQuacksProps> = ({ userId }) => {
+const ProfileQuacks: React.FC<ProfileQuacksProps> = ({ userId, loading }) => {
   const [
     variables,
     setVariables,
@@ -19,8 +20,13 @@ const ProfileQuacks: React.FC<ProfileQuacksProps> = ({ userId }) => {
     lastIndex: null,
   });
 
+  React.useEffect(() => {
+    setVariables((v) => ({ ...v, userId }));
+  }, [userId]);
+
   const [{ data, fetching, error }] = useQuacksFromUserQuery({
     variables,
+    pause: loading || !variables.userId,
   });
 
   const loadMore = () => {
@@ -38,7 +44,7 @@ const ProfileQuacks: React.FC<ProfileQuacksProps> = ({ userId }) => {
       quacks={data?.quacksFromUser?.quacks}
       hasMore={data?.quacksFromUser?.hasMore}
       next={loadMore}
-      loading={fetching}
+      loading={fetching || loading}
       error={error ? (error.networkError ? "network" : "other") : null}
     />
   );

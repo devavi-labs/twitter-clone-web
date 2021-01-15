@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ProtectedRoute } from "./components";
 import { Dashboard } from "./pages/Dashboard";
 import Home from "./pages/Home";
@@ -59,11 +59,15 @@ export const Routes = () => {
           redirectPath="/home"
           reverse
         />
-        <ProtectedRoute
-          path="/"
-          ProtectedComponent={<Dashboard feed="profile" />}
-          FallbackComponent={<Home />}
-        />
+        <Route path="/:username" exact>
+          <Dashboard feed="profile" tab={0} />
+        </Route>
+        <Route path="/:username/requacks" exact>
+          <Dashboard feed="profile" tab={1} />
+        </Route>
+        <Route path="/:username/likes" exact>
+          <Dashboard feed="profile" tab={2} />
+        </Route>
       </Switch>
     </Router>
   );

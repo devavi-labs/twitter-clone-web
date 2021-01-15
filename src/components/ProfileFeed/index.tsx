@@ -11,10 +11,12 @@ import {
 } from "..";
 import { RegularUserFragment } from "../../generated/graphql";
 import { RoundedButton } from "..";
+import { useHistory } from "react-router-dom";
 
 type ProfileFeedProps = {
   user?: RegularUserFragment | null;
   loading?: boolean;
+  tab?: number;
 };
 
 const a11yProps = (index: number) => ({
@@ -22,7 +24,7 @@ const a11yProps = (index: number) => ({
   "aria-controls": `full-width-tabpanel-${index}`,
 });
 
-const ProfileFeed: React.FC<ProfileFeedProps> = ({ user, loading }) => {
+const ProfileFeed: React.FC<ProfileFeedProps> = ({ user, loading, tab }) => {
   const useStyles = makeStyles(({ palette: { text } }) => ({
     root: {},
 
@@ -71,12 +73,35 @@ const ProfileFeed: React.FC<ProfileFeedProps> = ({ user, loading }) => {
 
   const [value, setValue] = React.useState(0);
 
+  React.useEffect(() => {
+    if (tab && tab !== value) {
+      setValue(tab);
+    }
+  }, [tab, value]);
+
+  const history = useHistory();
+
+  const changeTab = (index: number) => {
+    switch (index) {
+      case 0:
+        return history.push(`/${user?.username}`);
+      case 1:
+        return history.push(`/${user?.username}/requacks`);
+      case 2:
+        return history.push(`/${user?.username}/likes`);
+      default:
+        return history.push(`/${user?.username}`);
+    }
+  };
+
   const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
+    changeTab(newValue);
   };
 
   const handleChangeIndex = (index: number) => {
     setValue(index);
+    changeTab(index);
   };
 
   return (
@@ -117,7 +142,7 @@ const ProfileFeed: React.FC<ProfileFeedProps> = ({ user, loading }) => {
           </>
         ) : (
           <>
-            <AppBar position="static" color="transparent">
+            <AppBar position="static" color="transparent" elevation={0}>
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -142,13 +167,13 @@ const ProfileFeed: React.FC<ProfileFeedProps> = ({ user, loading }) => {
               onChangeIndex={handleChangeIndex}
             >
               <TabPanel value={value} index={0} dir={theme.direction}>
-                <ProfileQuacks userId={user?.id!} />
+                <ProfileQuacks userId={user?.id!} loading={loading} />
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
-                <ProfileRequacks userId={user?.id!} />
+                <ProfileRequacks userId={user?.id!} loading={loading} />
               </TabPanel>
               <TabPanel value={value} index={2} dir={theme.direction}>
-                <ProfileLikes userId={user?.id!} />
+                <ProfileLikes userId={user?.id!} loading={loading} />
               </TabPanel>
             </SwipeableViews>
           </>

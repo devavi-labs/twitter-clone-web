@@ -7,9 +7,13 @@ import { PaginatedQuacks } from "..";
 
 type ProfileLikesProps = {
   userId: number;
+  loading?: boolean;
 };
 
-const ProfileLikes: React.FC<ProfileLikesProps> = ({ userId }) => {
+const ProfileLikes: React.FC<ProfileLikesProps> = ({
+  userId,
+  loading = true,
+}) => {
   const [variables, setVariables] = React.useState<LikesByUserIdQueryVariables>(
     {
       userId,
@@ -18,8 +22,13 @@ const ProfileLikes: React.FC<ProfileLikesProps> = ({ userId }) => {
     }
   );
 
+  React.useEffect(() => {
+    setVariables((v) => ({ ...v, userId }));
+  }, [userId]);
+
   const [{ data, fetching, error }] = useLikesByUserIdQuery({
     variables,
+    pause: loading || !variables.userId,
   });
 
   const loadMore = () => {
@@ -37,7 +46,7 @@ const ProfileLikes: React.FC<ProfileLikesProps> = ({ userId }) => {
       quacks={data?.likesByUserId?.quacks}
       hasMore={data?.likesByUserId?.hasMore}
       next={loadMore}
-      loading={fetching}
+      loading={fetching || loading}
       error={error ? (error.networkError ? "network" : "other") : null}
     />
   );
