@@ -8,11 +8,11 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { BsArrowLeft } from "react-icons/bs";
-import { useHistory } from "react-router-dom";
 import { useMeQuery } from "../generated/graphql";
 import { useDisclosure } from "../hooks/useDisclosure";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { Drawer } from ".";
+import { useBetterGoBack } from "../hooks/useBetterGoBack";
 
 interface AppBarProps {
   title?: string;
@@ -57,7 +57,7 @@ export const AppBar: React.FC<AppBarProps> = ({
   }));
   const classes = useStyles();
 
-  const { goBack } = useHistory();
+  const goBackOrReplace = useBetterGoBack();
 
   const [{ data }] = useMeQuery();
 
@@ -67,7 +67,11 @@ export const AppBar: React.FC<AppBarProps> = ({
     <>
       <Box className={classes.root}>
         {backButton ? (
-          <IconButton size="medium" className={classes.prefix} onClick={goBack}>
+          <IconButton
+            size="medium"
+            className={classes.prefix}
+            onClick={() => goBackOrReplace("/")}
+          >
             <BsArrowLeft className={classes.backIcon} />
           </IconButton>
         ) : (

@@ -79,7 +79,9 @@ const DisplayName: React.FC<DisplayNameProps & BoxProps> = ({
         {verified && <BiBadgeCheck className={classes.verifiedBadge} />}
       </C>
 
-      <Typography className={classes.secondaryText}>@{username}</Typography>
+      {username && (
+        <Typography className={classes.secondaryText}>@{username}</Typography>
+      )}
     </div>
   );
 };

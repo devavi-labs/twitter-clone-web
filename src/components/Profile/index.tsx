@@ -13,10 +13,15 @@ import { ProfileOptionPopper } from "../ProfileOptionPopper";
 type ProfileProps = {
   user?: RegularUserFragment | null;
   loading?: boolean;
+  fallbackUsername?: string;
 };
 
-const Profile: React.FC<ProfileProps> = ({ user, loading }) => {
-  const useStyles = makeStyles(({ palette: { primary, secondary, text } }) => ({
+const Profile: React.FC<ProfileProps> = ({
+  user,
+  loading,
+  fallbackUsername,
+}) => {
+  const useStyles = makeStyles(({ palette: { primary, secondary, type } }) => ({
     root: {
       width: "100%",
     },
@@ -24,7 +29,7 @@ const Profile: React.FC<ProfileProps> = ({ user, loading }) => {
       width: "100%",
       height: 0,
       paddingTop: "33%",
-      backgroundColor: "#b6b2b2",
+      backgroundColor: type === "dark" ? "#2F3336" : "#C4CFD6",
       backgroundImage: `url(${user?.coverPicture})`,
       backgroundSize: "100%",
       backgroundPosition: "center",
@@ -41,7 +46,7 @@ const Profile: React.FC<ProfileProps> = ({ user, loading }) => {
       marginTop: "clamp(-75px, -5vw, -20px)",
       width: "clamp(85px, 10vw, 150px)",
       height: "clamp(85px, 10vw, 150px)",
-      backgroundColor: "#b6b2b2",
+      backgroundColor: type === "dark" ? "#15181C" : "#F7F9FA",
       border: "4px solid",
       borderColor: secondary.main,
     },
@@ -93,30 +98,32 @@ const Profile: React.FC<ProfileProps> = ({ user, loading }) => {
               alt={user?.displayName}
               className={classes.avatar}
             />
-            <div className={classes.actions}>
-              {data?.me?.id === user?.id ? (
-                <RoundedButton variant="outlined" color="primary">
-                  Edit Profile
-                </RoundedButton>
-              ) : user?.haveIBlockedThisUser || user?.amIBlockedByThisUser ? (
-                <BlockButton user={user as RegularUserFragment | null} />
-              ) : (
-                <>
-                  <IconButton
-                    className={classes.moreButton}
-                    color="primary"
-                    onClick={handleClick}
-                  >
-                    <BsThreeDots />
-                  </IconButton>
-                  <FollowButton user={user as RegularUserFragment | null} />
-                </>
-              )}
-            </div>
+            {user && (
+              <div className={classes.actions}>
+                {data?.me?.id === user?.id ? (
+                  <RoundedButton variant="outlined" color="primary">
+                    Edit Profile
+                  </RoundedButton>
+                ) : user?.haveIBlockedThisUser || user?.amIBlockedByThisUser ? (
+                  <BlockButton user={user as RegularUserFragment | null} />
+                ) : (
+                  <>
+                    <IconButton
+                      className={classes.moreButton}
+                      color="primary"
+                      onClick={handleClick}
+                    >
+                      <BsThreeDots />
+                    </IconButton>
+                    <FollowButton user={user as RegularUserFragment | null} />
+                  </>
+                )}
+              </div>
+            )}
           </div>
           <div className={classes.labels}>
             <DisplayName
-              displayName={user?.displayName}
+              displayName={user?.displayName || `@${fallbackUsername}`}
               username={user?.username}
               verified={user?.emailVerified}
               direction="vertical"
@@ -131,7 +138,7 @@ const Profile: React.FC<ProfileProps> = ({ user, loading }) => {
               />
             )}
           </div>
-          {!user?.amIBlockedByThisUser && (
+          {user && !user?.amIBlockedByThisUser && (
             <div className={classes.stats}>
               <Stat label="following" stat={user?.followings || 0} />
               <Stat label="followers" stat={user?.followers || 0} />

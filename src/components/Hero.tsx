@@ -59,7 +59,7 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps, tab = 0 }) => {
         <AppBar
           title={title}
           subtitle={subtitle}
-          backButton={Boolean(subtitle)}
+          backButton={feed !== "home"}
         />
 
         {feed === "home" ? (
@@ -69,6 +69,7 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps, tab = 0 }) => {
             user={data?.userByUsername}
             loading={fetching}
             tab={tab}
+            fallbackUsername={username}
           />
         ) : (
           <></>

@@ -17,6 +17,7 @@ type ProfileFeedProps = {
   user?: RegularUserFragment | null;
   loading?: boolean;
   tab?: number;
+  fallbackUsername?: string;
 };
 
 const a11yProps = (index: number) => ({
@@ -24,11 +25,15 @@ const a11yProps = (index: number) => ({
   "aria-controls": `full-width-tabpanel-${index}`,
 });
 
-const ProfileFeed: React.FC<ProfileFeedProps> = ({ user, loading, tab }) => {
+const ProfileFeed: React.FC<ProfileFeedProps> = ({
+  user,
+  loading,
+  tab,
+  fallbackUsername,
+}) => {
   const useStyles = makeStyles(({ palette: { text } }) => ({
     root: {},
-
-    blockedMessageContainer: {
+    container: {
       margin: "1rem 0",
       display: "flex",
       flexDirection: "column",
@@ -37,11 +42,11 @@ const ProfileFeed: React.FC<ProfileFeedProps> = ({ user, loading, tab }) => {
       textAlign: "center",
       padding: "0 1rem",
     },
-    blockedHeading: {
+    heading: {
       fontSize: "1.2rem",
       fontWeight: "bold",
     },
-    blockedContent: {
+    content: {
       fontSize: "0.9rem",
       color: text.secondary,
     },
@@ -104,79 +109,105 @@ const ProfileFeed: React.FC<ProfileFeedProps> = ({ user, loading, tab }) => {
 
   return (
     <div className={classes.root}>
-      <Profile user={user} loading={loading} />
-      <div>
-        {(user?.amIBlockedByThisUser || user?.haveIBlockedThisUser) &&
-        !viewQuacks ? (
-          <>
-            <Divider />
-            <div className={classes.blockedMessageContainer}>
-              {user?.haveIBlockedThisUser && (
-                <Typography component="h2" className={classes.blockedHeading}>
-                  @{user?.username} is blocked
-                </Typography>
-              )}
-              {user?.amIBlockedByThisUser ? (
-                <Typography className={classes.blockedContent}>
-                  You are blocked from following @{user?.username} and viewing @
-                  {user?.username}'s Quacks.
-                </Typography>
-              ) : (
-                <>
-                  <Typography className={classes.blockedContent}>
-                    Are you sure you want to view these Quacks? Viewing Quacks
-                    won’t unblock @{user?.username}.
+      <Profile
+        user={user}
+        loading={loading}
+        fallbackUsername={fallbackUsername}
+      />
+      {user ? (
+        <div>
+          {(user?.amIBlockedByThisUser || user?.haveIBlockedThisUser) &&
+          !viewQuacks ? (
+            <>
+              <Divider />
+              <div className={classes.container}>
+                {user?.haveIBlockedThisUser && (
+                  <Typography component="h2" className={classes.heading}>
+                    @{user?.username} is blocked
                   </Typography>
-                  <RoundedButton
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => setViewQuacks(true)}
-                  >
-                    View Quacks
-                  </RoundedButton>
-                </>
-              )}
-            </div>
-          </>
-        ) : (
-          <>
-            <AppBar position="static" color="transparent" elevation={0}>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                indicatorColor="primary"
-                textColor="primary"
-                variant="fullWidth"
-                aria-label="full width tabs example"
+                )}
+                {user?.amIBlockedByThisUser ? (
+                  <Typography className={classes.content}>
+                    You are blocked from following @{user?.username} and viewing
+                    @{user?.username}'s Quacks.
+                  </Typography>
+                ) : (
+                  <>
+                    <Typography className={classes.content}>
+                      Are you sure you want to view these Quacks? Viewing Quacks
+                      won’t unblock @{user?.username}.
+                    </Typography>
+                    <RoundedButton
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => setViewQuacks(true)}
+                    >
+                      View Quacks
+                    </RoundedButton>
+                  </>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <AppBar position="static" color="transparent" elevation={0}>
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  variant="fullWidth"
+                  aria-label="full width tabs example"
+                >
+                  <Tab
+                    label="Quacks"
+                    {...a11yProps(0)}
+                    className={classes.tab}
+                  />
+                  <Tab
+                    label="Requacks"
+                    {...a11yProps(1)}
+                    className={classes.tab}
+                  />
+                  <Tab
+                    label="Likes"
+                    {...a11yProps(2)}
+                    className={classes.tab}
+                  />
+                </Tabs>
+              </AppBar>
+              <Divider />
+              <SwipeableViews
+                axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+                index={value}
+                onChangeIndex={handleChangeIndex}
               >
-                <Tab label="Quacks" {...a11yProps(0)} className={classes.tab} />
-                <Tab
-                  label="Requacks"
-                  {...a11yProps(1)}
-                  className={classes.tab}
-                />
-                <Tab label="Likes" {...a11yProps(2)} className={classes.tab} />
-              </Tabs>
-            </AppBar>
-            <Divider />
-            <SwipeableViews
-              axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-              index={value}
-              onChangeIndex={handleChangeIndex}
-            >
-              <TabPanel value={value} index={0} dir={theme.direction}>
-                <ProfileQuacks userId={user?.id!} loading={loading} />
-              </TabPanel>
-              <TabPanel value={value} index={1} dir={theme.direction}>
-                <ProfileRequacks userId={user?.id!} loading={loading} />
-              </TabPanel>
-              <TabPanel value={value} index={2} dir={theme.direction}>
-                <ProfileLikes userId={user?.id!} loading={loading} />
-              </TabPanel>
-            </SwipeableViews>
-          </>
-        )}
-      </div>
+                <TabPanel value={value} index={0} dir={theme.direction}>
+                  <ProfileQuacks userId={user?.id!} loading={loading} />
+                </TabPanel>
+                <TabPanel value={value} index={1} dir={theme.direction}>
+                  <ProfileRequacks userId={user?.id!} loading={loading} />
+                </TabPanel>
+                <TabPanel value={value} index={2} dir={theme.direction}>
+                  <ProfileLikes userId={user?.id!} loading={loading} />
+                </TabPanel>
+              </SwipeableViews>
+            </>
+          )}
+        </div>
+      ) : (
+        <>
+          <Divider />
+          <div className={classes.container}>
+            <Typography component="h2" className={classes.heading}>
+              This account doesn’t exist
+            </Typography>
+            <Typography className={classes.content}>
+              Try searching for another.
+            </Typography>
+          </div>
+        </>
+      )}
     </div>
   );
 };
