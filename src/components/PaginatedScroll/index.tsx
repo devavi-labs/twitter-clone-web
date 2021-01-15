@@ -1,13 +1,14 @@
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { CircularProgressBar } from "..";
+import { CircularProgressBar, ErrorDisplay } from "..";
 
 type PaginatedScrollProps = {
   loading: boolean;
   hasMore: boolean;
   length: number;
   next: () => void;
+  error?: "network" | "other" | null;
 };
 
 const PaginatedScroll: React.FC<PaginatedScrollProps> = ({
@@ -15,6 +16,7 @@ const PaginatedScroll: React.FC<PaginatedScrollProps> = ({
   hasMore,
   length,
   next,
+  error,
   children,
 }) => {
   const useStyles = makeStyles(() => ({
@@ -28,6 +30,10 @@ const PaginatedScroll: React.FC<PaginatedScrollProps> = ({
   }));
 
   const classes = useStyles();
+
+  if (error) {
+    return <ErrorDisplay error={error} />;
+  }
 
   if (loading) {
     return (

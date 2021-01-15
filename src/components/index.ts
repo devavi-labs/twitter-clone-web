@@ -58,3 +58,4 @@ export { ProfileRequacks } from "./ProfileRequacks";
 export { ProfileLikes } from "./ProfileLikes";
 export { PaginatedScroll } from "./PaginatedScroll";
 export { PaginatedQuacks } from "./PaginatedQuacks";
+export { ErrorDisplay } from "./ErrorDisplay";

@@ -10,6 +10,7 @@ type PaginatedQuacksProps = {
   hasMore?: boolean;
   next?: () => void;
   loading?: boolean;
+  error?: "network" | "other" | null;
 };
 
 export const PaginatedQuacks: React.FC<PaginatedQuacksProps> = ({
@@ -17,6 +18,7 @@ export const PaginatedQuacks: React.FC<PaginatedQuacksProps> = ({
   hasMore = false,
   next = () => {},
   loading = false,
+  error,
 }) => {
   const { xs } = useMediaQuery();
 
@@ -27,6 +29,7 @@ export const PaginatedQuacks: React.FC<PaginatedQuacksProps> = ({
         next={next}
         hasMore={hasMore}
         loading={loading}
+        error={error}
       >
         <Box m={1} />
         <Divider />

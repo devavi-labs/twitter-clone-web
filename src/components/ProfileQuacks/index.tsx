@@ -19,7 +19,7 @@ const ProfileQuacks: React.FC<ProfileQuacksProps> = ({ userId }) => {
     lastIndex: null,
   });
 
-  const [{ data, fetching }] = useQuacksFromUserQuery({
+  const [{ data, fetching, error }] = useQuacksFromUserQuery({
     variables,
   });
 
@@ -39,6 +39,7 @@ const ProfileQuacks: React.FC<ProfileQuacksProps> = ({ userId }) => {
       hasMore={data?.quacksFromUser?.hasMore}
       next={loadMore}
       loading={fetching}
+      error={error ? (error.networkError ? "network" : "other") : null}
     />
   );
 };

@@ -18,7 +18,7 @@ const ProfileLikes: React.FC<ProfileLikesProps> = ({ userId }) => {
     }
   );
 
-  const [{ data, fetching }] = useLikesByUserIdQuery({
+  const [{ data, fetching, error }] = useLikesByUserIdQuery({
     variables,
   });
 
@@ -38,6 +38,7 @@ const ProfileLikes: React.FC<ProfileLikesProps> = ({ userId }) => {
       hasMore={data?.likesByUserId?.hasMore}
       next={loadMore}
       loading={fetching}
+      error={error ? (error.networkError ? "network" : "other") : null}
     />
   );
 };

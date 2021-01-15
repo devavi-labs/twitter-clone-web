@@ -12,7 +12,7 @@ export const QuacksFeed: React.FC = () => {
     lastIndex: null,
   });
 
-  const [{ data, fetching }] = useQuacksForMeQuery({
+  const [{ data, fetching, error }] = useQuacksForMeQuery({
     variables,
   });
 
@@ -36,6 +36,7 @@ export const QuacksFeed: React.FC = () => {
         hasMore={data?.quacksForMe?.hasMore}
         next={loadMore}
         loading={fetching}
+        error={error ? (error.networkError ? "network" : "other") : null}
       />
     </div>
   );

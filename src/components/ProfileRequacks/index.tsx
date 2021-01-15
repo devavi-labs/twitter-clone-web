@@ -19,7 +19,7 @@ const ProfileRequacks: React.FC<ProfileRequacksProps> = ({ userId }) => {
     lastIndex: null,
   });
 
-  const [{ data, fetching }] = useRequacksByUserIdQuery({
+  const [{ data, fetching, error }] = useRequacksByUserIdQuery({
     variables,
   });
 
@@ -42,6 +42,7 @@ const ProfileRequacks: React.FC<ProfileRequacksProps> = ({ userId }) => {
       hasMore={data?.requacksByUserId?.hasMore}
       next={loadMore}
       loading={fetching}
+      error={error ? (error.networkError ? "network" : "other") : null}
     />
   );
 };
