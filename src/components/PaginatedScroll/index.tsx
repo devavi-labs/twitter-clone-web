@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { CircularProgressBar, ErrorDisplay } from "..";
+import { EmptyDataDisplay } from "../EmptyDataDisplay";
 
 type PaginatedScrollProps = {
   loading: boolean;
@@ -9,6 +10,8 @@ type PaginatedScrollProps = {
   length: number;
   next: () => void;
   error?: "network" | "other" | null;
+  onEmptyTitle?: string;
+  onEmptyMessage?: string;
 };
 
 const PaginatedScroll: React.FC<PaginatedScrollProps> = ({
@@ -17,6 +20,8 @@ const PaginatedScroll: React.FC<PaginatedScrollProps> = ({
   length,
   next,
   error,
+  onEmptyTitle,
+  onEmptyMessage,
   children,
 }) => {
   const useStyles = makeStyles(() => ({
@@ -41,6 +46,8 @@ const PaginatedScroll: React.FC<PaginatedScrollProps> = ({
         <CircularProgressBar />
       </div>
     );
+  } else if (length <= 0) {
+    return <EmptyDataDisplay title={onEmptyTitle} message={onEmptyMessage} />;
   } else if (length > 0)
     return (
       <div>

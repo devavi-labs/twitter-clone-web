@@ -37,6 +37,8 @@ export const QuacksFeed: React.FC = () => {
         next={loadMore}
         loading={fetching}
         error={error ? (error.networkError ? "network" : "other") : null}
+        onEmptyTitle="What? No Quacks yet?"
+        onEmptyMessage="This empty timeline won't be around for long. Start following people and you'll see their quacks show up here."
       />
     </div>
   );
