@@ -38,7 +38,7 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps, tab = 0 }) => {
   const feed = state?.feed || feedFromProps;
   const username = state?.username || usernameFromParams;
 
-  const [{ data, fetching }] = useUserByUsernameQuery({
+  const [{ data, fetching, error }] = useUserByUsernameQuery({
     variables: { username: username! },
     pause: feed !== "profile" && !username,
   });
@@ -68,6 +68,7 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps, tab = 0 }) => {
           <ProfileFeed
             user={data?.userByUsername}
             loading={fetching}
+            error={error}
             tab={tab}
             fallbackUsername={username}
           />

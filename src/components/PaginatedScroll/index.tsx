@@ -1,8 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { CircularProgressBar, ErrorDisplay } from "..";
-import { EmptyDataDisplay } from "../EmptyDataDisplay";
+import { CircularProgressBar, ErrorDisplay, EmptyDataDisplay } from "..";
 
 type PaginatedScrollProps = {
   loading: boolean;

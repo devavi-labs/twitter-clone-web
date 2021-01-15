@@ -10,12 +10,14 @@ import {
   TabPanel,
 } from "..";
 import { RegularUserFragment } from "../../generated/graphql";
-import { RoundedButton } from "..";
 import { useHistory } from "react-router-dom";
+import { CombinedError } from "urql";
+import { CircularProgressBar, ErrorDisplay, RoundedButton } from "..";
 
 type ProfileFeedProps = {
   user?: RegularUserFragment | null;
   loading?: boolean;
+  error?: CombinedError | null;
   tab?: number;
   fallbackUsername?: string;
 };
@@ -28,11 +30,19 @@ const a11yProps = (index: number) => ({
 const ProfileFeed: React.FC<ProfileFeedProps> = ({
   user,
   loading,
+  error,
   tab,
   fallbackUsername,
 }) => {
   const useStyles = makeStyles(({ palette: { text } }) => ({
     root: {},
+    loading: {
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "1rem 0",
+    },
     container: {
       margin: "1rem 0",
       display: "flex",
@@ -106,6 +116,22 @@ const ProfileFeed: React.FC<ProfileFeedProps> = ({
     setValue(index);
     changeTab(index);
   };
+
+  if (error) {
+    return (
+      <ErrorDisplay
+        error={error ? (error.networkError ? "network" : "other") : null}
+      />
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className={classes.loading}>
+        <CircularProgressBar />
+      </div>
+    );
+  }
 
   return (
     <div className={classes.root}>
