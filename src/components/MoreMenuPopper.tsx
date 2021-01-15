@@ -52,6 +52,7 @@ export const MoreMenuPopper: React.FC<MoreMenuPopperProps> = ({ ...props }) => {
     history.push("/i/display", {
       feed: state?.feed,
       username: state?.username,
+      tab: state?.tab,
     });
   };
 

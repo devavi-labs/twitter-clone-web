@@ -71,7 +71,7 @@ const ProfileFeed: React.FC<ProfileFeedProps> = ({ user, loading, tab }) => {
     viewQuacks,
   ]);
 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(tab);
 
   React.useEffect(() => {
     if (tab && tab !== value) {

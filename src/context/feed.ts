@@ -3,6 +3,7 @@ import { createContext } from "react";
 export type FeedState = {
   feed?: "home" | "profile";
   username?: string;
+  tab?: number;
 };
 
 interface FeedContextType {

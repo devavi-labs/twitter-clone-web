@@ -1,7 +1,7 @@
 import { Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useContext, useEffect } from "react";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   DisplaySettingsModal,
   Hero,
@@ -10,6 +10,8 @@ import {
 } from "../components";
 import { CreateQuackModal } from "../components/CreateQuackModal";
 import { FeedContext } from "../context/feed";
+import { useBetterGoBack } from "../hooks/useBetterGoBack";
+import { useLocationManager } from "../hooks/useLocationManager";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 
 interface DashboardProps {
@@ -21,7 +23,7 @@ interface DashboardProps {
 export const Dashboard: React.FC<DashboardProps> = ({
   popup: popupFromProps,
   feed: feedFromProps,
-  tab = 0,
+  tab: tabFromProps = 0,
 }) => {
   const { xs } = useMediaQuery();
 
@@ -33,37 +35,42 @@ export const Dashboard: React.FC<DashboardProps> = ({
   }));
 
   const classes = useStyles();
-  const history = useHistory();
   const { state } = useLocation<DashboardProps>();
   const { username } = useParams<{ username?: string }>();
 
   const popup = state?.popup || popupFromProps;
   const feed = state?.feed || feedFromProps;
+  const tab = state?.tab || tabFromProps;
 
   const { state: feedState, setState } = useContext(FeedContext)!;
 
   useEffect(() => {
-    setState({
-      feed,
-      username,
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onDSModalClose = () => {
-    if (feedState?.username !== undefined) {
-      history.push("/" + feedState?.username);
-    } else {
-      history.push("/home");
+    if (
+      feedState?.feed !== feed ||
+      feedState?.username !== username ||
+      feedState?.tab !== tab
+    ) {
+      setState({
+        feed,
+        username,
+        tab,
+      });
     }
-    history.go(0);
-  };
+  }, [
+    feed,
+    feedState?.feed,
+    feedState?.tab,
+    feedState?.username,
+    setState,
+    tab,
+    username,
+  ]);
 
-  const onCQModalClose = () => {
-    if (feedState?.username) {
-      history.push("/" + feedState?.username);
-    } else history.push("/home");
+  useLocationManager();
+  const goBackOrReplace = useBetterGoBack();
+
+  const onModalClose = () => {
+    goBackOrReplace("/");
   };
 
   return (
@@ -77,11 +84,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
       </Box>
       <DisplaySettingsModal
         open={popup === "display-settings"}
-        onClose={onDSModalClose}
+        onClose={onModalClose}
       />
       <CreateQuackModal
         open={popup === "compose-quack"}
-        onClose={onCQModalClose}
+        onClose={onModalClose}
       />
     </>
   );

@@ -83,6 +83,7 @@ export const LeftSidebar: React.FC = () => {
       popup: "compose-quack",
       feed: state?.feed,
       username: state?.username,
+      tab: state?.tab,
     });
 
   return (
