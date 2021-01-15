@@ -83,14 +83,12 @@ const ProfileFeed: React.FC<ProfileFeedProps> = ({ user, loading, tab }) => {
 
   const changeTab = (index: number) => {
     switch (index) {
-      case 0:
-        return history.push(`/${user?.username}`);
       case 1:
-        return history.push(`/${user?.username}/requacks`);
+        return history.replace(`/${user?.username}/requacks`);
       case 2:
-        return history.push(`/${user?.username}/likes`);
+        return history.replace(`/${user?.username}/likes`);
       default:
-        return history.push(`/${user?.username}`);
+        return history.replace(`/${user?.username}`);
     }
   };
 
