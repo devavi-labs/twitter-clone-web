@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import { Provider } from "urql";
-
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { createUrqlClient } from "./utils/createUrqlClient";
 import { ContextProvider } from "./context/provider";
 
@@ -19,3 +19,5 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
+
+serviceWorkerRegistration.register();
