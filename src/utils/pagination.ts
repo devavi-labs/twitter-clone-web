@@ -1,7 +1,7 @@
 import { Resolver } from "@urql/exchange-graphcache";
 import { stringifyVariables } from "urql";
 
-export const quacksPagination = (): Resolver => (
+export const pagination = (field: string, __typename: string): Resolver => (
   _parent,
   fieldArgs,
   cache,
@@ -30,7 +30,7 @@ export const quacksPagination = (): Resolver => (
 
   fieldInfos.forEach((fi) => {
     const key = cache.resolve(entityKey, fi.fieldKey) as string;
-    const data = cache.resolve(key, "quacks") as string[];
+    const data = cache.resolve(key, field) as string[];
     const _hasMore = cache.resolve(key, "hasMore");
 
     if (!_hasMore) {
@@ -41,7 +41,7 @@ export const quacksPagination = (): Resolver => (
   });
 
   return {
-    __typename: "PaginatedQuacks",
+    __typename,
     hasMore,
     quacks,
   };

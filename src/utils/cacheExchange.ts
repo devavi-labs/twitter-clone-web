@@ -18,7 +18,7 @@ import {
   UnfollowMutationVariables,
 } from "../generated/graphql";
 import { betterUpdateQuery } from "./betterUpdateQuery";
-import { quacksPagination } from "./quacksPagination";
+import { pagination } from "./pagination";
 import { updateBlockOrUnblock } from "./updateBlockOrUnblock";
 import { updateFollowOrUnfollow } from "./updateFollowOrUnfollow";
 import { updateLikeOrRequack } from "./updateLikeOrRequack";
@@ -29,7 +29,10 @@ export const cacheExchange = CE({
   },
   resolvers: {
     Query: {
-      quacksForMe: quacksPagination(),
+      quacksForMe: pagination("quacks", "PaginatedQuacks"),
+      quacksFromUser: pagination("quacks", "PaginatedQuacks"),
+      requacksByUserId: pagination("quacks", "PaginatedQuacks"),
+      likesByUserId: pagination("quacks", "PaginatedQuacks"),
     },
   },
   updates: {
