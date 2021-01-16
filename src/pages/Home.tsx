@@ -18,7 +18,6 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ popup }) => {
-  console.log(popup);
   const { sm, xs } = useMediaQuery();
   const history = useHistory<{ popup?: string; from?: string }>();
 
