@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { Logo } from "../components";
 import { LoginForm } from "../components/LoginForm";
+import { Link as RouteLink } from "react-router-dom";
 
 const Login = () => {
   const useStyles = makeStyles(({ palette: { type, secondary } }) => ({
@@ -47,8 +48,13 @@ const Login = () => {
         <LoginForm />
 
         <div className={classes.extraLinks}>
-          <Link>Forgot password?</Link> ·{" "}
-          <Link href="/signup">Sign up for Quacker</Link>
+          <Link component={RouteLink} to="/">
+            Forgot password?
+          </Link>
+          {" · "}
+          <Link component={RouteLink} to="/signup">
+            Sign up for Quacker
+          </Link>
         </div>
       </Box>
     </Box>
