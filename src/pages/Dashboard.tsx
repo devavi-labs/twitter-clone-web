@@ -10,6 +10,7 @@ import {
   CreateQuackModal,
 } from "../components";
 import { FeedContext } from "../context/feed";
+import { RegularQuackFragment } from "../generated/graphql";
 import { useBetterGoBack } from "../hooks/useBetterGoBack";
 import { useLocationManager } from "../hooks/useLocationManager";
 import { useMediaQuery } from "../hooks/useMediaQuery";
@@ -40,7 +41,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
   }));
 
   const classes = useStyles();
-  const { state } = useLocation<DashboardProps>();
+  const { state } = useLocation<
+    DashboardProps & { inReplyToQuack: RegularQuackFragment }
+  >();
   const { username } = useParams<{ username?: string }>();
 
   const popup = state?.popup || popupFromProps;
@@ -110,7 +113,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
         open={popups["display-settings"]}
         onClose={onModalClose}
       />
-      <CreateQuackModal open={popups["compose-quack"]} onClose={onModalClose} />
+      <CreateQuackModal
+        open={popups["compose-quack"]}
+        onClose={onModalClose}
+        inReplyToQuack={state?.inReplyToQuack}
+      />
     </>
   );
 };

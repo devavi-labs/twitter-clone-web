@@ -1,17 +1,20 @@
 import { Divider, IconButton } from "@material-ui/core";
 import React from "react";
 import { BsX } from "react-icons/bs";
-import { Modal } from ".";
+import { Modal, Quack } from ".";
+import { RegularQuackFragment } from "../generated/graphql";
 import { CreateQuack } from "./CreateQuack";
 
 interface CreateQuackModalProps {
   open: boolean;
   onClose: () => any;
+  inReplyToQuack?: RegularQuackFragment;
 }
 
 export const CreateQuackModal: React.FC<CreateQuackModalProps> = ({
   open,
   onClose,
+  inReplyToQuack,
 }) => {
   return (
     <Modal
@@ -28,7 +31,17 @@ export const CreateQuackModal: React.FC<CreateQuackModalProps> = ({
     >
       <>
         <Divider />
-        <CreateQuack bottomDivider={false} rows={4} />
+        {inReplyToQuack && (
+          <Quack
+            quack={inReplyToQuack}
+            showBar="bottom"
+            variant="replying-to"
+          />
+        )}
+        <CreateQuack
+          bottomDivider={false}
+          inReplyToQuackId={inReplyToQuack?.id}
+        />
       </>
     </Modal>
   );

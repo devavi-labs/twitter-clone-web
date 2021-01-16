@@ -25,12 +25,12 @@ const validationSchema = Yup.object({
 
 interface CreateQuackProps {
   bottomDivider?: boolean;
-  rows?: number;
+  inReplyToQuackId?: number;
 }
 
 export const CreateQuack: React.FC<CreateQuackProps> = ({
   bottomDivider = true,
-  rows = 1,
+  inReplyToQuackId,
 }) => {
   const useStyles = makeStyles(({ palette: { primary, type } }) => ({
     root: {
@@ -89,10 +89,10 @@ export const CreateQuack: React.FC<CreateQuackProps> = ({
   const [, quack] = useQuackMutation();
 
   const onSubmit = async (
-    values: QuackValues,
+    { text }: QuackValues,
     { setErrors, resetForm }: FormikHelpers<QuackValues>
   ) => {
-    const { data } = await quack({ input: values });
+    const { data } = await quack({ input: { text, inReplyToQuackId } });
 
     if (data?.quack?.errors) {
       const errors = mapErrors(data?.quack?.errors);
@@ -135,7 +135,6 @@ export const CreateQuack: React.FC<CreateQuackProps> = ({
             aria-autocomplete="none"
             className={classes.input}
             multiline
-            rows={rows}
           />
 
           {formik.values.text && <Divider />}

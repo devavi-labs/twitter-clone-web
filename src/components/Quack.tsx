@@ -22,12 +22,14 @@ import { useMediaQuery } from "../hooks/useMediaQuery";
 import { usePopper } from "../hooks/usePopper";
 import { DisplayName } from "./DisplayName";
 import { EngageButton } from "./EngageButton";
+import { FeedContext } from "../context/feed";
+import { useHistory } from "react-router-dom";
 
 interface QuackProps {
   quack: RegularQuackFragment;
   inReplyTo?: RegularQuackFragment;
   showBar?: "top" | "bottom";
-  variant?: "contained" | "open" | "reply";
+  variant?: "contained" | "open" | "reply" | "replying-to";
 }
 
 export const Quack: React.FC<QuackProps> = ({
@@ -49,7 +51,7 @@ export const Quack: React.FC<QuackProps> = ({
       transition: "background 0.2s ease-in",
       outline: "none",
       "&:hover":
-        variant !== "open"
+        variant !== "open" && variant !== "replying-to"
           ? {
               background:
                 type === "light"
@@ -59,7 +61,7 @@ export const Quack: React.FC<QuackProps> = ({
             }
           : undefined,
       "&:focus":
-        variant !== "open"
+        variant !== "open" && variant !== "replying-to"
           ? {
               background:
                 type === "light"
@@ -75,6 +77,8 @@ export const Quack: React.FC<QuackProps> = ({
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "flex-start",
+      paddingLeft: variant === "replying-to" ? 8 : 0,
+      paddingBottom: variant === "replying-to" ? 24 : 0,
     },
     avatarButton: {
       padding: 0,
@@ -178,6 +182,18 @@ export const Quack: React.FC<QuackProps> = ({
 
   const { open, handleClick, anchorEl, onClose } = usePopper();
 
+  const { state } = React.useContext(FeedContext)!;
+  const history = useHistory();
+
+  const onReply = () =>
+    history.push("/compose/quack", {
+      popup: "compose-quack",
+      feed: state?.feed,
+      username: state?.username,
+      tab: state?.tab,
+      inReplyToQuack: quack,
+    });
+
   return (
     <>
       <ListItem tabIndex={variant !== "open" ? 0 : -1} className={classes.root}>
@@ -187,7 +203,7 @@ export const Quack: React.FC<QuackProps> = ({
 
             <UserAvatar
               user={quack?.quackedByUser}
-              variant={variant}
+              variant={variant !== "replying-to" ? variant : undefined}
               onMouseOver={handlePopperOpen}
             />
           </Box>
@@ -213,7 +229,7 @@ export const Quack: React.FC<QuackProps> = ({
               />
               {variant !== "open" && <ShortDateTime time={quack?.createdAt} />}
             </Box>
-            <QuackOptionButton quack={quack} />
+            {variant !== "replying-to" && <QuackOptionButton quack={quack} />}
           </Box>
           {inReplyTo && (
             <ReplyingSubheader username={inReplyTo?.quackedByUser?.username} />
@@ -245,40 +261,43 @@ export const Quack: React.FC<QuackProps> = ({
             </>
           )}
           {variant === "open" && <QuackStats quack={quack} />}
-          <Box className={classes.footer}>
-            <EngageButton
-              type="reply"
-              engagements={quack?.replies?.length}
-              size={variant === "open" ? "md" : "sm"}
-            />
-            <EngageButton
-              type="requack"
-              engagements={quack?.requacks || 0}
-              status={quack?.requackStatus || false}
-              size={variant === "open" ? "md" : "sm"}
-              onClick={handleRequack}
-              loading={requackLoading}
-            />
-            <EngageButton
-              type="like"
-              engagements={quack?.likes || 0}
-              status={quack?.likeStatus || false}
-              size={variant === "open" ? "md" : "sm"}
-              onClick={handleLike}
-              loading={likeLoading}
-            />
-            <EngageButton
-              type="share"
-              size={variant === "open" ? "md" : "sm"}
-              onClick={handleClick}
-            />
-            <QuackSharePopper
-              open={open}
-              anchorEl={anchorEl}
-              onClose={onClose}
-              quack={quack}
-            />
-          </Box>
+          {variant !== "replying-to" && (
+            <Box className={classes.footer}>
+              <EngageButton
+                type="reply"
+                engagements={quack?.replies?.length}
+                size={variant === "open" ? "md" : "sm"}
+                onClick={onReply}
+              />
+              <EngageButton
+                type="requack"
+                engagements={quack?.requacks || 0}
+                status={quack?.requackStatus || false}
+                size={variant === "open" ? "md" : "sm"}
+                onClick={handleRequack}
+                loading={requackLoading}
+              />
+              <EngageButton
+                type="like"
+                engagements={quack?.likes || 0}
+                status={quack?.likeStatus || false}
+                size={variant === "open" ? "md" : "sm"}
+                onClick={handleLike}
+                loading={likeLoading}
+              />
+              <EngageButton
+                type="share"
+                size={variant === "open" ? "md" : "sm"}
+                onClick={handleClick}
+              />
+              <QuackSharePopper
+                open={open}
+                anchorEl={anchorEl}
+                onClose={onClose}
+                quack={quack}
+              />
+            </Box>
+          )}
         </Box>
       </ListItem>
     </>
