@@ -99,14 +99,14 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
     });
   };
 
-  const [follow, followLoading] = useConditionalFollow();
+  const [follow] = useConditionalFollow();
 
   const handleConditionalFollow = () => {
     props.onClose();
     follow(quack?.quackedByUser as RegularUserFragment);
   };
 
-  const [block, blockLoading] = useConditionalBlock();
+  const [block] = useConditionalBlock();
 
   const handleConditionalBlock = () => {
     props.onClose();
@@ -133,11 +133,7 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
             </ListItem>
           ) : (
             <>
-              <ListItem
-                component={Button}
-                onClick={handleConditionalFollow}
-                disabled={followLoading}
-              >
+              <ListItem component={Button} onClick={handleConditionalFollow}>
                 <div className={classes.item}>
                   <ListItemIcon>
                     {quack?.quackedByUser?.followStatus ? (
@@ -147,13 +143,7 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
                     )}
                   </ListItemIcon>
                   <ListItemText className={classes.text}>
-                    {quack?.quackedByUser?.followStatus
-                      ? followLoading
-                        ? "Unfollowing"
-                        : "Unfollow"
-                      : followLoading
-                      ? "Following"
-                      : "Follow"}{" "}
+                    {quack?.quackedByUser?.followStatus ? "Unfollow" : "Follow"}{" "}
                     @{quack?.quackedByUser?.username}
                   </ListItemText>
                 </div>
@@ -165,11 +155,7 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
                   </ListItemIcon>
                   <ListItemText className={classes.text}>
                     {quack?.quackedByUser?.haveIBlockedThisUser
-                      ? blockLoading
-                        ? "Unblocking"
-                        : "Unblock"
-                      : blockLoading
-                      ? "Blocking"
+                      ? "Unblock"
                       : "Block"}{" "}
                     @{quack?.quackedByUser?.username}
                   </ListItemText>

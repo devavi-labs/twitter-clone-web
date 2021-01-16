@@ -22,7 +22,7 @@ const FollowButton: React.FC<FollowButtonProps> = ({ user }) => {
   }));
   const classes = useStyles();
 
-  const [follow, fetching] = useConditionalFollow();
+  const [follow] = useConditionalFollow();
 
   if (user?.followStatus === null) {
     return <></>;
@@ -34,9 +34,8 @@ const FollowButton: React.FC<FollowButtonProps> = ({ user }) => {
         variant="outlined"
         color="primary"
         onClick={() => follow(user)}
-        disabled={fetching}
       >
-        {fetching ? "Following" : "Follow"}
+        Follow
       </RoundedButton>
     );
   }
@@ -47,9 +46,8 @@ const FollowButton: React.FC<FollowButtonProps> = ({ user }) => {
         variant="contained"
         className={classes.red}
         onClick={() => follow(user)}
-        disabled={fetching}
       >
-        {fetching ? "Unfollowing" : "Unfollow"}
+        Unfollow
       </RoundedButton>
     );
   }

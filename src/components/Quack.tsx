@@ -12,6 +12,7 @@ import {
   ShortDateTime,
   UserAvatar,
 } from ".";
+import { ToastContext } from "../context/toast";
 import { UserPopperContext } from "../context/userPopper";
 import {
   RegularQuackFragment,
@@ -159,20 +160,22 @@ export const Quack: React.FC<QuackProps> = ({
     return;
   };
 
-  const [{ fetching: likeLoading }, like] = useLikeMutation();
-  const [{ fetching: requackLoading }, requack] = useRequackMutation();
+  const [, like] = useLikeMutation();
+  const [, requack] = useRequackMutation();
+
+  const { handleOpen: toast } = React.useContext(ToastContext)!;
 
   const handleLike = async () => {
     const { error } = await like({ quackId: quack?.id });
     if (error) {
-      console.log(error.message);
+      toast("Couldn't like the quack");
     }
   };
 
   const handleRequack = async () => {
     const { error } = await requack({ quackId: quack?.id });
     if (error) {
-      console.log(error.message);
+      toast("Couldn't requack the quack");
     }
   };
 
@@ -257,7 +260,6 @@ export const Quack: React.FC<QuackProps> = ({
               status={quack?.requackStatus || false}
               size={variant === "open" ? "md" : "sm"}
               onClick={handleRequack}
-              loading={requackLoading}
             />
             <EngageButton
               type="like"
@@ -265,7 +267,6 @@ export const Quack: React.FC<QuackProps> = ({
               status={quack?.likeStatus || false}
               size={variant === "open" ? "md" : "sm"}
               onClick={handleLike}
-              loading={likeLoading}
             />
             <EngageButton
               type="share"

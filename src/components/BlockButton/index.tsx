@@ -22,7 +22,7 @@ const BlockButton: React.FC<BlockButtonProps> = ({ user }) => {
   }));
   const classes = useStyles();
 
-  const [block, fetching] = useConditionalBlock();
+  const [block] = useConditionalBlock();
 
   if (user?.haveIBlockedThisUser === null) {
     return <></>;
@@ -34,9 +34,8 @@ const BlockButton: React.FC<BlockButtonProps> = ({ user }) => {
         variant="outlined"
         color="primary"
         onClick={() => block(user)}
-        disabled={fetching}
       >
-        {fetching ? "Blocking" : "Block"}
+        Block
       </RoundedButton>
     );
   }
@@ -47,9 +46,8 @@ const BlockButton: React.FC<BlockButtonProps> = ({ user }) => {
         variant="contained"
         className={classes.red}
         onClick={() => block(user)}
-        disabled={fetching}
       >
-        {fetching ? "Unblocking" : "Unblock"}
+        Unblock
       </RoundedButton>
     );
   }
