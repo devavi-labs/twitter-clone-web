@@ -254,7 +254,7 @@ export const Quack: React.FC<QuackProps> = ({
             <EngageButton
               type="requack"
               engagements={quack?.requacks || 0}
-              status={quack?.requackStatus}
+              status={quack?.requackStatus || false}
               size={variant === "open" ? "md" : "sm"}
               onClick={handleRequack}
               loading={requackLoading}
@@ -262,7 +262,7 @@ export const Quack: React.FC<QuackProps> = ({
             <EngageButton
               type="like"
               engagements={quack?.likes || 0}
-              status={quack?.likeStatus}
+              status={quack?.likeStatus || false}
               size={variant === "open" ? "md" : "sm"}
               onClick={handleLike}
               loading={likeLoading}

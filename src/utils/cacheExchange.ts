@@ -22,8 +22,10 @@ import { pagination } from "./pagination";
 import { updateBlockOrUnblock } from "./updateBlockOrUnblock";
 import { updateFollowOrUnfollow } from "./updateFollowOrUnfollow";
 import { updateLikeOrRequack } from "./updateLikeOrRequack";
+import schema from "../generated/schema.json";
 
 export const cacheExchange = CE({
+  schema: schema as any,
   keys: {
     PaginatedQuacks: () => null,
   },

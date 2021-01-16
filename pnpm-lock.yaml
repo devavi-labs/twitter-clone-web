@@ -24,6 +24,7 @@ dependencies:
   yup: 0.32.8
 devDependencies:
   '@graphql-codegen/cli': 1.20.0_graphql@15.4.0+typescript@4.1.3
+  '@graphql-codegen/introspection': 1.18.1_graphql@15.4.0
   '@graphql-codegen/typescript': 1.20.0_graphql@15.4.0
   '@graphql-codegen/typescript-operations': 1.17.13_graphql@15.4.0
   '@graphql-codegen/typescript-urql': 2.0.3_graphql@15.4.0
@@ -1710,6 +1711,16 @@ packages:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
     resolution:
       integrity: sha512-7nwy+bMWqb0iYJ2DKxA9UiE16meeJ2Ch2XWS/N/ZnA0snTR+GZ20USI8z6YqP1Fuist7LvGO1MbitO2qBT8raA==
+  /@graphql-codegen/introspection/1.18.1_graphql@15.4.0:
+    dependencies:
+      '@graphql-codegen/plugin-helpers': 1.18.2_graphql@15.4.0
+      graphql: 15.4.0
+      tslib: 2.0.3
+    dev: true
+    peerDependencies:
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+    resolution:
+      integrity: sha512-M8kLUYF+YA/oj378RHh7BN5hO2wdplBfL2oyRL9sxjtNY30iYGn7To3TRijDCNoXaak5jLwgwUURZ0BZgX6IJA==
   /@graphql-codegen/plugin-helpers/1.18.2_graphql@15.4.0:
     dependencies:
       '@graphql-tools/utils': 6.2.4_graphql@15.4.0
@@ -14589,6 +14600,7 @@ packages:
       integrity: sha512-SZulv5FIZ9d5H99EN5tRCRPXL0eyoYxWIP1AacCrjC9d4DfP13J1dROdKGfpfRHT3eQB6/ikBl5jG21smAfCkA==
 specifiers:
   '@graphql-codegen/cli': ^1.20.0
+  '@graphql-codegen/introspection': ^1.18.1
   '@graphql-codegen/typescript': ^1.19.0
   '@graphql-codegen/typescript-operations': ^1.17.13
   '@graphql-codegen/typescript-urql': ^2.0.3

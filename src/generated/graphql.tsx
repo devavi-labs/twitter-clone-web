@@ -175,8 +175,8 @@ export type Quack = {
   replies?: Maybe<Array<Quack>>;
   requacks?: Maybe<Scalars['Int']>;
   likes?: Maybe<Scalars['Int']>;
-  requackStatus: Scalars['Boolean'];
-  likeStatus: Scalars['Boolean'];
+  requackStatus?: Maybe<Scalars['Boolean']>;
+  likeStatus?: Maybe<Scalars['Boolean']>;
 };
 
 export type Link = {
