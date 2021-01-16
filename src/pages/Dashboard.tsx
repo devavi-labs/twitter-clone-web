@@ -7,8 +7,8 @@ import {
   Hero,
   LeftSidebar,
   RightSidebar,
+  CreateQuackModal,
 } from "../components";
-import { CreateQuackModal } from "../components/CreateQuackModal";
 import { FeedContext } from "../context/feed";
 import { useBetterGoBack } from "../hooks/useBetterGoBack";
 import { useLocationManager } from "../hooks/useLocationManager";
@@ -19,6 +19,11 @@ interface DashboardProps {
   feed?: "home" | "profile";
   tab?: number;
 }
+
+type Popups = {
+  "compose-quack": boolean;
+  "display-settings": boolean;
+};
 
 export const Dashboard: React.FC<DashboardProps> = ({
   popup: popupFromProps,
@@ -69,6 +74,25 @@ export const Dashboard: React.FC<DashboardProps> = ({
   useLocationManager();
   const goBackOrReplace = useBetterGoBack();
 
+  const [popups, setPopups] = React.useState<Popups>({
+    "compose-quack": popup === "compose-quack",
+    "display-settings": popup === "display-settings",
+  });
+
+  React.useEffect(() => {
+    if (popup && !popups[popup]) {
+      setPopups((state) => ({
+        ...state,
+        [popup]: true,
+      }));
+    } else if (!popup && Object.values(popups).some((v) => v === true)) {
+      setPopups({
+        "compose-quack": false,
+        "display-settings": false,
+      });
+    }
+  }, [popup, popups]);
+
   const onModalClose = () => {
     goBackOrReplace("/");
   };
@@ -83,13 +107,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
         </Box>
       </Box>
       <DisplaySettingsModal
-        open={popup === "display-settings"}
+        open={popups["display-settings"]}
         onClose={onModalClose}
       />
-      <CreateQuackModal
-        open={popup === "compose-quack"}
-        onClose={onModalClose}
-      />
+      <CreateQuackModal open={popups["compose-quack"]} onClose={onModalClose} />
     </>
   );
 };

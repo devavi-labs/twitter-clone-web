@@ -60,3 +60,4 @@ export { PaginatedScroll } from "./PaginatedScroll";
 export { PaginatedQuacks } from "./PaginatedQuacks";
 export { ErrorDisplay } from "./ErrorDisplay";
 export { EmptyDataDisplay } from "./EmptyDataDisplay";
+export { CreateQuackModal } from "./CreateQuackModal";
