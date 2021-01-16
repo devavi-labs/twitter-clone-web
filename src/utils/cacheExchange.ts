@@ -10,12 +10,21 @@ import {
   LogoutMutation,
   MeDocument,
   MeQuery,
+  QuackMutation,
+  QuacksFromUserDocument,
+  QuacksForMeDocument,
+  QuacksForMeQueryVariables,
   RequackMutationVariables,
   SignupMutation,
   UnblockMutation,
   UnblockMutationVariables,
   UnfollowMutation,
   UnfollowMutationVariables,
+  QuacksFromUserQueryVariables,
+  QuacksForMeQuery,
+  QuacksFromUserQuery,
+  RegularQuackFragmentDoc,
+  RegularQuackFragment,
 } from "../generated/graphql";
 import { betterUpdateQuery } from "./betterUpdateQuery";
 import { pagination } from "./pagination";
@@ -78,6 +87,66 @@ export const cacheExchange = CE({
             }
           }
         );
+      },
+      quack: (data, _, cache) => {
+        const {
+          quack: { quack },
+        } = data as QuackMutation;
+
+        if (quack) {
+          cache.updateQuery(
+            {
+              query: QuacksForMeDocument,
+              variables: {
+                limit: 20,
+                lastIndex: null,
+              } as QuacksForMeQueryVariables,
+            },
+            (data) => {
+              if (data) {
+                const { quacksForMe } = data as QuacksForMeQuery;
+                quacksForMe?.quacks?.unshift(quack);
+              }
+              return data;
+            }
+          );
+
+          cache.updateQuery(
+            {
+              query: QuacksFromUserDocument,
+              variables: {
+                userId: quack.quackedByUser.id,
+                limit: 20,
+                lastIndex: null,
+              } as QuacksFromUserQueryVariables,
+            },
+            (data) => {
+              if (data) {
+                const { quacksFromUser } = data as QuacksFromUserQuery;
+                quacksFromUser?.quacks?.unshift(quack);
+              }
+              return data;
+            }
+          );
+
+          if (quack.inReplyToQuack) {
+            const _quack = cache.readFragment<RegularQuackFragment>(
+              RegularQuackFragmentDoc,
+              { __typename: "Quack", id: quack.inReplyToQuack.id }
+            );
+
+            if (_quack) {
+              const replies = _quack.replies
+                ? [quack, ..._quack.replies]
+                : [quack];
+
+              cache.writeFragment(RegularQuackFragmentDoc, {
+                ..._quack,
+                replies,
+              });
+            }
+          }
+        }
       },
       deleteQuack: (_, args, cache) => {
         const _key = cache.keyOfEntity({
