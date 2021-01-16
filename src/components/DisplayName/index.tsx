@@ -2,6 +2,7 @@ import { BoxProps, Link, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { BiBadgeCheck } from "react-icons/bi";
+import { Link as RouteLink } from "react-router-dom";
 import { truncatedTextStyle } from "../../utils/truncatedTextStyle";
 
 type DisplayNameProps = {
@@ -70,15 +71,24 @@ const DisplayName: React.FC<DisplayNameProps & BoxProps> = ({
   }));
   const classes = useStyles();
 
-  const C = link ? Link : "div";
-
   return (
     <div className={classes.names}>
-      <C className={classes.primaryText} href={`/${username}`} {...props}>
-        {displayName}
-        {verified && <BiBadgeCheck className={classes.verifiedBadge} />}
-      </C>
-
+      {link ? (
+        <Link
+          component={RouteLink}
+          to={`/${username}`}
+          className={classes.primaryText}
+          {...props}
+        >
+          {displayName}
+          {verified && <BiBadgeCheck className={classes.verifiedBadge} />}
+        </Link>
+      ) : (
+        <div className={classes.primaryText} {...props}>
+          {displayName}
+          {verified && <BiBadgeCheck className={classes.verifiedBadge} />}
+        </div>
+      )}
       {username && (
         <Typography className={classes.secondaryText}>@{username}</Typography>
       )}

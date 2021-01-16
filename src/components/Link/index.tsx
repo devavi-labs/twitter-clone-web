@@ -12,7 +12,7 @@ const Link: React.FC<LinkProps> = ({ link }) => {
     _link = "https://" + link;
   }
 
-  return <MuiLink onClick={() => window.open(_link)}>{link}</MuiLink>;
+  return <MuiLink href={_link}>{link}</MuiLink>;
 };
 
 export { Link };
