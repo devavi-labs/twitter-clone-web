@@ -22,7 +22,8 @@ function App() {
   return (
     <ThemeProvider theme={theme === "light" ? light : dark}>
       <CssBaseline />
-      {fetching ? <Splash /> : <Routes />}
+      {fetching && <Splash />}
+      <Routes />
       <Toast open={open} onClose={onClose} message={message} />
       <ConfirmDialog {...confirmDialogProps} />
     </ThemeProvider>
