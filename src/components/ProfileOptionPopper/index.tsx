@@ -50,7 +50,7 @@ const ProfileOptionPopper: React.FC<ProfileOptionPopperProps> = ({
   }));
   const classes = useStyles();
 
-  const [block] = useConditionalBlock();
+  const [block, blockLoading] = useConditionalBlock();
 
   const handleConditionalBlock = () => {
     props.onClose();
@@ -86,8 +86,14 @@ const ProfileOptionPopper: React.FC<ProfileOptionPopperProps> = ({
                 <BsDashCircleFill className={classes.icon} />
               </ListItemIcon>
               <ListItemText className={classes.text}>
-                {user?.haveIBlockedThisUser ? "Unblock" : "Block"} @
-                {user?.username}
+                {user?.haveIBlockedThisUser
+                  ? blockLoading
+                    ? "Unblocking"
+                    : "Unblock"
+                  : blockLoading
+                  ? "Blocking"
+                  : "Block"}{" "}
+                @{user?.username}
               </ListItemText>
             </div>
           </ListItem>

@@ -1,4 +1,4 @@
-import { Cache, Data } from "@urql/exchange-graphcache";
+import { Cache } from "@urql/exchange-graphcache";
 import {
   LikeMutationVariables,
   RegularQuackFragment,
@@ -17,31 +17,33 @@ export function updateLikeOrRequack({
 }) {
   const { quackId } = args;
 
-  const entity = { __typename: "Quack", id: quackId } as const;
-  const _key = cache.keyOfEntity(entity);
+  const _key = cache.keyOfEntity({
+    __typename: "Quack",
+    id: quackId,
+  });
 
   const _quack =
     _key &&
     cache.readFragment<RegularQuackFragment>(RegularQuackFragmentDoc, _key);
 
   if (_quack) {
-    let _updatedQuack: Partial<RegularQuackFragment> = entity;
+    const actualStatus =
+      type === "like" ? _quack.likeStatus : _quack.requackStatus;
+    const actualCount = type === "like" ? _quack.likes : _quack.requacks;
 
-    const _status = _quack[`${type}Status` as "likeStatus" | "requackStatus"];
-    const _count = _quack[`${type}s` as "likes" | "requacks"];
+    const status = !actualStatus;
 
-    _updatedQuack[`${type}Status` as "likeStatus" | "requackStatus"] = !_status;
-
-    _updatedQuack[`${type}s` as "likes" | "requacks"] = _status
-      ? _count
-        ? _count - 1
+    const count = actualStatus
+      ? actualCount
+        ? actualCount - 1
         : 0
-      : _count
-      ? _count + 1
+      : actualCount
+      ? actualCount + 1
       : 1;
-
-    return _updatedQuack as Data;
+    cache.writeFragment(RegularQuackFragmentDoc, {
+      ..._quack,
+      [`${type}Status`]: status,
+      [`${type}s`]: count,
+    });
   }
-
-  return null;
 }

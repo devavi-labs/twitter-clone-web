@@ -1,5 +1,6 @@
 import {
   Box,
+  CircularProgress,
   IconButton,
   IconButtonProps,
 } from "@material-ui/core";
@@ -16,11 +17,21 @@ interface EngageButtonProps {
   engagements?: number;
   status?: boolean;
   size?: "sm" | "md";
+  loading?: boolean;
+  done?: boolean;
 }
 
 export const EngageButton: React.FC<
   EngageButtonProps & Pick<IconButtonProps, "onClick">
-> = ({ type, engagements = -1, status, size = "sm", onClick }) => {
+> = ({
+  type,
+  engagements = -1,
+  status,
+  size = "sm",
+  loading = false,
+  done = false,
+  onClick,
+}) => {
   const [hovered, setHovered] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
 
@@ -81,7 +92,14 @@ export const EngageButton: React.FC<
         onMouseLeave={() => setHovered(false)}
         onBlur={() => setFocused(false)}
       >
-        <Icon className={classes.icon} />
+        {loading ? (
+          <CircularProgress
+            size={size === "sm" ? 16 : 18}
+            className={classes.icon}
+          />
+        ) : (
+          <Icon className={classes.icon} />
+        )}
       </IconButton>
       {engagements > 0 &&
         numeral(engagements).format(engagements > 1000 ? "0.0a" : "0 a")}
