@@ -11,7 +11,5 @@ export const useStyles = makeStyles<
       variant === "open" ? "space-around" : "space-between",
     alignItems: "center",
     padding: ({ variant }) => (variant === "open" ? "0.5rem 0" : 0),
-    paddingRight: ({ variant, xs }) =>
-      !xs ? (variant !== "open" ? "6rem" : 0) : 0,
   },
 }));
