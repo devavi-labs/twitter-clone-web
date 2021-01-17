@@ -87,6 +87,7 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps, tab = 0 }) => {
           variant="fab"
           fabProps={{
             className: classes.fab,
+            size: "large",
           }}
         />
       )}
