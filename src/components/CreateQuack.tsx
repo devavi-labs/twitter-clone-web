@@ -1,15 +1,21 @@
-import { Avatar, Box, Divider, IconButton, InputBase } from "@material-ui/core";
+import { Box, Divider, IconButton, InputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { BaseEmoji } from "emoji-mart";
-import { EmojiPickerPopper } from ".";
 import { FormikHelpers, useFormik } from "formik";
 import React from "react";
-import * as Yup from "yup";
-import { CharacterLengthProgress, RoundedButton, TopProgressBar } from ".";
-import { useMeQuery, useQuackMutation } from "../generated/graphql";
-import { mapErrors } from "../utils/mapErrors";
-import { usePopper } from "../hooks/usePopper";
 import { GoSmiley } from "react-icons/go";
+import * as Yup from "yup";
+import {
+  CharacterLengthProgress,
+  EmojiPickerPopper,
+  QuackLayout,
+  RoundedButton,
+  TopProgressBar,
+  UserAvatar,
+} from ".";
+import { useMeQuery, useQuackMutation } from "../generated/graphql";
+import { usePopper } from "../hooks/usePopper";
+import { mapErrors } from "../utils/mapErrors";
 
 type QuackValues = {
   text: string;
@@ -33,26 +39,6 @@ export const CreateQuack: React.FC<CreateQuackProps> = ({
   inReplyToQuackId,
 }) => {
   const useStyles = makeStyles(({ palette: { primary, type } }) => ({
-    root: {
-      width: "100%",
-      flex: 1,
-      display: "flex",
-      marginBottom: "0.5rem",
-    },
-    left: {
-      padding: " 0.5rem 1rem",
-    },
-    avatar: {
-      width: "3rem",
-      height: "3rem",
-    },
-    right: {
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      paddingRight: "1rem",
-      type,
-    },
     input: {
       width: "100%",
       padding: "1rem 0",
@@ -61,7 +47,7 @@ export const CreateQuack: React.FC<CreateQuackProps> = ({
       margin: "1em 0",
     },
     footer: {
-      marginTop: "0.5rem",
+      margin: "0.5rem",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
@@ -115,13 +101,13 @@ export const CreateQuack: React.FC<CreateQuackProps> = ({
   const { open, onClose, anchorEl, handleClick } = usePopper();
 
   return (
-    <>
-      <Box className={classes.root}>
-        <Box className={classes.left}>
-          <Avatar src={data?.me?.displayPicture} className={classes.avatar} />
-        </Box>
-
-        <form onSubmit={formik.handleSubmit} className={classes.right}>
+    <React.Fragment>
+      <QuackLayout
+        variant="contained"
+        left={<UserAvatar user={data?.me} variant="contained" />}
+        clickable={false}
+      >
+        <form onSubmit={formik.handleSubmit}>
           <TopProgressBar visible={formik.isSubmitting} />
 
           <InputBase
@@ -162,14 +148,16 @@ export const CreateQuack: React.FC<CreateQuackProps> = ({
             </Box>
           </Box>
         </form>
-      </Box>
+      </QuackLayout>
+
       {bottomDivider && <Divider />}
+
       <EmojiPickerPopper
         open={open}
         onClose={onClose}
         anchorEl={anchorEl}
         onSelect={onEmojiSelect}
       />
-    </>
+    </React.Fragment>
   );
 };

@@ -44,12 +44,8 @@ export const PaginatedQuacks: React.FC<PaginatedQuacksProps> = ({
             const { main, inReplyTo, reply } = transform(quack);
             return (
               <React.Fragment key={index}>
-                <Quack
-                  quack={main}
-                  inReplyTo={inReplyTo}
-                  showBar={reply ? "bottom" : undefined}
-                />
-                {reply && <Quack quack={reply} showBar="top" variant="reply" />}
+                <Quack quack={main} inReplyTo={inReplyTo} showBar={!!reply} />
+                {reply && <Quack quack={reply} variant="reply" />}
                 <Divider />
               </React.Fragment>
             );

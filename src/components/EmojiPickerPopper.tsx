@@ -69,7 +69,7 @@ export const EmojiPickerPopper: React.FC<
     <Popper
       id={id}
       open={open}
-      placement="bottom-start"
+      placement="bottom"
       anchorEl={anchorEl}
       transition
       className={classes.root}

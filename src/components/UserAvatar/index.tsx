@@ -5,7 +5,7 @@ import { RegularUserFragment } from "../../generated/graphql";
 
 type UserAvatarProps = {
   user?: RegularUserFragment | null;
-  variant?: "open" | "contained" | "reply";
+  variant?: "contained" | "open" | "reply" | "replying-to";
 };
 
 const UserAvatar: React.FC<UserAvatarProps & IconButtonProps> = ({

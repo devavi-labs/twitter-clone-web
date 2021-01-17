@@ -61,3 +61,7 @@ export { PaginatedQuacks } from "./PaginatedQuacks";
 export { ErrorDisplay } from "./ErrorDisplay";
 export { EmptyDataDisplay } from "./EmptyDataDisplay";
 export { CreateQuackModal } from "./CreateQuackModal";
+export { QuackHeader } from "./QuackHeader";
+export { QuackFooter } from "./QuackFooter";
+export { ConnectingBar } from "./ConnectingBar";
+export { QuackLayout } from "./QuackLayout";
