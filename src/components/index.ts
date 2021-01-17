@@ -65,3 +65,4 @@ export { QuackHeader } from "./QuackHeader";
 export { QuackFooter } from "./QuackFooter";
 export { ConnectingBar } from "./ConnectingBar";
 export { QuackLayout } from "./QuackLayout";
+export { QuackButton } from "./QuackButton";

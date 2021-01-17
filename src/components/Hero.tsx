@@ -2,7 +2,7 @@ import { Box, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { AppBar, ProfileFeed, QuacksFeed } from ".";
+import { AppBar, ProfileFeed, QuacksFeed, QuackButton } from ".";
 import { useUserByUsernameQuery } from "../generated/graphql";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 
@@ -12,7 +12,7 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps, tab = 0 }) => {
-  const { md } = useMediaQuery();
+  const { md, xs } = useMediaQuery();
   const useStyles = makeStyles(({ palette: { secondary } }) => ({
     root: {
       flex: md ? 5 : 4.7,
@@ -25,6 +25,11 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps, tab = 0 }) => {
       display: "flex",
       flexDirection: "column",
       alignItems: "stretch",
+    },
+    fab: {
+      position: "fixed",
+      bottom: 80,
+      right: 40,
     },
   }));
   const classes = useStyles();
@@ -77,6 +82,14 @@ export const Hero: React.FC<HeroProps> = ({ feed: feedFromProps, tab = 0 }) => {
         )}
       </Box>
       <Divider orientation="vertical" />
+      {xs && (
+        <QuackButton
+          variant="fab"
+          fabProps={{
+            className: classes.fab,
+          }}
+        />
+      )}
     </Box>
   );
 };

@@ -1,6 +1,6 @@
-import { Box, Fab, IconButton, Drawer } from "@material-ui/core";
+import { Box, Drawer, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useContext } from "react";
+import React from "react";
 import {
   BsHash,
   BsHouse,
@@ -9,10 +9,8 @@ import {
   BsPersonFill,
   BsThreeDots,
 } from "react-icons/bs";
-import { IoCreate } from "react-icons/io5";
 import { useHistory } from "react-router-dom";
-import { AccountButton, RoundedButton, TabButton } from ".";
-import { FeedContext } from "../context/feed";
+import { AccountButton, QuackButton, TabButton } from ".";
 import { useMeQuery } from "../generated/graphql";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { usePopper } from "../hooks/usePopper";
@@ -58,14 +56,6 @@ export const LeftSidebar: React.FC = () => {
       gap: "0.8rem",
       margin: "1rem 0",
     },
-    quackButton: {
-      paddingTop: "0.8rem !important",
-      paddingBottom: "0.8rem !important",
-    },
-    createIcon: {
-      fontSize: "1.5rem",
-      color: "#ffffff",
-    },
   }));
 
   const classes = useStyles();
@@ -75,16 +65,6 @@ export const LeftSidebar: React.FC = () => {
   const history = useHistory();
 
   const { open, anchorEl, handleClick: handleMoreClick, onClose } = usePopper();
-
-  const { state } = useContext(FeedContext)!;
-
-  const onCQClick = () =>
-    history.push("/compose/quack", {
-      popup: "compose-quack",
-      feed: state?.feed,
-      username: state?.username,
-      tab: state?.tab,
-    });
 
   return (
     <>
@@ -121,27 +101,7 @@ export const LeftSidebar: React.FC = () => {
               onClick={handleMoreClick}
             />
           </div>
-          {md ? (
-            <Fab
-              color="primary"
-              aria-label="compose-quack"
-              size="medium"
-              onClick={onCQClick}
-            >
-              <IoCreate className={classes.createIcon} />
-            </Fab>
-          ) : (
-            <RoundedButton
-              color="primary"
-              variant="contained"
-              disableElevation
-              fullWidth
-              className={classes.quackButton}
-              onClick={onCQClick}
-            >
-              Quack
-            </RoundedButton>
-          )}
+          <QuackButton variant={md ? "fab" : "button"} />
         </Box>
         <Box className={classes.bottom}>
           <AccountButton />
