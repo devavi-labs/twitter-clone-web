@@ -89,10 +89,6 @@ export const Modal: React.FC<ModalProps & MuiModalProps> = ({
         onClose={onClose}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
-        disableScrollLock
-        disableBackdropClick
-        disableAutoFocus
-        disablePortal
         disableEnforceFocus
         container={() => rootRef.current}
         className={classes.modal}
