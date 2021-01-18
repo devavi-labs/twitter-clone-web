@@ -6,6 +6,7 @@ import { Provider } from "urql";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { createUrqlClient } from "./utils/createUrqlClient";
 import { ContextProvider } from "./context/provider";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const client = createUrqlClient();
 
@@ -13,7 +14,9 @@ ReactDOM.render(
   <React.StrictMode>
     <ContextProvider>
       <Provider value={client}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </Provider>
     </ContextProvider>
   </React.StrictMode>,

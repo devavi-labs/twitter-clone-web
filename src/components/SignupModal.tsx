@@ -4,14 +4,18 @@ import React from "react";
 import { BsX } from "react-icons/bs";
 import { Modal, SignupForm } from ".";
 import { Logo } from "./Logo";
+import { useHistory } from "react-router-dom";
 
 interface SignupModalProps {
-  open: boolean;
-  onClose: () => any;
+  open?: boolean;
+  onClose?: () => any;
 }
 
-export const SignupModal: React.FC<SignupModalProps> = ({ open, onClose }) => {
-  const useStyles = makeStyles(({ palette: { text, secondary, type } }) => ({
+export const SignupModal: React.FC<SignupModalProps> = ({
+  open = true,
+  onClose,
+}) => {
+  const useStyles = makeStyles(({ palette: { type } }) => ({
     logo: {
       position: "absolute",
       left: "50%",
@@ -28,13 +32,15 @@ export const SignupModal: React.FC<SignupModalProps> = ({ open, onClose }) => {
 
   const classes = useStyles();
 
+  const { goBack } = useHistory();
+
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={onClose || goBack}
       header={
         <>
-          <IconButton onClick={onClose}>
+          <IconButton onClick={onClose || goBack}>
             <BsX />
           </IconButton>
           <Logo size="xxs" className={classes.logo} />

@@ -1,9 +1,10 @@
-import { Fab, FabProps, ButtonProps } from "@material-ui/core";
-import React, { useContext } from "react";
+import { ButtonProps, Fab, FabProps } from "@material-ui/core";
+import React from "react";
 import { IoCreate } from "react-icons/io5";
 import { useHistory } from "react-router-dom";
 import { RoundedButton } from "..";
-import { FeedContext } from "../../context/feed";
+import { useRouter } from "../../hooks/useRouter";
+import { RouteStateType } from "../../routes";
 import { useStyles } from "./styles";
 
 type QuackButtonProps = {
@@ -19,24 +20,15 @@ const QuackButton: React.FC<QuackButtonProps> = ({
 }) => {
   const classes = useStyles();
 
-  const history = useHistory();
-
-  const { state } = useContext(FeedContext)!;
-
-  const onCQClick = () =>
-    history.push("/compose/quack", {
-      popup: "compose-quack",
-      feed: state?.feed,
-      username: state?.username,
-      tab: state?.tab,
-    });
+  const history = useHistory<RouteStateType>();
+  const router = useRouter(history);
 
   return variant === "fab" ? (
     <Fab
       color="primary"
       aria-label="compose-quack"
       size="medium"
-      onClick={onCQClick}
+      onClick={() => router.openComposeQuackModal()}
       {...fabProps}
     >
       <IoCreate className={classes.createIcon} />
@@ -48,7 +40,7 @@ const QuackButton: React.FC<QuackButtonProps> = ({
       disableElevation
       fullWidth
       className={classes.quackButton}
-      onClick={onCQClick}
+      onClick={() => router.openComposeQuackModal()}
       {...buttonProps}
     >
       Quack

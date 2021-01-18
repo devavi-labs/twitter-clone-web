@@ -66,3 +66,5 @@ export { QuackFooter } from "./QuackFooter";
 export { ConnectingBar } from "./ConnectingBar";
 export { QuackLayout } from "./QuackLayout";
 export { QuackButton } from "./QuackButton";
+export { Footer } from "./Footer";
+export { Dashboard } from "./Dashboard";

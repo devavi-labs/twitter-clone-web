@@ -3,25 +3,31 @@ import React from "react";
 import { BsX } from "react-icons/bs";
 import { Modal, Quack, CreateQuack } from ".";
 import { RegularQuackFragment } from "../generated/graphql";
+import { useHistory, useLocation } from "react-router-dom";
+
+export type CreateQuackModalState = {
+  inReplyToQuack?: RegularQuackFragment;
+};
 
 interface CreateQuackModalProps {
-  open: boolean;
-  onClose: () => any;
-  inReplyToQuack?: RegularQuackFragment;
+  open?: boolean;
+  onClose?: () => any;
 }
 
 export const CreateQuackModal: React.FC<CreateQuackModalProps> = ({
-  open,
+  open = true,
   onClose,
-  inReplyToQuack,
 }) => {
+  const { goBack } = useHistory();
+  const { state } = useLocation<CreateQuackModalState>();
+
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={onClose || goBack}
       header={
         <>
-          <IconButton onClick={onClose} color="primary">
+          <IconButton onClick={onClose || goBack} color="primary">
             <BsX />
           </IconButton>
         </>
@@ -30,12 +36,12 @@ export const CreateQuackModal: React.FC<CreateQuackModalProps> = ({
     >
       <>
         <Divider />
-        {inReplyToQuack && (
-          <Quack quack={inReplyToQuack} showBar variant="replying-to" />
+        {state?.inReplyToQuack && (
+          <Quack quack={state.inReplyToQuack} showBar variant="replying-to" />
         )}
         <CreateQuack
           bottomDivider={false}
-          inReplyToQuackId={inReplyToQuack?.id}
+          inReplyToQuackId={state?.inReplyToQuack?.id}
         />
       </>
     </Modal>

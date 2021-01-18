@@ -2,15 +2,14 @@ import { Box } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { QuackSharePopper } from "..";
-import { FeedContext } from "../../context/feed";
 import { ToastContext } from "../../context/toast";
 import {
   RegularQuackFragment,
   useLikeMutation,
   useRequackMutation,
 } from "../../generated/graphql";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { usePopper } from "../../hooks/usePopper";
+import { useRouter } from "../../hooks/useRouter";
 import { EngageButton } from "../EngageButton";
 import { useStyles } from "./styles";
 
@@ -20,9 +19,10 @@ export type QuackFooterProps = {
 };
 
 const QuackFooter: React.FC<QuackFooterProps> = ({ quack, variant }) => {
-  const { xs } = useMediaQuery();
+  const classes = useStyles({ variant });
 
-  const classes = useStyles({ variant, xs });
+  const history = useHistory();
+  const router = useRouter(history);
 
   const { handleOpen: toast } = React.useContext(ToastContext)!;
 
@@ -45,25 +45,13 @@ const QuackFooter: React.FC<QuackFooterProps> = ({ quack, variant }) => {
 
   const { open, handleClick, anchorEl, onClose } = usePopper();
 
-  const { state } = React.useContext(FeedContext)!;
-  const history = useHistory();
-
-  const onReply = () =>
-    history.push("/compose/quack", {
-      popup: "compose-quack",
-      feed: state?.feed,
-      username: state?.username,
-      tab: state?.tab,
-      inReplyToQuack: quack,
-    });
-
   return (
     <Box className={classes.root}>
       <EngageButton
         type="reply"
         engagements={quack?.replies?.length || 0}
         size={variant === "open" ? "md" : "sm"}
-        onClick={onReply}
+        onClick={() => router.openComposeQuackModal({ inReplyToQuack: quack })}
       />
       <EngageButton
         type="requack"

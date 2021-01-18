@@ -15,14 +15,15 @@ import { hexToRgb } from "../utils/hexToRgb";
 import { RoundedButton } from "./RoundedButton";
 import { SampleQuack } from "./SampleQuack";
 import { ThemeBox } from "./ThemeBox";
+import { useHistory } from "react-router-dom";
 
 interface DisplaySettingsModalProps {
-  open: boolean;
-  onClose: () => any;
+  open?: boolean;
+  onClose?: () => any;
 }
 
 export const DisplaySettingsModal: React.FC<DisplaySettingsModalProps> = ({
-  open,
+  open = true,
   onClose,
 }) => {
   const { xs } = useMediaQuery();
@@ -84,14 +85,16 @@ export const DisplaySettingsModal: React.FC<DisplaySettingsModalProps> = ({
     toggleTheme((event.target as HTMLInputElement).value as "dark" | "light");
   };
 
+  const { goBack } = useHistory();
+
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={onClose || goBack}
       header={
         xs ? (
           <div className={classes.header}>
-            <IconButton>
+            <IconButton onClick={onClose || goBack}>
               <BsArrowLeft className={classes.backIcon} />
             </IconButton>
             <Typography className={classes.heading}>
@@ -129,7 +132,11 @@ export const DisplaySettingsModal: React.FC<DisplaySettingsModalProps> = ({
           </RadioGroup>
         </FormControl>
 
-        <RoundedButton color="primary" variant="contained" onClick={onClose}>
+        <RoundedButton
+          color="primary"
+          variant="contained"
+          onClick={onClose || goBack}
+        >
           Done
         </RoundedButton>
       </>

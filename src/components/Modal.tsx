@@ -82,6 +82,14 @@ export const Modal: React.FC<ModalProps & MuiModalProps> = ({
 
   const classes = useStyles();
 
+  React.useEffect(() => {
+    document.body.classList.add("overflow-hidden");
+
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
+
   return (
     <div ref={rootRef}>
       <MuiModal
