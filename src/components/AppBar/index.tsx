@@ -34,7 +34,7 @@ export const AppBar: React.FC<AppBarProps> = ({
 
   return (
     <>
-      <MuiAppBar position="sticky" elevation={0}>
+      <MuiAppBar className={classes.appbar} elevation={0}>
         <Toolbar className={classes.root}>
           {backButton ? (
             <IconButton

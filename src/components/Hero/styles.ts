@@ -23,7 +23,7 @@ export const useStyles = makeStyles(
       position: "fixed",
       bottom: 80,
       right: 40,
-      [up("xs")]: {
+      [up("sm")]: {
         display: "none",
       },
     },

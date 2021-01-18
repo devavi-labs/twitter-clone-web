@@ -5,6 +5,12 @@ export const useStyles = makeStyles(
     palette: { primary, secondary, text, type },
     breakpoints: { down, up },
   }) => ({
+    appbar: {
+      position: "sticky",
+      [down("xs")]: {
+        position: "static",
+      },
+    },
     root: {
       padding: "0 1rem",
       display: "flex",
