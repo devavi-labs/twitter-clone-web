@@ -1,0 +1,28 @@
+query Search(
+  $lastIndex: Int = 0
+  $limit: Int = 20
+  $fromFollowing: Boolean = false
+  $type: String = "quack"
+  $query: String!
+) {
+  search(
+    lastIndex: $lastIndex
+    limit: $limit
+    fromFollowing: $fromFollowing
+    type: $type
+    query: $query
+  ) {
+    paginatedUsers {
+      hasMore
+      users {
+        ...RegularUser
+      }
+    }
+    paginatedQuacks {
+      hasMore
+      quacks {
+        ...RegularQuack
+      }
+    }
+  }
+}

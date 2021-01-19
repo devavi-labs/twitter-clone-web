@@ -7,7 +7,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 
-interface PopperProps {
+export interface PopperProps {
   open?: boolean;
   onClose: () => any;
   anchorEl: null | HTMLElement;

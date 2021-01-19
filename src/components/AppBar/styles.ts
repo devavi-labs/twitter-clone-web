@@ -18,13 +18,13 @@ export const useStyles = makeStyles(
       height: "50px",
       backgroundColor: secondary.main,
       [down("xs")]: {
-        padding: "0 0.2rem",
+        padding: "0 0.5rem",
       },
     },
     prefix: {
       marginRight: "1rem",
       [down("xs")]: {
-        marginRight: "0.4rem",
+        marginRight: "0rem",
       },
     },
     drawerToggleBtn: {

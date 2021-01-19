@@ -5,6 +5,7 @@ import { UserPopperContextProvider } from "./userPopper";
 import { ToastContextProvider } from "./toast";
 import { ConfirmDialogContextProvider } from "./confimDialog";
 import { DrawerContextProvider } from "./drawer";
+import { ISearchResultContextProvider } from "./instantSearch";
 
 export const ContextProvider: React.FC = ({ children }) => {
   const { theme, toggleTheme } = useLocalTheme();
@@ -14,7 +15,11 @@ export const ContextProvider: React.FC = ({ children }) => {
       <UserPopperContextProvider>
         <ConfirmDialogContextProvider>
           <DrawerContextProvider>
-            <ToastContextProvider>{children}</ToastContextProvider>
+            <ToastContextProvider>
+              <ISearchResultContextProvider>
+                {children}
+              </ISearchResultContextProvider>
+            </ToastContextProvider>
           </DrawerContextProvider>
         </ConfirmDialogContextProvider>
       </UserPopperContextProvider>

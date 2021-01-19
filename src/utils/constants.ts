@@ -11,7 +11,7 @@ export const REST_ENDPOINT =
 export const GRAPHQL_ENDPOINt = REST_ENDPOINT + "/graphql";
 
 export const LOCAL_THEME = "lt";
-export const ROUTES_KEY = "qrs";
+export const RECENT_SEARCHES = "qrs";
 
 export const REACT_APP_DOMAIN =
   process.env.REACT_APP_DOMAIN || "http://localhost:3000";

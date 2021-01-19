@@ -692,6 +692,37 @@ export type RequacksByUserIdQuery = (
   )> }
 );
 
+export type SearchQueryVariables = Exact<{
+  lastIndex?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  fromFollowing?: Maybe<Scalars['Boolean']>;
+  type?: Maybe<Scalars['String']>;
+  query: Scalars['String'];
+}>;
+
+
+export type SearchQuery = (
+  { __typename?: 'Query' }
+  & { search: (
+    { __typename?: 'SearchResponse' }
+    & { paginatedUsers?: Maybe<(
+      { __typename?: 'PaginatedUsers' }
+      & Pick<PaginatedUsers, 'hasMore'>
+      & { users?: Maybe<Array<(
+        { __typename?: 'User' }
+        & RegularUserFragment
+      )>> }
+    )>, paginatedQuacks?: Maybe<(
+      { __typename?: 'PaginatedQuacks' }
+      & Pick<PaginatedQuacks, 'hasMore'>
+      & { quacks?: Maybe<Array<(
+        { __typename?: 'Quack' }
+        & RegularQuackFragment
+      )>> }
+    )> }
+  ) }
+);
+
 export type UserByEmailQueryVariables = Exact<{
   email: Scalars['String'];
 }>;
@@ -1085,6 +1116,35 @@ export const RequacksByUserIdDocument = gql`
 
 export function useRequacksByUserIdQuery(options: Omit<Urql.UseQueryArgs<RequacksByUserIdQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<RequacksByUserIdQuery>({ query: RequacksByUserIdDocument, ...options });
+};
+export const SearchDocument = gql`
+    query Search($lastIndex: Int = 0, $limit: Int = 20, $fromFollowing: Boolean = false, $type: String = "quack", $query: String!) {
+  search(
+    lastIndex: $lastIndex
+    limit: $limit
+    fromFollowing: $fromFollowing
+    type: $type
+    query: $query
+  ) {
+    paginatedUsers {
+      hasMore
+      users {
+        ...RegularUser
+      }
+    }
+    paginatedQuacks {
+      hasMore
+      quacks {
+        ...RegularQuack
+      }
+    }
+  }
+}
+    ${RegularUserFragmentDoc}
+${RegularQuackFragmentDoc}`;
+
+export function useSearchQuery(options: Omit<Urql.UseQueryArgs<SearchQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<SearchQuery>({ query: SearchDocument, ...options });
 };
 export const UserByEmailDocument = gql`
     query UserByEmail($email: String!) {

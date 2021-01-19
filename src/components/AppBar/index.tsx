@@ -1,5 +1,6 @@
 import {
   AppBar as MuiAppBar,
+  AppBarProps as MuiAppBarProps,
   Avatar,
   Box,
   Divider,
@@ -14,16 +15,22 @@ import { DrawerContext } from "../../context/drawer";
 import { useMeQuery } from "../../generated/graphql";
 import { useStyles } from "./styles";
 
-interface AppBarProps {
+type AppBarProps = {
   title?: string;
   subtitle?: string;
   backButton?: boolean;
-}
+  onBack?: () => void;
+  bottomDivider?: boolean;
+} & MuiAppBarProps;
 
 export const AppBar: React.FC<AppBarProps> = ({
   title = "Home",
   subtitle,
   backButton,
+  onBack,
+  bottomDivider,
+  children,
+  ...props
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -33,14 +40,14 @@ export const AppBar: React.FC<AppBarProps> = ({
   const { toggle } = React.useContext(DrawerContext)!;
 
   return (
-    <>
-      <MuiAppBar className={classes.appbar} elevation={0}>
+    <React.Fragment>
+      <MuiAppBar className={classes.appbar} elevation={0} {...props}>
         <Toolbar className={classes.root}>
           {backButton ? (
             <IconButton
               size="medium"
               className={classes.prefix}
-              onClick={() => history.goBack()}
+              onClick={onBack || history.goBack}
             >
               <BsArrowLeft className={classes.backIcon} />
             </IconButton>
@@ -58,17 +65,19 @@ export const AppBar: React.FC<AppBarProps> = ({
               </IconButton>
             )
           )}
-          <Box>
-            <Typography component="h2" className={classes.title}>
-              {title}
-            </Typography>
-            <Typography component="span" className={classes.subtitle}>
-              {subtitle}
-            </Typography>
-          </Box>
+          {children || (
+            <Box>
+              <Typography component="h2" className={classes.title}>
+                {title}
+              </Typography>
+              <Typography component="span" className={classes.subtitle}>
+                {subtitle}
+              </Typography>
+            </Box>
+          )}
         </Toolbar>
       </MuiAppBar>
-      <Divider />
-    </>
+      {bottomDivider && <Divider />}
+    </React.Fragment>
   );
 };
