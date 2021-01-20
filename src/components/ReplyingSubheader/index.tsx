@@ -1,8 +1,9 @@
 import { Link, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
+import { Link as RouteLink } from "react-router-dom";
+import { useStyles } from "./styles";
 
-type ReplyingSubheaderProps = {
+export type ReplyingSubheaderProps = {
   username?: string | null | undefined;
   size?: "xs" | "sm" | "md";
 };
@@ -11,23 +12,16 @@ const ReplyingSubheader: React.FC<ReplyingSubheaderProps> = ({
   username,
   size,
 }) => {
-  const useStyles = makeStyles(({ palette: { text, primary, type } }) => ({
-    root: {
-      color: text.secondary,
-      fontSize: size === "xs" ? "0.75rem" : size === "sm" ? "0.8rem" : "0.9rem",
-    },
-    username: {
-      color: primary.main,
-      fontWeight: "bold",
-      opacity: "1 !important",
-    },
-  }));
-  const classes = useStyles();
+  const classes = useStyles({ size });
 
   return (
     <Typography className={classes.root}>
       Replying to{" "}
-      <Link className={classes.username} href={`/${username}`}>
+      <Link
+        component={RouteLink}
+        className={classes.username}
+        to={`/${username}`}
+      >
         @{username}
       </Link>
     </Typography>

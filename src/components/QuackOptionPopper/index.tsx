@@ -5,8 +5,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import React, { useContext } from "react";
+import React from "react";
 import {
   BsDashCircleFill,
   BsFillPersonDashFill,
@@ -14,16 +13,19 @@ import {
   BsTrashFill,
 } from "react-icons/bs";
 import { Popper, TopProgressBar } from "..";
-import { ConfirmDialogContext } from "../../context/confimDialog";
-import { ToastContext } from "../../context/toast";
 import {
   RegularQuackFragment,
   RegularUserFragment,
   useDeleteQuackMutation,
   useMeQuery,
 } from "../../generated/graphql";
-import { useConditionalBlock } from "../../hooks/useConditionalBlock";
-import { useConditionalFollow } from "../../hooks/useConditionalFollow";
+import {
+  useConditionalBlock,
+  useConditionalFollow,
+  useConfirmDialog,
+  useToast,
+} from "../../hooks";
+import { useStyles } from "./styles";
 
 type QuackOptionPopperProps = {
   open?: boolean;
@@ -36,37 +38,11 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
   quack,
   ...props
 }) => {
-  const useStyles = makeStyles(({ palette: { text, error } }) => ({
-    body: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "stretch",
-      minWidth: 200,
-    },
-    item: {
-      display: "flex",
-      alignItems: "center",
-      padding: "0 !important",
-    },
-    icon: {
-      color: text.primary,
-      fontSize: "1rem",
-    },
-    text: {
-      fontSize: "0.8rem",
-      marginLeft: "-2rem",
-      textTransform: "initial",
-      color: text.primary,
-    },
-    red: {
-      color: error.main,
-    },
-  }));
   const classes = useStyles();
   const [{ data }] = useMeQuery();
 
-  const { handleOpen: handleToastOpen } = useContext(ToastContext)!;
-  const { handleOpen: handleDialogOpen } = useContext(ConfirmDialogContext)!;
+  const [, { handleOpen: handleToastOpen }] = useToast();
+  const [, { handleOpen: handleDialogOpen }] = useConfirmDialog();
 
   const [loading, setLoading] = React.useState(false);
 
@@ -114,7 +90,7 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
   };
 
   return (
-    <>
+    <React.Fragment>
       {loading && <TopProgressBar />}
       <Popper {...props}>
         <List className={classes.body}>
@@ -179,7 +155,7 @@ const QuackOptionPopper: React.FC<QuackOptionPopperProps> = ({
           )}
         </List>
       </Popper>
-    </>
+    </React.Fragment>
   );
 };
 

@@ -1,37 +1,32 @@
 import { Button, Divider, List, ListItem } from "@material-ui/core";
 import React from "react";
-import { CircularProgressBar, UserListItem, RecentSearches } from "..";
-import { useStyles } from "./styles";
 import { useHistory } from "react-router-dom";
-import { ISearchResultContext } from "../../context/instantSearch";
-import { useRecentSearches } from "../../hooks/useRecentSearches";
+import { CircularProgressBar, RecentSearches, UserListItem } from "..";
 import { useSearchQuery } from "../../generated/graphql";
+import { useInstantSearch, useRecentSearches } from "../../hooks";
+import { useStyles } from "./styles";
 
 const InstantSearchResults: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const { query } = React.useContext(ISearchResultContext)!;
+  const [instantSearchState] = useInstantSearch();
+
+  const [state, { pushSearch }] = useRecentSearches();
 
   const [{ data, fetching }] = useSearchQuery({
     variables: {
-      query: query!,
+      query: instantSearchState.query!,
       type: "user",
       limit: 3,
     },
-    pause: !query,
+    pause: !instantSearchState.query,
   });
 
-  const {
-    searches,
-    pushSearch,
-    removeSearch,
-    removeAllRecentSearches,
-  } = useRecentSearches();
-
   const handleSearch = () => {
-    query && pushSearch(query);
-    query && history.push(`/search?q=${query}&src=typed_query`);
+    instantSearchState.query && pushSearch(instantSearchState.query);
+    instantSearchState.query &&
+      history.push(`/search?q=${instantSearchState.query}&src=typed_query`);
   };
 
   if (fetching) {
@@ -42,23 +37,17 @@ const InstantSearchResults: React.FC = () => {
     );
   }
 
-  if (query && query.length > 0) {
+  if (instantSearchState.query && instantSearchState.query.length > 0) {
     return (
       <React.Fragment>
-        {searches && searches.length > 0 && (
-          <RecentSearches
-            searches={searches}
-            removeSearch={removeSearch}
-            removeAllRecentSearches={removeAllRecentSearches}
-          />
-        )}
+        {state.searches && state.searches.length > 0 && <RecentSearches />}
         <List>
           <ListItem
             component={Button}
             className={classes.listItem}
             onClick={handleSearch}
           >
-            Search for {query}
+            Search for {instantSearchState.query}
           </ListItem>
           <Divider />
           {data && (
@@ -69,9 +58,9 @@ const InstantSearchResults: React.FC = () => {
               <ListItem
                 component={Button}
                 className={classes.listItem}
-                onClick={() => history.push(`/${query}`)}
+                onClick={() => history.push(`/${instantSearchState.query}`)}
               >
-                Go to @{query}
+                Go to @{instantSearchState.query}
               </ListItem>
             </>
           )}
@@ -80,14 +69,8 @@ const InstantSearchResults: React.FC = () => {
     );
   }
 
-  if (searches && searches.length > 0) {
-    return (
-      <RecentSearches
-        searches={searches}
-        removeSearch={removeSearch}
-        removeAllRecentSearches={removeAllRecentSearches}
-      />
-    );
+  if (state.searches && state.searches.length > 0) {
+    return <RecentSearches />;
   }
 
   return (

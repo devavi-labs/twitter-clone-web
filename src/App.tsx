@@ -1,26 +1,25 @@
 import { CssBaseline } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core/styles";
-import React, { useContext } from "react";
+import React from "react";
 import { ConfirmDialog, Splash, Toast } from "./components";
-import { ConfirmDialogContext } from "./context/confimDialog";
-import { ThemeContext } from "./context/theme";
-import { ToastContext } from "./context/toast";
 import { useMeQuery } from "./generated/graphql";
+import { useLocalTheme } from "./hooks";
 import { ModalRoutes, Routes } from "./routes";
 import { dark, light } from "./theme";
 
-function App() {
-  const { theme } = useContext(ThemeContext)!;
+const App: React.FC = () => {
+  const [themeState, { initialize: initializeTheme }] = useLocalTheme();
 
-  const { handleOpen: _, ...toastProps } = useContext(ToastContext)!;
-  const { handleOpen: __, ...confirmDialogProps } = useContext(
-    ConfirmDialogContext
-  )!;
+  React.useEffect(() => {
+    initializeTheme();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [{ fetching }] = useMeQuery();
 
   return (
-    <ThemeProvider theme={theme === "light" ? light : dark}>
+    <ThemeProvider theme={themeState.theme === "light" ? light : dark}>
       <CssBaseline />
       {fetching ? (
         <Splash />
@@ -30,10 +29,11 @@ function App() {
           <ModalRoutes />
         </React.Fragment>
       )}
-      <Toast {...toastProps} />
-      <ConfirmDialog {...confirmDialogProps} />
+
+      <Toast />
+      <ConfirmDialog />
     </ThemeProvider>
   );
-}
+};
 
 export default App;

@@ -1,9 +1,8 @@
 import copyToClipboard from "clipboard-copy";
-import { useContext } from "react";
-import { ToastContext } from "../context/toast";
+import { useToast } from ".";
 
 export const useClipboard = () => {
-  const { handleOpen: handleToastOpen } = useContext(ToastContext)!;
+  const [, { handleOpen: handleToastOpen }] = useToast();
 
   const copy = async (text: string) => {
     try {

@@ -1,16 +1,13 @@
 import { Box } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { QuackSharePopper } from "..";
-import { ToastContext } from "../../context/toast";
+import { QuackSharePopper, EngageButton } from "..";
 import {
   RegularQuackFragment,
   useLikeMutation,
   useRequackMutation,
 } from "../../generated/graphql";
-import { usePopper } from "../../hooks/usePopper";
-import { useRouter } from "../../hooks/useRouter";
-import { EngageButton } from "../EngageButton";
+import { usePopper, useRouter, useToast } from "../../hooks";
 import { useStyles } from "./styles";
 
 export type QuackFooterProps = {
@@ -24,7 +21,7 @@ const QuackFooter: React.FC<QuackFooterProps> = ({ quack, variant }) => {
   const history = useHistory();
   const router = useRouter(history);
 
-  const { handleOpen: toast } = React.useContext(ToastContext)!;
+  const [, { handleOpen: toast }] = useToast();
 
   const [{ fetching: likeLoading }, like] = useLikeMutation();
   const [{ fetching: requackLoading }, requack] = useRequackMutation();

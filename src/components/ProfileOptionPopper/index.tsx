@@ -5,14 +5,13 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { BsDashCircleFill, BsLink45Deg } from "react-icons/bs";
 import { Popper } from "..";
 import { RegularUserFragment } from "../../generated/graphql";
-import { useClipboard } from "../../hooks/useClipboard";
-import { useConditionalBlock } from "../../hooks/useConditionalBlock";
+import { useClipboard, useConditionalBlock } from "../../hooks";
 import { REACT_APP_DOMAIN } from "../../utils/constants";
+import { useStyles } from "./styles";
 
 type ProfileOptionPopperProps = {
   open?: boolean;
@@ -25,29 +24,6 @@ const ProfileOptionPopper: React.FC<ProfileOptionPopperProps> = ({
   user,
   ...props
 }) => {
-  const useStyles = makeStyles(({ palette: { text, error } }) => ({
-    body: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "stretch",
-      minWidth: 200,
-    },
-    item: {
-      display: "flex",
-      alignItems: "center",
-      padding: "0 !important",
-    },
-    icon: {
-      color: text.primary,
-      fontSize: "1rem",
-    },
-    text: {
-      fontSize: "0.8rem",
-      marginLeft: "-2rem",
-      textTransform: "initial",
-      color: text.primary,
-    },
-  }));
   const classes = useStyles();
 
   const [block, blockLoading] = useConditionalBlock();

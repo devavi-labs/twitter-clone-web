@@ -9,8 +9,7 @@ import {
   InstantSearchResults,
 } from "../../components";
 import SwipeableViews from "react-swipeable-views";
-import { ISearchResultContext } from "../../context/instantSearch";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { useMediaQuery, useInstantSearch } from "../../hooks";
 
 const a11yProps = (index: number) => ({
   id: `full-width-tab-${index}`,
@@ -47,7 +46,7 @@ export const Explore = () => {
 
   const theme = useTheme();
 
-  const { open, setOpen } = React.useContext(ISearchResultContext)!;
+  const [{ open }, { handleClose }] = useInstantSearch();
 
   const { xs } = useMediaQuery();
 
@@ -57,7 +56,7 @@ export const Explore = () => {
         bottomDivider={false}
         position="static"
         backButton={xs && open}
-        onBack={() => setOpen(false)}
+        onBack={handleClose}
       >
         <SearchBar />
       </AppBar>

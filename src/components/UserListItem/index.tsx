@@ -5,10 +5,10 @@ import {
   ListItemSecondaryAction,
 } from "@material-ui/core";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { DisplayName, FollowButton, UserAvatar } from "..";
 import { RegularUserFragment } from "../../generated/graphql";
 import { useStyles } from "./styles";
-import { useHistory } from "react-router-dom";
 
 type UserListItemProps = {
   user: RegularUserFragment | null | undefined;

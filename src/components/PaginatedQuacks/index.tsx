@@ -2,7 +2,7 @@ import { Box, Divider } from "@material-ui/core";
 import React from "react";
 import { PaginatedScroll, Quack, UserPopper } from "..";
 import { RegularQuackFragment } from "../../generated/graphql";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { useMediaQuery } from "../../hooks";
 import { transform } from "../../utils/quackTransformer";
 
 type PaginatedQuacksProps = {

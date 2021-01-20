@@ -5,84 +5,28 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { Backdrop, RoundedButton, Logo } from "..";
+import { Backdrop, Logo, RoundedButton } from "..";
+import { useStyles } from "./styles";
+import { useConfirmDialog } from "../../hooks";
 
-export type ConfirmDialogProps = {
-  title: string;
-  content: string;
-  open: boolean;
-  onClose?: () => any;
-  cancelLabel?: string;
-  confirmLabel?: string;
-  onCancel?: () => any;
-  onConfirm?: () => any;
-  danger?: boolean;
-  includeLogo?: boolean;
-};
+const ConfirmDialog: React.FC = () => {
+  const [
+    {
+      open,
+      content,
+      title,
+      cancelLabel,
+      confirmLabel,
+      danger,
+      includeLogo,
+      onCancel,
+      onClose,
+      onConfirm,
+    },
+  ] = useConfirmDialog();
 
-const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
-  title,
-  content,
-  open,
-  onClose,
-  onConfirm = onClose,
-  onCancel = onClose,
-  confirmLabel = "Confirm",
-  cancelLabel = "Cancel",
-  danger = true,
-  includeLogo = false,
-}) => {
-  const useStyles = makeStyles(({ palette: { primary, error } }) => ({
-    root: {
-      position: "relative",
-      padding: "1rem",
-    },
-    paper: {
-      width: "100%",
-      maxWidth: 400,
-      margin: 0,
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate( -50%, -50%)",
-      borderRadius: "1rem",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      padding: "0.5rem",
-    },
-    logo: {
-      marginTop: "1rem",
-    },
-    contentText: {
-      textAlign: "center",
-      fontSize: "0.9rem",
-    },
-    actions: {
-      width: "100%",
-    },
-    cancelButton: {
-      backgroundColor: "#222121",
-      "&:hover": {
-        backgroundColor: "#363535",
-      },
-      "&:focus": {
-        backgroundColor: "#363535",
-      },
-    },
-    confirmButton: {
-      backgroundColor: danger ? error.main : primary.main,
-      "&:hover": {
-        backgroundColor: danger ? error.dark : primary.dark,
-      },
-      "&:focus": {
-        backgroundColor: danger ? error.dark : primary.dark,
-      },
-    },
-  }));
-  const classes = useStyles();
+  const classes = useStyles({ danger });
 
   const handleCancel = () => {
     if (onCancel) {

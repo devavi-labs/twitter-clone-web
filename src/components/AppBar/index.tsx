@@ -11,8 +11,8 @@ import {
 import React from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
-import { DrawerContext } from "../../context/drawer";
 import { useMeQuery } from "../../generated/graphql";
+import { useDrawer } from "../../hooks";
 import { useStyles } from "./styles";
 
 type AppBarProps = {
@@ -37,7 +37,7 @@ export const AppBar: React.FC<AppBarProps> = ({
 
   const [{ data }] = useMeQuery();
 
-  const { toggle } = React.useContext(DrawerContext)!;
+  const [,{ handleOpen }] = useDrawer();
 
   return (
     <React.Fragment>
@@ -56,7 +56,7 @@ export const AppBar: React.FC<AppBarProps> = ({
               <IconButton
                 size="medium"
                 className={[classes.prefix, classes.drawerToggleBtn].join(" ")}
-                onClick={toggle}
+                onClick={() => handleOpen()}
               >
                 <Avatar
                   src={data?.me?.displayPicture}

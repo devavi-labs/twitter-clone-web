@@ -13,8 +13,7 @@ import {
   UserAvatar,
 } from "..";
 import { RegularQuackFragment } from "../../generated/graphql";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
-import { useUserPopper } from "../../hooks/useUserPopper";
+import { useMediaQuery, useUserPopper } from "../../hooks";
 
 interface QuackProps {
   quack: RegularQuackFragment;
@@ -29,14 +28,14 @@ export const Quack: React.FC<QuackProps> = ({
   showBar,
   variant = "contained",
 }) => {
-  const { handlePopperOpen, handleMouseOut } = useUserPopper(quack);
+  const [, { handlePopperOpen, handleMouseOut }] = useUserPopper();
   const { xs } = useMediaQuery();
 
   const handleMouseOver = (
     event: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
     if (variant !== "replying-to" && !xs) {
-      handlePopperOpen(event);
+      handlePopperOpen(event, quack.quackedByUser);
     }
   };
 

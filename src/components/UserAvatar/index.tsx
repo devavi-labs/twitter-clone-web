@@ -1,9 +1,10 @@
 import { Avatar, IconButton, IconButtonProps } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { RegularUserFragment } from "../../generated/graphql";
+import { useStyles } from "./styles";
 
-type UserAvatarProps = {
+export type UserAvatarProps = {
   user?: RegularUserFragment | null;
   variant?: "contained" | "open" | "reply" | "replying-to";
 };
@@ -13,28 +14,18 @@ const UserAvatar: React.FC<UserAvatarProps & IconButtonProps> = ({
   variant = "contained",
   ...props
 }) => {
-  const useStyles = makeStyles(() => ({
-    avatarButton: {
-      padding: 0,
-      margin: 0,
-      "&:hover": {
-        opacity: 0.8,
-      },
-      "&:focus": {
-        opacity: 0.8,
-      },
-    },
-    avatar: {
-      width: variant === "open" ? 52 : variant === "contained" ? 48 : 42,
-      height: variant === "open" ? 52 : variant === "contained" ? 48 : 42,
-      marginRight: variant === "open" ? "0.5rem" : 0,
-    },
-  }));
-  const classes = useStyles();
+  const classes = useStyles({ variant });
+
+  const history = useHistory();
 
   return (
     <>
-      <IconButton className={classes.avatarButton} disableRipple {...props}>
+      <IconButton
+        className={classes.avatarButton}
+        disableRipple
+        onClick={() => history.push(`/${user?.username}`)}
+        {...props}
+      >
         <Avatar
           src={user?.displayPicture}
           alt={user?.displayName}

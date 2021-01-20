@@ -1,25 +1,14 @@
-import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { RegularUserFragment } from "../../generated/graphql";
-import { useConditionalBlock } from "../../hooks/useConditionalBlock";
+import { useConditionalBlock } from "../../hooks";
 import { RoundedButton } from "../RoundedButton";
+import { useStyles } from "./styles";
 
 type BlockButtonProps = {
   user: RegularUserFragment | null;
 };
 
 const BlockButton: React.FC<BlockButtonProps> = ({ user }) => {
-  const useStyles = makeStyles(({ palette: { error } }) => ({
-    red: {
-      backgroundColor: error.main,
-      "&:hover": {
-        backgroundColor: error.dark,
-      },
-      "&:focus": {
-        backgroundColor: error.dark,
-      },
-    },
-  }));
   const classes = useStyles();
 
   const [block, fetching] = useConditionalBlock();

@@ -1,27 +1,10 @@
 import { CircularProgress, CircularProgressProps } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
+import { useStyles } from "./styles";
 
 type CircularProgressBarProps = {} & CircularProgressProps;
 
 const CircularProgressBar: React.FC<CircularProgressBarProps> = (props) => {
-  const useStyles = makeStyles(({ palette: { primary, text } }) => ({
-    root: {
-      position: "relative",
-    },
-    bottom: {
-      color: primary.dark,
-      opacity: 0.4,
-      transition: "all 100ms ease-in",
-    },
-    top: {
-      position: "absolute",
-      left: 0,
-      transition: "all 100ms ease-in",
-      color: primary.main,
-    },
-  }));
-
   const classes = useStyles();
   return (
     <div className={classes.root}>

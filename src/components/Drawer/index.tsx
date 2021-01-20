@@ -2,12 +2,12 @@ import {
   Avatar,
   Button,
   Divider,
+  Drawer as MuiDrawer,
   IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Drawer as MuiDrawer,
   Typography,
 } from "@material-ui/core";
 import React from "react";
@@ -15,8 +15,8 @@ import { BsDisplay, BsGear, BsPerson, BsX } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
 import { Backdrop } from "..";
 import { useMeQuery } from "../../generated/graphql";
+import { useRouter } from "../../hooks";
 import { useStyles } from "./styles";
-import { useRouter } from "../../hooks/useRouter";
 
 interface DrawerProps {
   open: boolean;

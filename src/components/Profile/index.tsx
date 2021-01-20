@@ -1,14 +1,17 @@
 import { Avatar, Chip, IconButton } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { BsThreeDots } from "react-icons/bs";
-import { DisplayName, RoundedButton, Stat } from "..";
+import {
+  BlockButton,
+  DisplayName,
+  FollowButton,
+  ProfileOptionPopper,
+  RoundedButton,
+  Stat,
+} from "..";
 import { RegularUserFragment, useMeQuery } from "../../generated/graphql";
-import { usePopper } from "../../hooks/usePopper";
-import { hexToRgb } from "../../utils/hexToRgb";
-import { BlockButton } from "../BlockButton";
-import { FollowButton } from "../FollowButton";
-import { ProfileOptionPopper } from "../ProfileOptionPopper";
+import { usePopper } from "../../hooks";
+import { useStyles } from "./styles";
 
 type ProfileProps = {
   user?: RegularUserFragment | null;
@@ -21,67 +24,7 @@ const Profile: React.FC<ProfileProps> = ({
   loading,
   fallbackUsername,
 }) => {
-  const useStyles = makeStyles(({ palette: { primary, secondary, type } }) => ({
-    root: {
-      width: "100%",
-    },
-    cover: {
-      width: "100%",
-      height: 0,
-      paddingTop: "33%",
-      backgroundColor: type === "dark" ? "#2F3336" : "#C4CFD6",
-      backgroundImage: `url(${user?.coverPicture})`,
-      backgroundSize: "100%",
-      backgroundPosition: "center",
-    },
-    profile: {
-      padding: "0 1rem",
-    },
-    photoRow: {
-      display: "flex",
-      alignItems: "flex-end",
-      justifyContent: "space-between",
-    },
-    avatar: {
-      marginTop: "clamp(-75px, -5vw, -20px)",
-      width: "clamp(85px, 10vw, 150px)",
-      height: "clamp(85px, 10vw, 150px)",
-      backgroundColor: type === "dark" ? "#15181C" : "#F7F9FA",
-      border: "4px solid",
-      borderColor: secondary.main,
-    },
-    actions: {
-      display: "flex",
-      alignItems: "center",
-      gap: "0.5rem",
-    },
-    moreButton: {
-      border: "0.4px solid",
-      borderColor: hexToRgb(primary.main, 0.5),
-      padding: "0.5rem !important",
-      "&:hover": {
-        borderColor: primary.main,
-      },
-      "&:focus": {
-        borderColor: primary.main,
-      },
-    },
-    labels: {
-      display: "flex",
-      alignItems: "flex-end",
-      gap: "0.4rem",
-      margin: "1rem 0",
-    },
-    fbChip: {
-      fontSize: "0.7rem",
-    },
-    stats: {
-      display: "flex",
-      gap: "0.5rem",
-      marginBottom: "1rem",
-    },
-  }));
-  const classes = useStyles();
+  const classes = useStyles({ coverPicture: user?.coverPicture });
 
   const [{ data }] = useMeQuery();
 

@@ -1,34 +1,35 @@
 import {
+  ClickAwayListener,
   IconButton,
   InputAdornment,
   InputBase,
-  ClickAwayListener,
 } from "@material-ui/core";
 import React from "react";
 import { BsSearch, BsX } from "react-icons/bs";
-import { SearchPopper } from "..";
-import { usePopper } from "../../hooks/usePopper";
-import { useStyles } from "./styles";
 import { useHistory } from "react-router-dom";
-import { ISearchResultContext } from "../../context/instantSearch";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
-import { useRecentSearches } from "../../hooks/useRecentSearches";
-
-type SearchBarProps = {};
+import { SearchPopper } from "..";
+import {
+  useInstantSearch,
+  useMediaQuery,
+  usePopper,
+  useRecentSearches,
+} from "../../hooks";
+import { useStyles } from "./styles";
 
 type Value = {
   actualValue: string;
   trimmedValue: string;
 };
 
-const SearchBar: React.FC<SearchBarProps> = (props) => {
+const SearchBar: React.FC = () => {
   const classes = useStyles();
   const { xs } = useMediaQuery();
 
-  const { pushSearch } = useRecentSearches();
-  const { setOpen: setISROpen, setQuery, query } = React.useContext(
-    ISearchResultContext
-  )!;
+  const [
+    ,
+    { pushSearch, initialize: initializeRecentSearches },
+  ] = useRecentSearches();
+  const [, { handleOpen, handleQueryUpdate }] = useInstantSearch();
 
   const [value, setValue] = React.useState<Value>({
     actualValue: "",
@@ -42,6 +43,7 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
       actualValue: e.target.value,
       trimmedValue: e.target.value.trim(),
     });
+    handleQueryUpdate(e.target.value.trim());
   };
 
   const clear = () => {
@@ -49,13 +51,8 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
       actualValue: "",
       trimmedValue: "",
     });
+    handleQueryUpdate("");
   };
-
-  React.useEffect(() => {
-    if (value.trimmedValue !== query) {
-      setQuery(value.trimmedValue);
-    }
-  }, [query, setQuery, value.trimmedValue]);
 
   const inputRef = React.useRef<HTMLElement>();
 
@@ -66,7 +63,8 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
   const handlePopperOpen = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget);
     setOpen(true);
-    setISROpen(true);
+    initializeRecentSearches();
+    handleOpen();
   };
 
   const handleSearch = () => {

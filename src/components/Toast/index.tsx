@@ -1,24 +1,20 @@
 import React from "react";
 import { Snackbar, SnackbarProps, Grow } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { useStyles } from "./styles";
+import { useToast } from "../../hooks";
 
 type ToastProps = SnackbarProps;
 
 const Toast: React.FC<ToastProps> = (props) => {
-  const useStyles = makeStyles(({ palette: { primary } }) => ({
-    root: {
-      "& > .MuiSnackbarContent-root": {
-        backgroundColor: primary.main,
-        color: "#fff",
-        fontWeight: "bold",
-      },
-    },
-  }));
   const classes = useStyles();
+
+  const [toastProps] = useToast();
+
   return (
     <Snackbar
       classes={{ root: classes.root }}
       {...props}
+      {...toastProps}
       TransitionComponent={Grow}
       autoHideDuration={4000}
     />

@@ -1,25 +1,14 @@
-import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { RegularUserFragment } from "../../generated/graphql";
-import { useConditionalFollow } from "../../hooks/useConditionalFollow";
+import { useConditionalFollow } from "../../hooks";
 import { RoundedButton } from "../RoundedButton";
+import { useStyles } from "./styles";
 
 type FollowButtonProps = {
   user: RegularUserFragment | null;
 };
 
 const FollowButton: React.FC<FollowButtonProps> = ({ user }) => {
-  const useStyles = makeStyles(({ palette: { error } }) => ({
-    red: {
-      backgroundColor: error.main,
-      "&:hover": {
-        backgroundColor: error.dark,
-      },
-      "&:focus": {
-        backgroundColor: error.dark,
-      },
-    },
-  }));
   const classes = useStyles();
 
   const [follow, fetching] = useConditionalFollow();

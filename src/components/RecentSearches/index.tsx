@@ -5,29 +5,23 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemText,
   ListItemSecondaryAction,
+  ListItemText,
 } from "@material-ui/core";
-import { BsX, BsSearch } from "react-icons/bs";
 import React from "react";
-import { useStyles } from "./styles";
-import { RoundedButton } from "..";
-import { ConfirmDialogContext } from "../../context/confimDialog";
+import { BsSearch, BsX } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
+import { RoundedButton } from "..";
+import { useConfirmDialog, useRecentSearches } from "../../hooks";
+import { useStyles } from "./styles";
 
-type RecentSearchesProps = {
-  searches: string[] | undefined;
-  removeSearch: (search: string) => void;
-  removeAllRecentSearches: () => void;
-};
-
-const RecentSearches: React.FC<RecentSearchesProps> = ({
-  searches,
-  removeSearch,
-  removeAllRecentSearches,
-}) => {
+const RecentSearches: React.FC = () => {
   const classes = useStyles();
-  const { handleOpen } = React.useContext(ConfirmDialogContext)!;
+  const [, { handleOpen }] = useConfirmDialog();
+  const [
+    state,
+    { removeRecentSearch, clearRecentSearches },
+  ] = useRecentSearches();
   const history = useHistory();
 
   const handleClearAll = () => {
@@ -36,7 +30,7 @@ const RecentSearches: React.FC<RecentSearchesProps> = ({
       content:
         "This can’t be undone and you’ll remove all your recent searches.",
       confirmLabel: "Clear",
-      onConfirm: removeAllRecentSearches,
+      onConfirm: clearRecentSearches,
     });
   };
 
@@ -49,7 +43,7 @@ const RecentSearches: React.FC<RecentSearchesProps> = ({
         </RoundedButton>
       </div>
       <List>
-        {searches?.map((search, index) => (
+        {state.searches?.map((search, index) => (
           <ListItem
             key={index}
             component={Button}
@@ -63,7 +57,7 @@ const RecentSearches: React.FC<RecentSearchesProps> = ({
             </ListItemAvatar>
             <ListItemText>{search}</ListItemText>
             <ListItemSecondaryAction>
-              <IconButton onClick={() => removeSearch(search)}>
+              <IconButton onClick={() => removeRecentSearch(search)}>
                 <BsX />
               </IconButton>
             </ListItemSecondaryAction>

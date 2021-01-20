@@ -1,7 +1,7 @@
 import { Link } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import numeral from "numeral";
 import React from "react";
+import { useStyles } from "./styles";
 
 type StatProps = {
   label: string;
@@ -10,17 +10,6 @@ type StatProps = {
 };
 
 const Stat: React.FC<StatProps> = ({ label, stat, href }) => {
-  const useStyles = makeStyles(({ palette: { text } }) => ({
-    root: {
-      color: text.primary,
-    },
-    stat: {
-      fontWeight: "bold",
-    },
-    label: {
-      color: text.secondary,
-    },
-  }));
   const classes = useStyles();
 
   return (

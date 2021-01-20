@@ -1,8 +1,7 @@
 import React from "react";
 import { DisplayName, QuackOptionButton, ShortDateTime, UserAvatar } from "..";
 import { RegularQuackFragment } from "../../generated/graphql";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
-import { useUserPopper } from "../../hooks/useUserPopper";
+import { useMediaQuery, useUserPopper } from "../../hooks";
 import { useStyles } from "./styles";
 
 export type QuackHeaderProps = {
@@ -13,14 +12,14 @@ export type QuackHeaderProps = {
 const QuackHeader: React.FC<QuackHeaderProps> = ({ quack, variant }) => {
   const classes = useStyles({ variant });
 
-  const { handlePopperOpen, handleMouseOut } = useUserPopper(quack);
+  const [, { handlePopperOpen, handleMouseOut }] = useUserPopper();
   const { xs } = useMediaQuery();
 
   const handleMouseOver = (
     event: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
     if (variant !== "replying-to" && !xs) {
-      handlePopperOpen(event);
+      handlePopperOpen(event, quack.quackedByUser);
     }
   };
 

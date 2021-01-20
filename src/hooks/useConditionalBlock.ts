@@ -1,6 +1,5 @@
-import { useContext, useState } from "react";
-import { ConfirmDialogContext } from "../context/confimDialog";
-import { ToastContext } from "../context/toast";
+import { useState } from "react";
+import { useConfirmDialog, useToast } from ".";
 import {
   RegularUserFragment,
   useBlockMutation,
@@ -16,8 +15,8 @@ export const useConditionalBlock = (): [
 
   const [fetching, setFetching] = useState(false);
 
-  const { handleOpen: handleToastOpen } = useContext(ToastContext)!;
-  const { handleOpen: handleDialogOpen } = useContext(ConfirmDialogContext)!;
+  const [, { handleOpen: handleToastOpen }] = useToast();
+  const [, { handleOpen: handleDialogOpen }] = useConfirmDialog();
 
   const _handleBlock = async (user: RegularUserFragment | null) => {
     setFetching(true);

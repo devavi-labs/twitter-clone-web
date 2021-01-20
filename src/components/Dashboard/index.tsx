@@ -1,19 +1,12 @@
-import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { Drawer, Hero, LeftSidebar, RightSidebar } from "..";
-import { DrawerContext } from "../../context/drawer";
+import { useDrawer } from "../../hooks";
 import { DashboardRoutes } from "../../routes";
+import { useStyles } from "./styles";
 
 export const Dashboard: React.FC = () => {
-  const useStyles = makeStyles(() => ({
-    dashboard: {
-      flex: 1,
-      display: "flex",
-    },
-  }));
-
   const classes = useStyles();
-  const { open, onClose } = React.useContext(DrawerContext)!;
+  const [{ open, onClose }] = useDrawer();
 
   return (
     <main>
@@ -23,7 +16,7 @@ export const Dashboard: React.FC = () => {
           <DashboardRoutes />
         </Hero>
         <RightSidebar />
-        <Drawer open={open} onClose={onClose} />
+        <Drawer open={open} onClose={() => (onClose ? onClose() : {})} />
       </div>
     </main>
   );

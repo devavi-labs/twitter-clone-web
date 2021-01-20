@@ -9,12 +9,15 @@ import {
   BsThreeDots,
 } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
-import { AccountButton, QuackButton, TabButton } from "..";
+import {
+  AccountButton,
+  Logo,
+  MoreMenuPopper,
+  QuackButton,
+  TabButton,
+} from "..";
 import { useMeQuery } from "../../generated/graphql";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
-import { usePopper } from "../../hooks/usePopper";
-import { Logo } from "../Logo";
-import { MoreMenuPopper } from "../MoreMenuPopper";
+import { useMediaQuery, usePopper } from "../../hooks";
 import { useStyles } from "./styles";
 
 export const LeftSidebar: React.FC = () => {
