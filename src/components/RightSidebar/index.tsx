@@ -1,17 +1,24 @@
 import React from "react";
-import { Drawer } from "@material-ui/core";
+import { AppBar, SearchBar, SidebarNewsFeed } from "../../components";
 import { useStyles } from "./styles";
+import { useLocation } from "react-router-dom";
 
 export const RightSidebar = () => {
   const classes = useStyles();
+  const { pathname } = useLocation();
+
+  const toShowSearchbar = !/(explore|search)/gi.test(pathname);
+
   return (
-    <Drawer
-      className={classes.rightSidebar}
-      variant="permanent"
-      anchor="right"
-      classes={{ paper: classes.paper }}
-    >
-      <div></div>
-    </Drawer>
+    <aside className={classes.rightSidebar}>
+      {toShowSearchbar && (
+        <AppBar position="sticky" bottomDivider={false}>
+          <SearchBar />
+        </AppBar>
+      )}
+      <div className={classes.feed}>
+        <SidebarNewsFeed />
+      </div>
+    </aside>
   );
 };

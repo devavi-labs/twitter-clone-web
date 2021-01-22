@@ -21,6 +21,24 @@ export const DashboardRoutes = () => {
       <Route exact path="/explore">
         <Explore />
       </Route>
+      <Route exact path="/explore/tabs/world">
+        <Explore tab={0} />
+      </Route>
+      <Route exact path="/explore/tabs/health">
+        <Explore tab={1} />
+      </Route>
+      <Route exact path="/explore/tabs/science">
+        <Explore tab={2} />
+      </Route>
+      <Route exact path="/explore/tabs/sports">
+        <Explore tab={3} />
+      </Route>
+      <Route exact path="/explore/tabs/business">
+        <Explore tab={4} />
+      </Route>
+      <Route exact path="/explore/tabs/movies">
+        <Explore tab={5} />
+      </Route>
       <Route path="/:username" exact>
         <ProfilePage tab={0} />
       </Route>

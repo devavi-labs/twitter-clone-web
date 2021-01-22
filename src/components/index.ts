@@ -73,3 +73,5 @@ export { SearchPopper } from "./SearchPopper";
 export { UserListItem } from "./UserListItem";
 export { NewsFeed } from "./NewsFeed";
 export { MoreMenuPopper } from "./MoreMenuPopper";
+export { SidebarNewsFeed } from "./SidebarNewsFeed";
+export { NewsListItem } from "./NewsListItem";
