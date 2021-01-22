@@ -37,7 +37,7 @@ export const AppBar: React.FC<AppBarProps> = ({
 
   const [{ data }] = useMeQuery();
 
-  const [,{ handleOpen }] = useDrawer();
+  const [, { handleOpen }] = useDrawer();
 
   return (
     <React.Fragment>

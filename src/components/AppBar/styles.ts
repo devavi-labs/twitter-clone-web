@@ -7,6 +7,7 @@ export const useStyles = makeStyles(
   }) => ({
     appbar: {
       position: "sticky",
+      backgroundColor: secondary.main,
       [down("xs")]: {
         position: "static",
       },
@@ -16,7 +17,6 @@ export const useStyles = makeStyles(
       display: "flex",
       alignItems: "center",
       height: "50px",
-      backgroundColor: secondary.main,
       [down("xs")]: {
         padding: "0 0.5rem",
       },
