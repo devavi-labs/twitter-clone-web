@@ -109,6 +109,7 @@ const SearchBar: React.FC = () => {
             )
           }
           fullWidth
+          placeholder="Search Quacker"
           value={value.actualValue}
           onChange={handleChange}
           onKeyUp={handleEnter}

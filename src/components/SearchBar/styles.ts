@@ -8,6 +8,7 @@ export const useStyles = makeStyles(
       flexDirection: "column",
     },
     input: {
+      minHeight: 36,
       borderRadius: 24,
       padding: "0 16px",
       backgroundColor: type === "dark" ? "#15181C" : "#e3e6e7",
