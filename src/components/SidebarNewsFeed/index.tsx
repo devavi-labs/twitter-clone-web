@@ -6,14 +6,14 @@ import { CircularProgressBar, ErrorDisplay, NewsListItem } from "..";
 
 const SidebarNewsFeed: React.FC = () => {
   const classes = useStyles();
+  const maxItemsLength = 10;
 
   const [{ data, fetching, error }] = useNewsQuery({
     variables: {
       section: "world",
+      limit: maxItemsLength,
     },
   });
-
-  const maxItemsLength = 10;
 
   return (
     <List className={classes.feedCard}>
@@ -30,26 +30,12 @@ const SidebarNewsFeed: React.FC = () => {
           <ListItem className={classes.feedHeader}>
             <h2 className={classes.heading}>What's happening</h2>
           </ListItem>
-          {data?.news?.map(
-            ({ id, title, abstract, thumbnailUrl, caption, url }, i) => {
-              if (i < maxItemsLength) {
-                return (
-                  <React.Fragment>
-                    <NewsListItem
-                      key={id}
-                      title={title}
-                      abstract={abstract}
-                      thumbnail={thumbnailUrl}
-                      caption={caption}
-                      url={url}
-                    />
-                    <Divider />
-                  </React.Fragment>
-                );
-              }
-              return <React.Fragment />;
-            }
-          )}
+          {data?.news?.map((news) => (
+            <React.Fragment>
+              <NewsListItem key={news.id} news={news} />
+              <Divider />
+            </React.Fragment>
+          ))}
           {data?.news && (
             <ListItem
               className={classes.footer}

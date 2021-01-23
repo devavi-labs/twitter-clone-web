@@ -1,0 +1,13 @@
+fragment RegularNews on News {
+  id
+  publishedAt
+  section
+  title
+  abstract
+  author
+  thumbnailUrl
+  cover
+  caption
+  url
+  shortUrl
+}

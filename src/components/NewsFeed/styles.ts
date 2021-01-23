@@ -1,6 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export const useStyles = makeStyles(({ palette: { primary, type, text } }) => ({
+export const useStyles = makeStyles(() => ({
+  list: {
+    padding: 0,
+  },
   loading: {
     width: "100%",
     display: "flex",

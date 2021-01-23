@@ -75,3 +75,4 @@ export { NewsFeed } from "./NewsFeed";
 export { MoreMenuPopper } from "./MoreMenuPopper";
 export { SidebarNewsFeed } from "./SidebarNewsFeed";
 export { NewsListItem } from "./NewsListItem";
+export { HeroNews } from "./HeroNews";

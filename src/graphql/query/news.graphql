@@ -1,14 +1,5 @@
-query News($section: String!) {
-  news(section: $section) {
-    id
-    publishedAt
-    section
-    title
-    abstract
-    author
-    url
-    shortUrl
-    thumbnailUrl
-    caption
+query News($section: String!, $limit: Int) {
+  news(section: $section, limit: $limit) {
+    ...RegularNews
   }
 }

@@ -1,21 +1,14 @@
 import { Button, ListItem } from "@material-ui/core";
 import React from "react";
+import { RegularNewsFragment } from "../../generated/graphql";
 import { useStyles } from "./styles";
 
 type NewsListItemProps = {
-  title: string;
-  abstract: string;
-  thumbnail: string;
-  caption: string;
-  url: string;
+  news: RegularNewsFragment;
 };
 
 const NewsListItem: React.FC<NewsListItemProps> = ({
-  title,
-  abstract,
-  thumbnail,
-  caption,
-  url,
+  news: { title, abstract, thumbnailUrl, caption, url },
 }) => {
   const classes = useStyles();
 
@@ -30,11 +23,13 @@ const NewsListItem: React.FC<NewsListItemProps> = ({
         <h3 className={classes.title}>{title}</h3>
         <p className={classes.abstract}>{abstract}</p>
       </div>
-      <img
-        src={thumbnail}
-        alt={caption || title}
-        className={classes.thumbnail}
-      />
+      {thumbnailUrl && (
+        <img
+          src={thumbnailUrl}
+          alt={caption ?? title}
+          className={classes.thumbnail}
+        />
+      )}
     </ListItem>
   );
 };

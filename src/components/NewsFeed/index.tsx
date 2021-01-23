@@ -1,12 +1,13 @@
+import { Divider, List } from "@material-ui/core";
 import React from "react";
-import { useNewsQuery } from "../../generated/graphql";
-import { List } from "@material-ui/core";
 import {
-  NewsListItem,
-  ErrorDisplay,
   CircularProgressBar,
   EmptyDataDisplay,
+  ErrorDisplay,
+  HeroNews,
+  NewsListItem,
 } from "..";
+import { useNewsQuery } from "../../generated/graphql";
 import { useStyles } from "./styles";
 
 type NewsFeedProps = {
@@ -21,6 +22,14 @@ const NewsFeed: React.FC<NewsFeedProps> = ({ type }) => {
   });
 
   const classes = useStyles();
+
+  const heroNews = React.useMemo(() => data?.news?.find((news) => news.cover), [
+    data?.news,
+  ]);
+  const newsList = React.useMemo(
+    () => data?.news?.filter((news) => news !== heroNews),
+    [data?.news, heroNews]
+  );
 
   if (error) {
     return (
@@ -40,19 +49,16 @@ const NewsFeed: React.FC<NewsFeedProps> = ({ type }) => {
     return <EmptyDataDisplay />;
   } else
     return (
-      <List>
-        {data?.news?.map(
-          ({ id, title, abstract, thumbnailUrl, caption, url }) => (
-            <NewsListItem
-              key={id}
-              title={title}
-              abstract={abstract}
-              thumbnail={thumbnailUrl}
-              caption={caption}
-              url={url}
-            />
-          )
+      <List className={classes.list}>
+        {heroNews && (
+          <React.Fragment>
+            <HeroNews news={heroNews} />
+            <Divider />
+          </React.Fragment>
         )}
+        {newsList?.map((news) => (
+          <NewsListItem key={news.id} news={news} />
+        ))}
       </List>
     );
 };

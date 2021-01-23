@@ -65,6 +65,7 @@ export type QueryLikesByUserIdArgs = {
 
 
 export type QueryNewsArgs = {
+  limit?: Maybe<Scalars['Int']>;
   section: Scalars['String'];
 };
 
@@ -199,10 +200,11 @@ export type News = {
   title: Scalars['String'];
   abstract: Scalars['String'];
   author: Scalars['String'];
-  thumbnailUrl: Scalars['String'];
-  caption: Scalars['String'];
+  thumbnailUrl?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['String']>;
+  caption?: Maybe<Scalars['String']>;
   url: Scalars['String'];
-  shortUrl: Scalars['String'];
+  shortUrl?: Maybe<Scalars['String']>;
 };
 
 export type SearchResponse = {
@@ -351,6 +353,11 @@ export type FullLinkFragment = (
 export type RegularFieldErrorFragment = (
   { __typename?: 'FieldError' }
   & Pick<FieldError, 'field' | 'message'>
+);
+
+export type RegularNewsFragment = (
+  { __typename?: 'News' }
+  & Pick<News, 'id' | 'publishedAt' | 'section' | 'title' | 'abstract' | 'author' | 'thumbnailUrl' | 'cover' | 'caption' | 'url' | 'shortUrl'>
 );
 
 export type RegularQuackFragment = (
@@ -593,6 +600,7 @@ export type MeQuery = (
 
 export type NewsQueryVariables = Exact<{
   section: Scalars['String'];
+  limit?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -600,7 +608,7 @@ export type NewsQuery = (
   { __typename?: 'Query' }
   & { news?: Maybe<Array<(
     { __typename?: 'News' }
-    & Pick<News, 'id' | 'publishedAt' | 'section' | 'title' | 'abstract' | 'author' | 'url' | 'shortUrl' | 'thumbnailUrl' | 'caption'>
+    & RegularNewsFragment
   )>> }
 );
 
@@ -762,6 +770,21 @@ export type UserByUsernameQuery = (
   )> }
 );
 
+export const RegularNewsFragmentDoc = gql`
+    fragment RegularNews on News {
+  id
+  publishedAt
+  section
+  title
+  abstract
+  author
+  thumbnailUrl
+  cover
+  caption
+  url
+  shortUrl
+}
+    `;
 export const FullLinkFragmentDoc = gql`
     fragment FullLink on Link {
   id
@@ -1031,21 +1054,12 @@ export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'q
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 };
 export const NewsDocument = gql`
-    query News($section: String!) {
-  news(section: $section) {
-    id
-    publishedAt
-    section
-    title
-    abstract
-    author
-    url
-    shortUrl
-    thumbnailUrl
-    caption
+    query News($section: String!, $limit: Int) {
+  news(section: $section, limit: $limit) {
+    ...RegularNews
   }
 }
-    `;
+    ${RegularNewsFragmentDoc}`;
 
 export function useNewsQuery(options: Omit<Urql.UseQueryArgs<NewsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<NewsQuery>({ query: NewsDocument, ...options });
