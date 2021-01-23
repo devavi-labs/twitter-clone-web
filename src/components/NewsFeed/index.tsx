@@ -57,7 +57,10 @@ const NewsFeed: React.FC<NewsFeedProps> = ({ type }) => {
           </React.Fragment>
         )}
         {newsList?.map((news) => (
-          <NewsListItem key={news.id} news={news} />
+          <React.Fragment>
+            <NewsListItem key={news.id} news={news} />
+            <Divider />
+          </React.Fragment>
         ))}
       </List>
     );

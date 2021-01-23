@@ -14,15 +14,13 @@ export const useStyles = makeStyles<
   },
   innerBox: {
     position: "absolute",
-    top: 0,
     bottom: 0,
     left: 0,
     right: 0,
     backgroundImage: `linear-gradient(
             to bottom,
-            transparent 20%,
-            transparent,
-            #000000
+            transparent 0%,
+            black
           )`,
     display: "flex",
     flexDirection: "column",
