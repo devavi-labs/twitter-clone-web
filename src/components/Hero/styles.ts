@@ -15,9 +15,8 @@ export const useStyles = makeStyles(
       display: "flex",
       flexDirection: "column",
       alignItems: "stretch",
-      [down("md")]: {
-        maxWidth: 600,
-      },
+      maxWidth: 600,
+      paddingBottom: 200,
     },
     fab: {
       position: "fixed",

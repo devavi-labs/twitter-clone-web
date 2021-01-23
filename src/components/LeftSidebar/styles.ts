@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 export const useStyles = makeStyles(
   ({ palette: { secondary, type }, breakpoints: { down } }) => ({
     root: {
-      width: "24%",
+      width: 300,
       [down("md")]: {
         width: 100,
         paddingLeft: "2rem",
@@ -14,7 +14,8 @@ export const useStyles = makeStyles(
       },
     },
     paper: {
-      width: "24%",
+      left: "auto",
+      width: 300,
       backgroundColor: secondary.main,
       display: "flex",
       flexDirection: "column",
@@ -22,6 +23,7 @@ export const useStyles = makeStyles(
       paddingRight: 0,
       alignItems: "flex-start",
       [down("md")]: {
+        left: 0,
         width: 100,
         paddingLeft: "2rem",
         paddingRight: "2rem",

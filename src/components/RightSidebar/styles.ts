@@ -7,7 +7,7 @@ export const useStyles = makeStyles(
       display: "flex",
       flexDirection: "column",
       alignItems: "flex-start",
-      width: "32%",
+      width: "100%",
       padding: "0 2.5rem 2.5rem 1rem",
       overflowY: "hidden",
       [down("md")]: {
