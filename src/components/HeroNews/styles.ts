@@ -3,7 +3,7 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
 export const useStyles = makeStyles<
   Theme,
   { cover: string | null | undefined }
->(() => ({
+>(({ breakpoints: { down } }) => ({
   heroNewsBox: {
     position: "relative",
     width: "100%",
@@ -26,6 +26,9 @@ export const useStyles = makeStyles<
     flexDirection: "column",
     justifyContent: "flex-end",
     padding: "1rem",
+    [down("xs")]: {
+      padding: "0.4rem 1rem",
+    },
   },
   heading: {
     display: "flex",
