@@ -76,3 +76,4 @@ export { MoreMenuPopper } from "./MoreMenuPopper";
 export { SidebarNewsFeed } from "./SidebarNewsFeed";
 export { NewsListItem } from "./NewsListItem";
 export { HeroNews } from "./HeroNews";
+export { BottomBanner } from "./BottomBanner";
