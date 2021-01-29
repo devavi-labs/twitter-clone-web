@@ -31,8 +31,8 @@ const SidebarNewsFeed: React.FC = () => {
             <h2 className={classes.heading}>What's happening</h2>
           </ListItem>
           {data?.news?.map((news) => (
-            <React.Fragment>
-              <NewsListItem key={news.id} news={news} />
+            <React.Fragment key={news.id}>
+              <NewsListItem news={news} />
               <Divider />
             </React.Fragment>
           ))}

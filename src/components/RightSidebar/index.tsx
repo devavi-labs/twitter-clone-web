@@ -8,10 +8,13 @@ import {
 import { useStyles } from "./styles";
 import { useLocation } from "react-router-dom";
 import { useMeQuery } from "../../generated/graphql";
+import { useMediaQuery } from "../../hooks";
 
 export const RightSidebar = () => {
   const classes = useStyles();
   const { pathname } = useLocation();
+
+  const { sm } = useMediaQuery();
 
   const toShowSearchbar = !/(explore|search)/gi.test(pathname);
 
@@ -19,20 +22,21 @@ export const RightSidebar = () => {
 
   return (
     <aside className={classes.rightSidebar}>
-      {data && data.me ? (
-        <React.Fragment>
-          {toShowSearchbar && (
-            <AppBar position="sticky" bottomDivider={false}>
-              <SearchBar />
-            </AppBar>
-          )}
-          <div className={classes.feed}>
-            <SidebarNewsFeed />
-          </div>
-        </React.Fragment>
-      ) : (
-        <NewToQuackerCard />
-      )}
+      {!sm &&
+        (data && data.me ? (
+          <React.Fragment>
+            {toShowSearchbar && (
+              <AppBar position="sticky" bottomDivider={false}>
+                <SearchBar />
+              </AppBar>
+            )}
+            <div className={classes.feed}>
+              <SidebarNewsFeed />
+            </div>
+          </React.Fragment>
+        ) : (
+          <NewToQuackerCard />
+        ))}
     </aside>
   );
 };
