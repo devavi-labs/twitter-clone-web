@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import { useMeQuery } from "../../generated/graphql";
 import { useDrawer } from "../../hooks";
 import { useStyles } from "./styles";
+import { Logo } from "..";
 
 type AppBarProps = {
   title?: string;
@@ -51,19 +52,25 @@ export const AppBar: React.FC<AppBarProps> = ({
             >
               <BsArrowLeft className={classes.backIcon} />
             </IconButton>
+          ) : data?.me ? (
+            <IconButton
+              size="medium"
+              className={[classes.prefix, classes.onSmallScreen].join(" ")}
+              onClick={() => handleOpen()}
+            >
+              <Avatar
+                src={data?.me?.displayPicture}
+                className={classes.avatar}
+              />
+            </IconButton>
           ) : (
-            data && (
-              <IconButton
-                size="medium"
-                className={[classes.prefix, classes.drawerToggleBtn].join(" ")}
-                onClick={() => handleOpen()}
-              >
-                <Avatar
-                  src={data?.me?.displayPicture}
-                  className={classes.avatar}
-                />
-              </IconButton>
-            )
+            <IconButton
+              size="medium"
+              className={[classes.prefix, classes.onSmallScreen].join(" ")}
+              onClick={() => history.push("/")}
+            >
+              <Logo size="xxs" />
+            </IconButton>
           )}
           {children || (
             <Box>

@@ -19,7 +19,7 @@ export const Dashboard: React.FC = () => {
           <DashboardRoutes />
         </Hero>
         <RightSidebar />
-        <Drawer open={open} onClose={onClose ?? voidFn} />
+        {data?.me && <Drawer open={open} onClose={onClose ?? voidFn} />}
         {data && !data.me && <BottomBanner />}
       </div>
     </main>

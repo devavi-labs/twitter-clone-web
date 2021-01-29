@@ -52,24 +52,30 @@ export const LeftSidebar: React.FC = () => {
               onClick={() => history.push("/")}
             />
             <TabButton label="Explore" icon={BsHash} activeIcon={BsHash} />
-            <TabButton
-              label="Profile"
-              icon={BsPerson}
-              activeIcon={BsPersonFill}
-              onClick={() => history.push(`/${data?.me?.username}`)}
-            />
-            <TabButton
-              label="More"
-              icon={BsThreeDots}
-              activeIcon={BsThreeDots}
-              onClick={handleMoreClick}
-            />
+            {data?.me && (
+              <React.Fragment>
+                <TabButton
+                  label="Profile"
+                  icon={BsPerson}
+                  activeIcon={BsPersonFill}
+                  onClick={() => history.push(`/${data?.me?.username}`)}
+                />
+                <TabButton
+                  label="More"
+                  icon={BsThreeDots}
+                  activeIcon={BsThreeDots}
+                  onClick={handleMoreClick}
+                />
+              </React.Fragment>
+            )}
           </div>
-          <QuackButton variant={md ? "fab" : "button"} />
+          {data?.me && <QuackButton variant={md ? "fab" : "button"} />}
         </Box>
-        <Box className={classes.bottom}>
-          <AccountButton />
-        </Box>
+        {data?.me && (
+          <Box className={classes.bottom}>
+            <AccountButton />
+          </Box>
+        )}
       </Drawer>
       <MoreMenuPopper open={open} anchorEl={anchorEl} onClose={onClose} />
     </>

@@ -15,8 +15,11 @@ export const useStyles = makeStyles(
       display: "flex",
       flexDirection: "column",
       alignItems: "stretch",
-      maxWidth: 600,
+      width: 600,
       paddingBottom: 200,
+      [down("sm")]: {
+        width: "100%",
+      },
     },
     fab: {
       position: "fixed",

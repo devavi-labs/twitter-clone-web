@@ -27,7 +27,7 @@ export const useStyles = makeStyles(
         marginRight: "0rem",
       },
     },
-    drawerToggleBtn: {
+    onSmallScreen: {
       [up("sm")]: {
         display: "none",
       },
