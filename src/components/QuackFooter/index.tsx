@@ -46,7 +46,7 @@ const QuackFooter: React.FC<QuackFooterProps> = ({ quack, variant }) => {
     <Box className={classes.root}>
       <EngageButton
         type="reply"
-        engagements={quack?.replies?.length || 0}
+        engagements={quack?.replies || 0}
         size={variant === "open" ? "md" : "sm"}
         onClick={() => router.openComposeQuackModal({ inReplyToQuack: quack })}
       />

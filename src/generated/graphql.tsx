@@ -26,6 +26,7 @@ export type Query = {
   quackById?: Maybe<Quack>;
   quacksForMe?: Maybe<PaginatedQuacks>;
   quacksFromUser?: Maybe<PaginatedQuacks>;
+  repliesOfQuack?: Maybe<PaginatedQuacks>;
   requacksByQuackId?: Maybe<PaginatedUsers>;
   requacksByUserId?: Maybe<PaginatedQuacks>;
   search: SearchResponse;
@@ -85,6 +86,13 @@ export type QueryQuacksFromUserArgs = {
   lastIndex?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
   userId: Scalars['Int'];
+};
+
+
+export type QueryRepliesOfQuackArgs = {
+  lastIndex?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  quackId: Scalars['Int'];
 };
 
 
@@ -173,7 +181,7 @@ export type Quack = {
   quackedByUser: User;
   inReplyToQuackId?: Maybe<Scalars['Int']>;
   inReplyToQuack?: Maybe<Quack>;
-  replies?: Maybe<Array<Quack>>;
+  replies?: Maybe<Scalars['Int']>;
   requacks?: Maybe<Scalars['Int']>;
   likes?: Maybe<Scalars['Int']>;
   requackStatus?: Maybe<Scalars['Boolean']>;
@@ -362,7 +370,7 @@ export type RegularNewsFragment = (
 
 export type RegularQuackFragment = (
   { __typename?: 'Quack' }
-  & Pick<Quack, 'id' | 'createdAt' | 'text' | 'truncatedText' | 'hashtags' | 'requacks' | 'likes' | 'requackStatus' | 'likeStatus'>
+  & Pick<Quack, 'id' | 'createdAt' | 'text' | 'truncatedText' | 'hashtags' | 'replies' | 'requacks' | 'likes' | 'requackStatus' | 'likeStatus'>
   & { links?: Maybe<Array<(
     { __typename?: 'Link' }
     & FullLinkFragment
@@ -374,7 +382,7 @@ export type RegularQuackFragment = (
     & RegularUserFragment
   ), inReplyToQuack?: Maybe<(
     { __typename?: 'Quack' }
-    & Pick<Quack, 'id' | 'createdAt' | 'text' | 'truncatedText' | 'hashtags' | 'requacks' | 'likes' | 'requackStatus' | 'likeStatus'>
+    & Pick<Quack, 'id' | 'createdAt' | 'text' | 'truncatedText' | 'hashtags' | 'replies' | 'requacks' | 'likes' | 'requackStatus' | 'likeStatus'>
     & { links?: Maybe<Array<(
       { __typename?: 'Link' }
       & FullLinkFragment
@@ -392,20 +400,7 @@ export type RegularQuackFragment = (
         & Pick<User, 'username'>
       ) }
     )> }
-  )>, replies?: Maybe<Array<(
-    { __typename?: 'Quack' }
-    & Pick<Quack, 'id' | 'createdAt' | 'text' | 'truncatedText' | 'hashtags' | 'requacks' | 'likes' | 'requackStatus' | 'likeStatus'>
-    & { links?: Maybe<Array<(
-      { __typename?: 'Link' }
-      & FullLinkFragment
-    )>>, mentions?: Maybe<Array<(
-      { __typename?: 'User' }
-      & RegularUserFragment
-    )>>, quackedByUser: (
-      { __typename?: 'User' }
-      & RegularUserFragment
-    ) }
-  )>> }
+  )> }
 );
 
 export type RegularUserFragment = (
@@ -662,6 +657,25 @@ export type QuacksFromUserQuery = (
   )> }
 );
 
+export type RepliesOfQuackQueryVariables = Exact<{
+  quackId: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  lastIndex?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type RepliesOfQuackQuery = (
+  { __typename?: 'Query' }
+  & { repliesOfQuack?: Maybe<(
+    { __typename?: 'PaginatedQuacks' }
+    & Pick<PaginatedQuacks, 'hasMore'>
+    & { quacks?: Maybe<Array<(
+      { __typename?: 'Quack' }
+      & RegularQuackFragment
+    )>> }
+  )> }
+);
+
 export type RequacksByQuackIdQueryVariables = Exact<{
   quackId: Scalars['Int'];
   limit?: Maybe<Scalars['Int']>;
@@ -852,31 +866,13 @@ export const RegularQuackFragmentDoc = gql`
         username
       }
     }
+    replies
     requacks
     likes
     requackStatus
     likeStatus
   }
-  replies {
-    id
-    createdAt
-    text
-    truncatedText
-    links {
-      ...FullLink
-    }
-    hashtags
-    mentions {
-      ...RegularUser
-    }
-    quackedByUser {
-      ...RegularUser
-    }
-    requacks
-    likes
-    requackStatus
-    likeStatus
-  }
+  replies
   requacks
   likes
   requackStatus
@@ -1102,6 +1098,20 @@ export const QuacksFromUserDocument = gql`
 
 export function useQuacksFromUserQuery(options: Omit<Urql.UseQueryArgs<QuacksFromUserQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<QuacksFromUserQuery>({ query: QuacksFromUserDocument, ...options });
+};
+export const RepliesOfQuackDocument = gql`
+    query RepliesOfQuack($quackId: Int!, $limit: Int, $lastIndex: Int) {
+  repliesOfQuack(quackId: $quackId, limit: $limit, lastIndex: $lastIndex) {
+    hasMore
+    quacks {
+      ...RegularQuack
+    }
+  }
+}
+    ${RegularQuackFragmentDoc}`;
+
+export function useRepliesOfQuackQuery(options: Omit<Urql.UseQueryArgs<RepliesOfQuackQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<RepliesOfQuackQuery>({ query: RepliesOfQuackDocument, ...options });
 };
 export const RequacksByQuackIdDocument = gql`
     query RequacksByQuackId($quackId: Int!, $limit: Int, $lastIndex: Int) {

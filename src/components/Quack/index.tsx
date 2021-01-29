@@ -1,5 +1,6 @@
 import { Divider } from "@material-ui/core";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import {
   ConnectingBar,
   FullDateTime,
@@ -20,6 +21,7 @@ interface QuackProps {
   inReplyTo?: RegularQuackFragment;
   showBar?: boolean;
   variant?: "contained" | "open" | "reply" | "replying-to";
+  clickable?: boolean;
 }
 
 export const Quack: React.FC<QuackProps> = ({
@@ -27,9 +29,12 @@ export const Quack: React.FC<QuackProps> = ({
   inReplyTo,
   showBar,
   variant = "contained",
+  clickable,
 }) => {
   const [, { handlePopperOpen, handleMouseOut }] = useUserPopper();
   const { xs } = useMediaQuery();
+
+  const history = useHistory();
 
   const handleMouseOver = (
     event: React.MouseEvent<HTMLElement, MouseEvent>
@@ -53,6 +58,7 @@ export const Quack: React.FC<QuackProps> = ({
           {showBar && <ConnectingBar />}
         </React.Fragment>
       }
+      clickable={clickable}
     >
       <QuackHeader quack={quack} variant={variant} />
       {inReplyTo && (
@@ -65,6 +71,9 @@ export const Quack: React.FC<QuackProps> = ({
         hashtags={quack?.hashtags}
         links={quack?.links?.map((link) => link.url)}
         variant={variant}
+        onClick={() =>
+          history.push(`/${quack.quackedByUser.username}/quack/${quack.id}`)
+        }
       />
 
       {variant !== "replying-to" &&

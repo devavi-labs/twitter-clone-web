@@ -4,6 +4,7 @@ import { Feed } from "../pages/Feed";
 import { ProfilePage } from "../pages/Profile";
 import { RouteStateType } from ".";
 import { Explore } from "../pages/Explore";
+import { QuackPage } from "../pages/Quack";
 
 export const DashboardRoutes = () => {
   const location = useLocation<RouteStateType>();
@@ -38,6 +39,9 @@ export const DashboardRoutes = () => {
       </Route>
       <Route exact path="/explore/tabs/movies">
         <Explore tab={5} />
+      </Route>
+      <Route exact path="/:username/quack/:quackId">
+        <QuackPage />
       </Route>
       <Route path="/:username" exact>
         <ProfilePage tab={0} />

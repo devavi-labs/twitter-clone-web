@@ -1,0 +1,8 @@
+query RepliesOfQuack($quackId: Int!, $limit: Int, $lastIndex: Int) {
+  repliesOfQuack(quackId: $quackId, limit: $limit, lastIndex: $lastIndex) {
+    hasMore
+    quacks {
+      ...RegularQuack
+    }
+  }
+}

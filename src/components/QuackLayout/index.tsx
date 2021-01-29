@@ -18,6 +18,7 @@ const QuackLayout: React.FC<QuackLayoutProps> = ({
       ? clickable
       : variant !== "open" && variant !== "replying-to";
   const classes = useStyles({ variant, clickable });
+
   return (
     <div className={classes.root}>
       {variant !== "open" && <div className={classes.left}>{left}</div>}

@@ -34,31 +34,13 @@ fragment RegularQuack on Quack {
         username
       }
     }
+    replies
     requacks
     likes
     requackStatus
     likeStatus
   }
-  replies {
-    id
-    createdAt
-    text
-    truncatedText
-    links {
-      ...FullLink
-    }
-    hashtags
-    mentions {
-      ...RegularUser
-    }
-    quackedByUser {
-      ...RegularUser
-    }
-    requacks
-    likes
-    requackStatus
-    likeStatus
-  }
+  replies
   requacks
   likes
   requackStatus

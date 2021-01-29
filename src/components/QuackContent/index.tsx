@@ -6,15 +6,17 @@ import { useStyles } from "./styles";
 
 export type QuackContentProps = {
   variant?: "contained" | "open" | "reply" | "replying-to";
+  onClick?: () => void;
 } & QuackContentType;
 
 export const QuackContent: React.FC<QuackContentProps> = ({
   variant,
   text,
+  onClick,
 }) => {
   const classes = useStyles({ variant });
   return (
-    <div className={classes.root}>
+    <div className={classes.root} onClick={onClick}>
       <Typography className={classes.text}>
         {parse(text).map((e, i) => {
           if (typeof e !== "string") {

@@ -11,42 +11,48 @@ export const QuackStats: React.FC<QuackStatsProps> = ({ quack }) => {
   const classes = useStyles();
 
   if (
-    (quack?.replies && quack.replies.length > 0) ||
+    (quack?.replies && quack.replies > 0) ||
     (quack?.requacks && quack.requacks > 0) ||
     (quack?.likes && quack.likes > 0)
   ) {
     return (
       <>
         <Box className={classes.stats}>
-          {quack?.replies && quack.replies.length > 0 && (
+          {quack?.replies && quack.replies > 0 ? (
             <Link className={classes.stat}>
               <Typography component="span" className={classes.primaryText}>
-                {quack.replies.length}
+                {quack.replies}
               </Typography>
               <Typography component="span" className={classes.secondaryText}>
                 Replies
               </Typography>
             </Link>
+          ) : (
+            <></>
           )}
-          {quack?.requacks && quack.requacks > 0 && (
+          {quack?.requacks && quack.requacks > 0 ? (
             <Link className={classes.stat}>
               <Typography component="span" className={classes.primaryText}>
-                {quack.requacks || 0}
+                {quack.requacks}
               </Typography>
               <Typography component="span" className={classes.secondaryText}>
                 Requacks
               </Typography>
             </Link>
+          ) : (
+            <></>
           )}
-          {quack?.likes && quack.likes > 0 && (
+          {quack?.likes && quack.likes > 0 ? (
             <Link className={classes.stat}>
               <Typography component="span" className={classes.primaryText}>
-                {quack.likes || 0}
+                {quack.likes}
               </Typography>
               <Typography component="span" className={classes.secondaryText}>
                 Likes
               </Typography>
             </Link>
+          ) : (
+            <></>
           )}
         </Box>
         <Divider />

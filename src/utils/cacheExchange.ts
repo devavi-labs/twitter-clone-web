@@ -11,27 +11,27 @@ import {
   MeDocument,
   MeQuery,
   QuackMutation,
-  QuacksFromUserDocument,
   QuacksForMeDocument,
+  QuacksForMeQuery,
   QuacksForMeQueryVariables,
+  QuacksFromUserDocument,
+  QuacksFromUserQuery,
+  QuacksFromUserQueryVariables,
+  RepliesOfQuackDocument,
+  RepliesOfQuackQuery,
   RequackMutationVariables,
   SignupMutation,
   UnblockMutation,
   UnblockMutationVariables,
   UnfollowMutation,
   UnfollowMutationVariables,
-  QuacksFromUserQueryVariables,
-  QuacksForMeQuery,
-  QuacksFromUserQuery,
-  RegularQuackFragmentDoc,
-  RegularQuackFragment,
 } from "../generated/graphql";
+import schema from "../generated/schema.json";
 import { betterUpdateQuery } from "./betterUpdateQuery";
 import { pagination } from "./pagination";
 import { updateBlockOrUnblock } from "./updateBlockOrUnblock";
 import { updateFollowOrUnfollow } from "./updateFollowOrUnfollow";
 import { updateLikeOrRequack } from "./updateLikeOrRequack";
-import schema from "../generated/schema.json";
 
 export const cacheExchange = CE({
   schema: schema as any,
@@ -130,21 +130,26 @@ export const cacheExchange = CE({
           );
 
           if (quack.inReplyToQuack) {
-            const _quack = cache.readFragment<RegularQuackFragment>(
-              RegularQuackFragmentDoc,
-              { __typename: "Quack", id: quack.inReplyToQuack.id }
+            console.log("inReplyToQuackId: ", quack.inReplyToQuack.id);
+            cache.updateQuery<RepliesOfQuackQuery>(
+              {
+                query: RepliesOfQuackDocument,
+                variables: {
+                  quackId: quack.inReplyToQuack.id,
+                  limit: 20,
+                  lastIndex: null,
+                },
+              },
+              (data) => {
+                console.log("data: ", data);
+                if (data) {
+                  const { repliesOfQuack } = data;
+                  repliesOfQuack?.quacks?.unshift(quack);
+                }
+                console.log("new data: ", data);
+                return data;
+              }
             );
-
-            if (_quack) {
-              const replies = _quack.replies
-                ? [quack, ..._quack.replies]
-                : [quack];
-
-              cache.writeFragment(RegularQuackFragmentDoc, {
-                ..._quack,
-                replies,
-              });
-            }
           }
         }
       },
