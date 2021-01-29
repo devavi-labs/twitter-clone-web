@@ -26,7 +26,7 @@ const QuackSharePopper: React.FC<QuackSharePopperProps> = ({
 }) => {
   const classes = useStyles();
 
-  const link = `${REACT_APP_DOMAIN}/${quack?.quackedByUser?.username}/status/${quack?.id}`;
+  const link = `${REACT_APP_DOMAIN}/${quack?.quackedByUser?.username}/quack/${quack?.id}`;
 
   const copy = useClipboard();
 
