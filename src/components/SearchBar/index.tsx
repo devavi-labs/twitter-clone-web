@@ -21,7 +21,11 @@ type Value = {
   trimmedValue: string;
 };
 
-const SearchBar: React.FC = () => {
+type SearchBarProps = {
+  input?: string;
+};
+
+const SearchBar: React.FC<SearchBarProps> = ({ input = "" }) => {
   const classes = useStyles();
   const { xs } = useMediaQuery();
 
@@ -29,12 +33,14 @@ const SearchBar: React.FC = () => {
     ,
     { pushSearch, initialize: initializeRecentSearches },
   ] = useRecentSearches();
-  const [, { handleOpen, handleQueryUpdate }] = useInstantSearch();
+  const [, { handleOpen, handleQueryUpdate, handleClose }] = useInstantSearch();
 
   const [value, setValue] = React.useState<Value>({
-    actualValue: "",
-    trimmedValue: "",
+    actualValue: input,
+    trimmedValue: input,
   });
+
+  const { open, anchorEl, onClose, setAnchorEl, setOpen } = usePopper();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -44,6 +50,11 @@ const SearchBar: React.FC = () => {
       trimmedValue: e.target.value.trim(),
     });
     handleQueryUpdate(e.target.value.trim());
+
+    if (!open) {
+      setOpen(true);
+      handleOpen();
+    }
   };
 
   const clear = () => {
@@ -57,8 +68,6 @@ const SearchBar: React.FC = () => {
   const inputRef = React.useRef<HTMLElement>();
 
   const history = useHistory();
-
-  const { open, anchorEl, onClose, setAnchorEl, setOpen } = usePopper();
 
   const handlePopperOpen = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget);
@@ -76,6 +85,8 @@ const SearchBar: React.FC = () => {
     event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     if (value.trimmedValue && event.key === "Enter") {
+      setOpen(false);
+      handleClose();
       handleSearch();
     }
   };

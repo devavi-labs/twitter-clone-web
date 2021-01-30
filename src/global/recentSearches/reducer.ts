@@ -56,11 +56,15 @@ export const recentSearchesReducer = (
       if (action.payload) {
         const _string = localStorage.getItem(RECENT_SEARCHES);
 
-        const _array = _string
+        let _array = _string
           ? (JSON.parse(_string) as Array<string>)
           : Array<string>();
 
         _array.unshift(action.payload);
+
+        if (_array.length > 3) {
+          _array = _array.slice(0, 4);
+        }
 
         localStorage.setItem(RECENT_SEARCHES, JSON.stringify(_array));
 

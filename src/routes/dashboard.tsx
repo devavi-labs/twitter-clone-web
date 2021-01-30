@@ -5,6 +5,7 @@ import { ProfilePage } from "../pages/Profile";
 import { RouteStateType } from ".";
 import { Explore } from "../pages/Explore";
 import { QuackPage } from "../pages/Quack";
+import { Search } from "../pages/Search";
 
 export const DashboardRoutes = () => {
   const location = useLocation<RouteStateType>();
@@ -19,6 +20,9 @@ export const DashboardRoutes = () => {
         redirectPath="/"
         redirectState={{ from: "/home" }}
       />
+      <Route exact path="/search">
+        <Search />
+      </Route>
       <Route exact path="/explore">
         <Explore />
       </Route>

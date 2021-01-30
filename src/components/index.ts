@@ -78,3 +78,5 @@ export { NewsListItem } from "./NewsListItem";
 export { HeroNews } from "./HeroNews";
 export { BottomBanner } from "./BottomBanner";
 export { NewToQuackerCard } from "./NewToQuackerCard";
+export { SearchResults } from "./SearchResults";
+export { PaginatedUsers } from "./PaginatedUsers";

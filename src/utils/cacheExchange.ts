@@ -28,6 +28,7 @@ import {
 } from "../generated/graphql";
 import schema from "../generated/schema.json";
 import { betterUpdateQuery } from "./betterUpdateQuery";
+import { searchResultsPagination } from "./searchResultsPagination";
 import { pagination } from "./pagination";
 import { updateBlockOrUnblock } from "./updateBlockOrUnblock";
 import { updateFollowOrUnfollow } from "./updateFollowOrUnfollow";
@@ -37,6 +38,8 @@ export const cacheExchange = CE({
   schema: schema as any,
   keys: {
     PaginatedQuacks: () => null,
+    PaginatedUsers: () => null,
+    SearchResponse: () => null,
   },
   resolvers: {
     Query: {
@@ -44,6 +47,7 @@ export const cacheExchange = CE({
       quacksFromUser: pagination("quacks", "PaginatedQuacks"),
       requacksByUserId: pagination("quacks", "PaginatedQuacks"),
       likesByUserId: pagination("quacks", "PaginatedQuacks"),
+      search: searchResultsPagination(),
     },
   },
   updates: {
