@@ -1,10 +1,11 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import {
   SignupModal,
   ProtectedRoute,
   CreateQuackModal,
   DisplaySettingsModal,
+  AdvancedSearchModal,
 } from "../components";
 
 export const ModalRoutes = () => {
@@ -31,6 +32,9 @@ export const ModalRoutes = () => {
         redirectPath="/login"
         redirectState={{ from: "/i/display" }}
       />
+      <Route exact path="/search-advanced">
+        <AdvancedSearchModal open />
+      </Route>
     </Switch>
   );
 };

@@ -80,3 +80,4 @@ export { BottomBanner } from "./BottomBanner";
 export { NewToQuackerCard } from "./NewToQuackerCard";
 export { SearchResults } from "./SearchResults";
 export { PaginatedUsers } from "./PaginatedUsers";
+export { AdvancedSearchModal } from "./AdvancedSearchModal";
