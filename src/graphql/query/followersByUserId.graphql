@@ -1,0 +1,8 @@
+query FollowersByUserId($userId: Int!, $limit: Int, $lastIndex: Int) {
+  followersByUserId(userId: $userId, limit: $limit, lastIndex: $lastIndex) {
+    hasMore
+    users {
+      ...RegularUser
+    }
+  }
+}

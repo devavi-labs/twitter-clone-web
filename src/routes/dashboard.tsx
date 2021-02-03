@@ -6,6 +6,7 @@ import { RouteStateType } from ".";
 import { Explore } from "../pages/Explore";
 import { QuackPage } from "../pages/Quack";
 import { Search } from "../pages/Search";
+import { FollowStats } from "../pages/FollowStats";
 
 export const DashboardRoutes = () => {
   const location = useLocation<RouteStateType>();
@@ -55,6 +56,12 @@ export const DashboardRoutes = () => {
       </Route>
       <Route path="/:username/likes" exact>
         <ProfilePage tab={2} />
+      </Route>
+      <Route path="/:username/followers" exact>
+        <FollowStats tab={0} />
+      </Route>
+      <Route path="/:username/following" exact>
+        <FollowStats tab={1} />
       </Route>
     </Switch>
   );

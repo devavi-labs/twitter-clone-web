@@ -544,6 +544,44 @@ export type UnfollowMutation = (
   & Pick<Mutation, 'unfollow'>
 );
 
+export type FollowersByUserIdQueryVariables = Exact<{
+  userId: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  lastIndex?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type FollowersByUserIdQuery = (
+  { __typename?: 'Query' }
+  & { followersByUserId?: Maybe<(
+    { __typename?: 'PaginatedUsers' }
+    & Pick<PaginatedUsers, 'hasMore'>
+    & { users?: Maybe<Array<(
+      { __typename?: 'User' }
+      & RegularUserFragment
+    )>> }
+  )> }
+);
+
+export type FollowingsByUserIdQueryVariables = Exact<{
+  userId: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  lastIndex?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type FollowingsByUserIdQuery = (
+  { __typename?: 'Query' }
+  & { followingsByUserId?: Maybe<(
+    { __typename?: 'PaginatedUsers' }
+    & Pick<PaginatedUsers, 'hasMore'>
+    & { users?: Maybe<Array<(
+      { __typename?: 'User' }
+      & RegularUserFragment
+    )>> }
+  )> }
+);
+
 export type LikesByQuackIdQueryVariables = Exact<{
   quackId: Scalars['Int'];
   limit?: Maybe<Scalars['Int']>;
@@ -1009,6 +1047,34 @@ export const UnfollowDocument = gql`
 
 export function useUnfollowMutation() {
   return Urql.useMutation<UnfollowMutation, UnfollowMutationVariables>(UnfollowDocument);
+};
+export const FollowersByUserIdDocument = gql`
+    query FollowersByUserId($userId: Int!, $limit: Int, $lastIndex: Int) {
+  followersByUserId(userId: $userId, limit: $limit, lastIndex: $lastIndex) {
+    hasMore
+    users {
+      ...RegularUser
+    }
+  }
+}
+    ${RegularUserFragmentDoc}`;
+
+export function useFollowersByUserIdQuery(options: Omit<Urql.UseQueryArgs<FollowersByUserIdQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<FollowersByUserIdQuery>({ query: FollowersByUserIdDocument, ...options });
+};
+export const FollowingsByUserIdDocument = gql`
+    query FollowingsByUserId($userId: Int!, $limit: Int, $lastIndex: Int) {
+  followingsByUserId(userId: $userId, limit: $limit, lastIndex: $lastIndex) {
+    hasMore
+    users {
+      ...RegularUser
+    }
+  }
+}
+    ${RegularUserFragmentDoc}`;
+
+export function useFollowingsByUserIdQuery(options: Omit<Urql.UseQueryArgs<FollowingsByUserIdQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<FollowingsByUserIdQuery>({ query: FollowingsByUserIdDocument, ...options });
 };
 export const LikesByQuackIdDocument = gql`
     query LikesByQuackId($quackId: Int!, $limit: Int, $lastIndex: Int) {
