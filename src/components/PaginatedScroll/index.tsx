@@ -49,27 +49,25 @@ const PaginatedScroll: React.FC<PaginatedScrollProps> = ({
     return <EmptyDataDisplay title={onEmptyTitle} message={onEmptyMessage} />;
   } else if (length > 0)
     return (
-      <div>
-        <InfiniteScroll
-          dataLength={length}
-          next={next}
-          hasMore={hasMore}
-          loader={
-            <div className={classes.loading}>
-              <CircularProgressBar />
-            </div>
-          }
-          endMessage={
-            <p style={{ textAlign: "center" }}>
-              <b>You've seen it all!</b>
-            </p>
-          }
-        >
-          {children}
-        </InfiniteScroll>
-      </div>
+      <InfiniteScroll
+        dataLength={length}
+        next={next}
+        hasMore={hasMore}
+        loader={
+          <div className={classes.loading}>
+            <CircularProgressBar />
+          </div>
+        }
+        endMessage={
+          <p style={{ textAlign: "center" }}>
+            <b>You've seen it all!</b>
+          </p>
+        }
+      >
+        {children}
+      </InfiniteScroll>
     );
-  return <></>;
+  return <React.Fragment />;
 };
 
 export { PaginatedScroll };

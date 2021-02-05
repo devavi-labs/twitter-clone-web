@@ -92,7 +92,8 @@ const QuackStatsModal: React.FC<QuackStatsModalProps> = ({
         </div>
       }
       disableBackdropClick={false}
-      padding="0.5rem 2rem"
+      padding="0px"
+      top="5%"
     >
       <div className={classes.body}>
         {type === "requacks" ? (
