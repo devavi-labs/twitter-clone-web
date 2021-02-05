@@ -50,6 +50,8 @@ export const cacheExchange = CE({
       search: searchResultsPagination(),
       followersByUserId: pagination("users", "PaginatedUsers"),
       followingsByUserId: pagination("users", "PaginatedUsers"),
+      requacksByQuackId: pagination("users", "PaginatedUsers"),
+      likesByQuackId: pagination("users", "PaginatedUsers"),
     },
   },
   updates: {

@@ -1,10 +1,11 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import {
   SignupModal,
   ProtectedRoute,
   CreateQuackModal,
   DisplaySettingsModal,
+  QuackStatsModal,
 } from "../components";
 
 export const ModalRoutes = () => {
@@ -31,6 +32,12 @@ export const ModalRoutes = () => {
         redirectPath="/login"
         redirectState={{ from: "/i/display" }}
       />
+      <Route exact path="/:username/quack/:quackId/requacks">
+        <QuackStatsModal type="requacks" />
+      </Route>
+      <Route exact path="/:username/quack/:quackId/likes">
+        <QuackStatsModal type="likes" />
+      </Route>
     </Switch>
   );
 };

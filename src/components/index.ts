@@ -81,3 +81,4 @@ export { NewToQuackerCard } from "./NewToQuackerCard";
 export { SearchResults } from "./SearchResults";
 export { PaginatedUsers } from "./PaginatedUsers";
 export { FollowStats } from "./FollowStats";
+export { QuackStatsModal } from "./QuackStatsModal";
