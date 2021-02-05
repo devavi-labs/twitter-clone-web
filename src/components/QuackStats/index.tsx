@@ -1,5 +1,6 @@
-import { Box, Divider, Link, Typography } from "@material-ui/core";
+import { Box, Divider } from "@material-ui/core";
 import React from "react";
+import { Stat } from "..";
 import { RegularQuackFragment } from "../../generated/graphql";
 import { useStyles } from "./styles";
 
@@ -16,48 +17,35 @@ export const QuackStats: React.FC<QuackStatsProps> = ({ quack }) => {
     (quack?.likes && quack.likes > 0)
   ) {
     return (
-      <>
+      <React.Fragment>
         <Box className={classes.stats}>
           {quack?.replies && quack.replies > 0 ? (
-            <Link className={classes.stat}>
-              <Typography component="span" className={classes.primaryText}>
-                {quack.replies}
-              </Typography>
-              <Typography component="span" className={classes.secondaryText}>
-                Replies
-              </Typography>
-            </Link>
+            <Stat label="Replies" stat={quack.replies} />
           ) : (
-            <></>
+            <React.Fragment />
           )}
           {quack?.requacks && quack.requacks > 0 ? (
-            <Link className={classes.stat}>
-              <Typography component="span" className={classes.primaryText}>
-                {quack.requacks}
-              </Typography>
-              <Typography component="span" className={classes.secondaryText}>
-                Requacks
-              </Typography>
-            </Link>
+            <Stat
+              label="Requacks"
+              stat={quack.requacks}
+              href={`/${quack.quackedByUser?.username}/quack/${quack.id}/requacks`}
+            />
           ) : (
-            <></>
+            <React.Fragment />
           )}
           {quack?.likes && quack.likes > 0 ? (
-            <Link className={classes.stat}>
-              <Typography component="span" className={classes.primaryText}>
-                {quack.likes}
-              </Typography>
-              <Typography component="span" className={classes.secondaryText}>
-                Likes
-              </Typography>
-            </Link>
+            <Stat
+              label="Likes"
+              stat={quack.likes}
+              href={`/${quack.quackedByUser?.username}/quack/${quack.id}/likes`}
+            />
           ) : (
-            <></>
+            <React.Fragment />
           )}
         </Box>
         <Divider />
-      </>
+      </React.Fragment>
     );
   }
-  return <></>;
+  return <React.Fragment />;
 };
