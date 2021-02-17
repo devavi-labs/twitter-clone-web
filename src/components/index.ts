@@ -81,3 +81,4 @@ export { NewToQuackerCard } from "./NewToQuackerCard";
 export { SearchResults } from "./SearchResults";
 export { PaginatedUsers } from "./PaginatedUsers";
 export { AdvancedSearchModal } from "./AdvancedSearchModal";
+export { AdvancedSearchForm } from "./AdvancedSearchForm";

@@ -23,6 +23,9 @@ export const DashboardRoutes = () => {
       <Route exact path="/search">
         <Search />
       </Route>
+      <Route exact path="/search-advanced">
+        <Explore />
+      </Route>
       <Route exact path="/explore">
         <Explore />
       </Route>
