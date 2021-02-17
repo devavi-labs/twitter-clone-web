@@ -5,7 +5,7 @@ import {
   InputBase,
 } from "@material-ui/core";
 import React from "react";
-import { BsSearch, BsX } from "react-icons/bs";
+import { BsGear, BsSearch, BsX } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
 import { SearchPopper } from "..";
 import {
@@ -125,6 +125,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ input = "" }) => {
           onChange={handleChange}
           onKeyUp={handleEnter}
         />
+        <IconButton
+          onClick={() =>
+            history.push("/search-advanced", {
+              background: history.location,
+            })
+          }
+        >
+          <BsGear />
+        </IconButton>
         {!xs && (
           <SearchPopper
             open={open}
