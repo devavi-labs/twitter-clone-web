@@ -1,11 +1,11 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import {
   SignupModal,
   ProtectedRoute,
   CreateQuackModal,
   DisplaySettingsModal,
-  QuackStatsModal,
+  AdvancedSearchModal,
 } from "../components";
 
 export const ModalRoutes = () => {
@@ -32,11 +32,8 @@ export const ModalRoutes = () => {
         redirectPath="/login"
         redirectState={{ from: "/i/display" }}
       />
-      <Route exact path="/:username/quack/:quackId/requacks">
-        <QuackStatsModal type="requacks" />
-      </Route>
-      <Route exact path="/:username/quack/:quackId/likes">
-        <QuackStatsModal type="likes" />
+      <Route exact path="/search-advanced">
+        <AdvancedSearchModal open />
       </Route>
     </Switch>
   );

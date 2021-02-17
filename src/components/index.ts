@@ -80,5 +80,5 @@ export { BottomBanner } from "./BottomBanner";
 export { NewToQuackerCard } from "./NewToQuackerCard";
 export { SearchResults } from "./SearchResults";
 export { PaginatedUsers } from "./PaginatedUsers";
-export { FollowStats } from "./FollowStats";
-export { QuackStatsModal } from "./QuackStatsModal";
+export { AdvancedSearchModal } from "./AdvancedSearchModal";
+export { AdvancedSearchForm } from "./AdvancedSearchForm";
