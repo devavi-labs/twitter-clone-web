@@ -5,7 +5,8 @@ export const useStyles = makeStyles(
     searchBar: {
       width: "100%",
       display: "flex",
-      flexDirection: "column",
+      alignItems: "center",
+      gap: "0.5rem",
     },
     input: {
       minHeight: 36,
