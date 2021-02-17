@@ -3,7 +3,7 @@ dependencies:
   '@material-ui/core': 4.11.2_aef73de6374e2d7a7f5dc9d5ceec06df
   '@material-ui/pickers': 3.2.10_f4b58722d877c15467e3e7d6668ec53d
   '@urql/exchange-auth': 0.1.2_graphql@15.4.0
-  '@urql/exchange-graphcache': 3.3.3_graphql@15.4.0
+  '@urql/exchange-graphcache': 4.0.0_graphql@15.4.0
   clipboard-copy: 4.0.1
   date-fns: 2.16.1
   emoji-mart: 3.0.0_react@17.0.1
@@ -24,7 +24,7 @@ dependencies:
   regexify-string: 1.0.5
   twitter-text: 3.1.0
   typescript: 4.1.3
-  urql: 1.11.4_graphql@15.4.0+react@17.0.1
+  urql: 2.0.1_graphql@15.4.0+react@17.0.1
   yup: 0.32.8
 devDependencies:
   '@graphql-codegen/cli': 1.20.0_graphql@15.4.0+typescript@4.1.3
@@ -3173,7 +3173,7 @@ packages:
       node: ^8.10.0 || ^10.13.0 || >=11.10.1
     resolution:
       integrity: sha512-IrlBhD9bm4bdYcS8xpWarazkKXlE7iYb1HzRuyBP114mIaj5DJPo11Us1HgH60dTt41TCZXMaTCAW+OILIYPOg==
-  /@urql/core/1.16.1_graphql@15.4.0:
+  /@urql/core/2.0.0_graphql@15.4.0:
     dependencies:
       '@graphql-typed-document-node/core': 3.1.0_graphql@15.4.0
       graphql: 15.4.0
@@ -3182,10 +3182,10 @@ packages:
     peerDependencies:
       graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
     resolution:
-      integrity: sha512-lcEMCS/rB+ug7jKSRDVZIsqNhZxRooTNa1kHfvSjJT2k4SXDyPmjNSfXBUJF2pDJmvv9EIKl9Tk0AF1CvG3Q/g==
+      integrity: sha512-Qj24CG8ullqZZsYmjrSH0JhH+nY7kj8GbVbA9si3KUjlYs75A/MBQU3i97j6oWyGldDBapyis2CfaQeXKbv8rA==
   /@urql/exchange-auth/0.1.2_graphql@15.4.0:
     dependencies:
-      '@urql/core': 1.16.1_graphql@15.4.0
+      '@urql/core': 2.0.0_graphql@15.4.0
       graphql: 15.4.0
       wonka: 4.0.15
     dev: false
@@ -3193,16 +3193,16 @@ packages:
       graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
     resolution:
       integrity: sha512-SIrcnbom+nro0pALmqQmcMxUcy8qZUoykoPs5LezYVPmvZXx4ErXwly58g0XoU4eX10U2gakjCFPTyleF8Nt6Q==
-  /@urql/exchange-graphcache/3.3.3_graphql@15.4.0:
+  /@urql/exchange-graphcache/4.0.0_graphql@15.4.0:
     dependencies:
-      '@urql/core': 1.16.1_graphql@15.4.0
+      '@urql/core': 2.0.0_graphql@15.4.0
       graphql: 15.4.0
       wonka: 4.0.15
     dev: false
     peerDependencies:
       graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
     resolution:
-      integrity: sha512-xkKvSN18bLsl6ldf64A7r2ibdoUwBlNJxog3cCyffktAgG3E1yuKbKs/qZELPsIQIEFPvTpC/gqCpBbJ7+0YRA==
+      integrity: sha512-UuLyR2tuy28KFmcMzD0aU3hWEa62H8Yfo9rBVAaXPxvGUD8g0Bq3NXUGLBvXxKMZcodn7AjYeVBlfPCHth9awA==
   /@webassemblyjs/ast/1.9.0:
     dependencies:
       '@webassemblyjs/helper-module-context': 1.9.0
@@ -13921,9 +13921,9 @@ packages:
     dev: false
     resolution:
       integrity: sha1-ODjpfPxgUh63PFJajlW/3Z4uKPE=
-  /urql/1.11.4_graphql@15.4.0+react@17.0.1:
+  /urql/2.0.1_graphql@15.4.0+react@17.0.1:
     dependencies:
-      '@urql/core': 1.16.1_graphql@15.4.0
+      '@urql/core': 2.0.0_graphql@15.4.0
       graphql: 15.4.0
       react: 17.0.1
       wonka: 4.0.15
@@ -13932,7 +13932,7 @@ packages:
       graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
       react: '>= 16.8.0'
     resolution:
-      integrity: sha512-VtX8xuzwxDtVXRCf/uvy1LcAnBIfiDrKlkblq6ENVJtI3eNsq7mTTxk3F1kZCxE29GWBayQpO4kcLzhEE0OojQ==
+      integrity: sha512-UTYLaMMw/N2iM2nHbcZ1XvN+opZxtWKwJaczV+MAco8buFpR3JR9CFrgKvx9p4uz+EayqQ69LZTWreJx+c196w==
   /use/3.1.1:
     dev: false
     engines:
@@ -14713,7 +14713,7 @@ specifiers:
   '@types/twitter-text': ^3.1.0
   '@types/yup': ^0.29.11
   '@urql/exchange-auth': ^0.1.2
-  '@urql/exchange-graphcache': ^3.3.3
+  '@urql/exchange-graphcache': ^4.0.0
   babel-plugin-import: ^1.13.3
   clipboard-copy: ^4.0.1
   customize-cra: ^1.0.0
@@ -14737,5 +14737,5 @@ specifiers:
   regexify-string: ^1.0.5
   twitter-text: ^3.1.0
   typescript: ^4.0.3
-  urql: ^1.11.4
+  urql: 2.0.1
   yup: ^0.32.8
