@@ -42,6 +42,7 @@ export const CreateQuackModal: React.FC<CreateQuackModalProps> = ({
         <CreateQuack
           bottomDivider={false}
           inReplyToQuackId={state?.inReplyToQuack?.id}
+          onDone={goBack}
         />
       </>
     </Modal>

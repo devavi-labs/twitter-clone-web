@@ -32,11 +32,13 @@ const validationSchema = Yup.object({
 interface CreateQuackProps {
   bottomDivider?: boolean;
   inReplyToQuackId?: number;
+  onDone?: () => void;
 }
 
 export const CreateQuack: React.FC<CreateQuackProps> = ({
   bottomDivider = true,
   inReplyToQuackId,
+  onDone = () => {},
 }) => {
   const classes = useStyles();
 
@@ -55,6 +57,8 @@ export const CreateQuack: React.FC<CreateQuackProps> = ({
     }
 
     resetForm();
+
+    return onDone();
   };
 
   const formik = useFormik<QuackValues>({
