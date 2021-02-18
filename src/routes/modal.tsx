@@ -1,11 +1,12 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import {
-  SignupModal,
-  ProtectedRoute,
+  AdvancedSearchModal,
   CreateQuackModal,
   DisplaySettingsModal,
-  AdvancedSearchModal,
+  DummyUserLoginModal,
+  ProtectedRoute,
+  SignupModal,
 } from "../components";
 
 export const ModalRoutes = () => {
@@ -15,6 +16,13 @@ export const ModalRoutes = () => {
         path="/i/flow/signup"
         exact
         ProtectedComponent={<SignupModal open />}
+        redirectPath="/home"
+        reverse
+      />
+      <ProtectedRoute
+        path="/i/flow/login-dummy"
+        exact
+        ProtectedComponent={<DummyUserLoginModal open />}
         redirectPath="/home"
         reverse
       />

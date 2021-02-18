@@ -1,0 +1,8 @@
+query DummyUsers($limit: Int, $lastIndex: Int) {
+  dummyUsers(limit: $limit, lastIndex: $lastIndex) {
+    hasMore
+    users {
+      ...RegularUser
+    }
+  }
+}

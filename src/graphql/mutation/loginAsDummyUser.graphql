@@ -1,0 +1,5 @@
+mutation LoginAsDummyUser($userId: Int!) {
+  loginAsDummyUser(userId: $userId) {
+    ...RegularUserResponse
+  }
+}

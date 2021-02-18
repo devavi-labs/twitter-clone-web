@@ -459,6 +459,19 @@ export type LoginMutation = (
   ) }
 );
 
+export type LoginAsDummyUserMutationVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
+
+
+export type LoginAsDummyUserMutation = (
+  { __typename?: 'Mutation' }
+  & { loginAsDummyUser: (
+    { __typename?: 'UserResponse' }
+    & RegularUserResponseFragment
+  ) }
+);
+
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -527,6 +540,24 @@ export type UnfollowMutationVariables = Exact<{
 export type UnfollowMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'unfollow'>
+);
+
+export type DummyUsersQueryVariables = Exact<{
+  limit?: Maybe<Scalars['Int']>;
+  lastIndex?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type DummyUsersQuery = (
+  { __typename?: 'Query' }
+  & { dummyUsers?: Maybe<(
+    { __typename?: 'PaginatedUsers' }
+    & Pick<PaginatedUsers, 'hasMore'>
+    & { users?: Maybe<Array<(
+      { __typename?: 'User' }
+      & RegularUserFragment
+    )>> }
+  )> }
 );
 
 export type FollowersByUserIdQueryVariables = Exact<{
@@ -968,6 +999,17 @@ export const LoginDocument = gql`
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };
+export const LoginAsDummyUserDocument = gql`
+    mutation LoginAsDummyUser($userId: Int!) {
+  loginAsDummyUser(userId: $userId) {
+    ...RegularUserResponse
+  }
+}
+    ${RegularUserResponseFragmentDoc}`;
+
+export function useLoginAsDummyUserMutation() {
+  return Urql.useMutation<LoginAsDummyUserMutation, LoginAsDummyUserMutationVariables>(LoginAsDummyUserDocument);
+};
 export const LogoutDocument = gql`
     mutation Logout {
   logout
@@ -1031,6 +1073,20 @@ export const UnfollowDocument = gql`
 
 export function useUnfollowMutation() {
   return Urql.useMutation<UnfollowMutation, UnfollowMutationVariables>(UnfollowDocument);
+};
+export const DummyUsersDocument = gql`
+    query DummyUsers($limit: Int, $lastIndex: Int) {
+  dummyUsers(limit: $limit, lastIndex: $lastIndex) {
+    hasMore
+    users {
+      ...RegularUser
+    }
+  }
+}
+    ${RegularUserFragmentDoc}`;
+
+export function useDummyUsersQuery(options: Omit<Urql.UseQueryArgs<DummyUsersQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<DummyUsersQuery>({ query: DummyUsersDocument, ...options });
 };
 export const FollowersByUserIdDocument = gql`
     query FollowersByUserId($userId: Int!, $limit: Int, $lastIndex: Int) {

@@ -18,8 +18,8 @@ const Login = () => {
         <LoginForm />
 
         <div className={classes.extraLinks}>
-          <Link component={RouteLink} to="/">
-            Forgot password?
+          <Link component={RouteLink} to="/i/flow/login-dummy">
+            Log in as Dummy User
           </Link>
 
           {" · "}
