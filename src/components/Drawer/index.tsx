@@ -54,6 +54,7 @@ export const Drawer: React.FC<DrawerProps> = ({ open, onClose }) => {
             displayName={data?.me?.displayName}
             username={data?.me?.username}
             direction="vertical"
+            link={false}
           />
           <div className={classes.follow}>
             <div onClick={onClose}>
