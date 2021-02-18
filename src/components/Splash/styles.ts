@@ -14,4 +14,21 @@ export const useStyles = makeStyles(({ palette: { primary } }) => ({
       outline: "none",
     },
   },
+  logoContainer: {
+    position: "relative",
+    display: "grid",
+    placeItems: "center",
+  },
+  progress: {
+    position: "absolute",
+    color: "white",
+  },
+  serverDelayMessageContainer: {
+    maxWidth: 400,
+    margin: "0.4rem 0",
+  },
+  serverDelayMessage: {
+    fontSize: "1.2rem",
+    textAlign: "center",
+  },
 }));
