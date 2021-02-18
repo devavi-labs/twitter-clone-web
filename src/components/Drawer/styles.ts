@@ -37,14 +37,9 @@ export const useStyles = makeStyles(
     avatar: {
       height: 36,
       width: 36,
+      marginBottom: 8,
     },
-    displayName: {
-      fontWeight: "bold",
-      marginTop: "0.4rem",
-    },
-    username: {
-      opactiy: 0.6,
-    },
+
     follow: {
       display: "flex",
       gap: "1rem",

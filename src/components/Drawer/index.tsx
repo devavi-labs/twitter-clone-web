@@ -11,9 +11,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { BsDisplay, BsGear, BsPerson, BsX } from "react-icons/bs";
+import { BsDisplay, BsHouse, BsHash, BsPerson, BsX } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
-import { Backdrop, Stat } from "..";
+import { Backdrop, Stat, DisplayName } from "..";
 import { useMeQuery } from "../../generated/graphql";
 import { useRouter } from "../../hooks";
 import { useStyles } from "./styles";
@@ -50,26 +50,53 @@ export const Drawer: React.FC<DrawerProps> = ({ open, onClose }) => {
             alt={data?.me?.displayName}
             className={classes.avatar}
           />
-          <Typography className={classes.displayName}>
-            {data?.me?.displayName}
-          </Typography>
-          <Typography className={classes.username}>
-            @{data?.me?.username}
-          </Typography>
+          <DisplayName
+            displayName={data?.me?.displayName}
+            username={data?.me?.username}
+            direction="vertical"
+          />
           <div className={classes.follow}>
-            <Stat
-              label="following"
-              stat={data?.me?.followings || 0}
-              href={`/${data?.me?.username}/followers`}
-            />
-            <Stat
-              label="followers"
-              stat={data?.me?.followers || 0}
-              href={`/${data?.me?.username}/following`}
-            />
+            <div onClick={onClose}>
+              <Stat
+                label="following"
+                stat={data?.me?.followings || 0}
+                href={`/${data?.me?.username}/followers`}
+              />
+            </div>
+            <div onClick={onClose}>
+              <Stat
+                label="followers"
+                stat={data?.me?.followers || 0}
+                href={`/${data?.me?.username}/following`}
+              />
+            </div>
           </div>
         </div>
         <List>
+          <ListItem
+            component={Button}
+            onClick={() => {
+              onClose();
+              history.push("/home");
+            }}
+          >
+            <ListItemIcon className={classes.listIcon}>
+              <BsHouse />
+            </ListItemIcon>
+            <ListItemText className={classes.listText}>Home</ListItemText>
+          </ListItem>
+          <ListItem
+            component={Button}
+            onClick={() => {
+              onClose();
+              history.push("/explore");
+            }}
+          >
+            <ListItemIcon className={classes.listIcon}>
+              <BsHash />
+            </ListItemIcon>
+            <ListItemText className={classes.listText}>Explore</ListItemText>
+          </ListItem>
           <ListItem
             component={Button}
             onClick={() => {
@@ -82,12 +109,7 @@ export const Drawer: React.FC<DrawerProps> = ({ open, onClose }) => {
             </ListItemIcon>
             <ListItemText className={classes.listText}>Profile</ListItemText>
           </ListItem>
-          <ListItem component={Button}>
-            <ListItemIcon className={classes.listIcon}>
-              <BsGear />
-            </ListItemIcon>
-            <ListItemText className={classes.listText}>Settings</ListItemText>
-          </ListItem>
+
           <ListItem
             component={Button}
             onClick={() => {
