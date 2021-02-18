@@ -3,9 +3,13 @@ import React from "react";
 import { useNewsQuery } from "../../generated/graphql";
 import { useStyles } from "./styles";
 import { CircularProgressBar, ErrorDisplay, NewsListItem } from "..";
+import { useHistory } from "react-router-dom";
 
 const SidebarNewsFeed: React.FC = () => {
   const classes = useStyles();
+
+  const history = useHistory();
+
   const maxItemsLength = 10;
 
   const [{ data, fetching, error }] = useNewsQuery({
@@ -41,6 +45,7 @@ const SidebarNewsFeed: React.FC = () => {
               className={classes.footer}
               component={Button}
               disableRipple
+              onClick={() => history.push("/explore")}
             >
               Show More
             </ListItem>

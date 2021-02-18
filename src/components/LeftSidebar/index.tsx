@@ -51,7 +51,12 @@ export const LeftSidebar: React.FC = () => {
               isActive
               onClick={() => history.push("/")}
             />
-            <TabButton label="Explore" icon={BsHash} activeIcon={BsHash} />
+            <TabButton
+              label="Explore"
+              icon={BsHash}
+              activeIcon={BsHash}
+              onClick={() => history.push("/explore")}
+            />
             {data?.me && (
               <React.Fragment>
                 <TabButton
