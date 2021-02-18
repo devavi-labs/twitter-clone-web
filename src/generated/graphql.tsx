@@ -34,6 +34,7 @@ export type Query = {
   userById?: Maybe<User>;
   userByEmail?: Maybe<User>;
   userByUsername?: Maybe<User>;
+  dummyUsers?: Maybe<PaginatedUsers>;
 };
 
 
@@ -133,6 +134,12 @@ export type QueryUserByUsernameArgs = {
   username: Scalars['String'];
 };
 
+
+export type QueryDummyUsersArgs = {
+  lastIndex?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+};
+
 export type PaginatedUsers = {
   __typename?: 'PaginatedUsers';
   users?: Maybe<Array<User>>;
@@ -149,8 +156,7 @@ export type User = {
   coverPicture: Scalars['String'];
   username: Scalars['String'];
   email: Scalars['String'];
-  emailVerified: Scalars['Boolean'];
-  amIDeactivated: Scalars['Boolean'];
+  isVerified: Scalars['Boolean'];
   quacks?: Maybe<Scalars['Int']>;
   followers?: Maybe<Scalars['Int']>;
   followings?: Maybe<Scalars['Int']>;
@@ -233,14 +239,9 @@ export type Mutation = {
   requack: Scalars['Boolean'];
   signup: UserResponse;
   login: UserResponse;
-  sendEmailVerificationLink: Scalars['Boolean'];
-  verifyEmail: UserResponse;
-  forgotPassword: Scalars['Boolean'];
-  changePasswordWithToken: UserResponse;
   changePasswordWithOldPassword: UserResponse;
-  deactivate?: Maybe<UserResponse>;
-  activate?: Maybe<UserResponse>;
   logout: Scalars['Boolean'];
+  loginAsDummyUser: UserResponse;
 };
 
 
@@ -295,30 +296,14 @@ export type MutationLoginArgs = {
 };
 
 
-export type MutationVerifyEmailArgs = {
-  token: Scalars['String'];
-};
-
-
-export type MutationForgotPasswordArgs = {
-  email: Scalars['String'];
-};
-
-
-export type MutationChangePasswordWithTokenArgs = {
-  newPassword: Scalars['String'];
-  token: Scalars['String'];
-};
-
-
 export type MutationChangePasswordWithOldPasswordArgs = {
   newPassword: Scalars['String'];
   password: Scalars['String'];
 };
 
 
-export type MutationDeactivateArgs = {
-  password: Scalars['String'];
+export type MutationLoginAsDummyUserArgs = {
+  userId: Scalars['Int'];
 };
 
 export type QuackResponse = {
@@ -405,7 +390,7 @@ export type RegularQuackFragment = (
 
 export type RegularUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'displayName' | 'username' | 'displayPicture' | 'coverPicture' | 'emailVerified' | 'followers' | 'followings' | 'amIDeactivated' | 'quacks' | 'amIBlockedByThisUser' | 'haveIBlockedThisUser' | 'followStatus' | 'followBackStatus'>
+  & Pick<User, 'id' | 'displayName' | 'username' | 'displayPicture' | 'coverPicture' | 'isVerified' | 'followers' | 'followings' | 'quacks' | 'amIBlockedByThisUser' | 'haveIBlockedThisUser' | 'followStatus' | 'followBackStatus'>
 );
 
 export type RegularUserResponseFragment = (
@@ -856,10 +841,9 @@ export const RegularUserFragmentDoc = gql`
   username
   displayPicture
   coverPicture
-  emailVerified
+  isVerified
   followers
   followings
-  amIDeactivated
   quacks
   amIBlockedByThisUser
   haveIBlockedThisUser

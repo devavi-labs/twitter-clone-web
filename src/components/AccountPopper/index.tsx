@@ -39,7 +39,7 @@ export const AccountPopper: React.FC<AccountPopperProps> = ({
             <DisplayName
               displayName={data?.me?.displayName}
               username={data?.me?.username}
-              verified={data?.me?.emailVerified}
+              verified={data?.me?.isVerified}
               direction="vertical"
             />
           </div>

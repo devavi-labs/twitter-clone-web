@@ -39,7 +39,7 @@ export const AccountButton = () => {
           <DisplayName
             displayName={data?.me?.displayName}
             username={data?.me?.username}
-            verified={data?.me?.emailVerified}
+            verified={data?.me?.isVerified}
             direction="vertical"
             link={false}
           />

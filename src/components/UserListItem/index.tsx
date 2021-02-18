@@ -30,7 +30,7 @@ const UserListItem: React.FC<UserListItemProps> = ({ user }) => {
       <DisplayName
         displayName={user?.displayName}
         username={user?.username}
-        verified={user?.emailVerified}
+        verified={user?.isVerified}
         size="sm"
         direction="vertical"
         link={false}

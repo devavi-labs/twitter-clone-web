@@ -4,10 +4,9 @@ fragment RegularUser on User {
   username
   displayPicture
   coverPicture
-  emailVerified
+  isVerified
   followers
   followings
-  amIDeactivated
   quacks
   amIBlockedByThisUser
   haveIBlockedThisUser

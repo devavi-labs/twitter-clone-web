@@ -43,14 +43,12 @@ export const FollowStats: React.FC<FollowStatsProps> = ({ tab }) => {
   React.useEffect(() => {
     if (
       !data?.userByUsername?.amIBlockedByThisUser &&
-      !data?.userByUsername?.haveIBlockedThisUser &&
-      !data?.userByUsername?.amIDeactivated
+      !data?.userByUsername?.haveIBlockedThisUser
     ) {
       setViewStats(true);
     }
   }, [
     data?.userByUsername?.amIBlockedByThisUser,
-    data?.userByUsername?.amIDeactivated,
     data?.userByUsername?.haveIBlockedThisUser,
     viewStats,
   ]);

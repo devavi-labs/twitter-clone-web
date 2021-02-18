@@ -1,4 +1,10 @@
-import { AppBar as MuiAppBar, Divider, Tab, Tabs, Typography } from "@material-ui/core";
+import {
+  AppBar as MuiAppBar,
+  Divider,
+  Tab,
+  Tabs,
+  Typography,
+} from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
@@ -44,14 +50,12 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ tab }) => {
   React.useEffect(() => {
     if (
       !data?.userByUsername?.amIBlockedByThisUser &&
-      !data?.userByUsername?.haveIBlockedThisUser &&
-      !data?.userByUsername?.amIDeactivated
+      !data?.userByUsername?.haveIBlockedThisUser
     ) {
       setViewQuacks(true);
     }
   }, [
     data?.userByUsername?.amIBlockedByThisUser,
-    data?.userByUsername?.amIDeactivated,
     data?.userByUsername?.haveIBlockedThisUser,
     viewQuacks,
   ]);

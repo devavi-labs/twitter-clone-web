@@ -68,7 +68,7 @@ const Profile: React.FC<ProfileProps> = ({
             <DisplayName
               displayName={user?.displayName || `@${fallbackUsername}`}
               username={user?.username}
-              verified={user?.emailVerified}
+              verified={user?.isVerified}
               direction="vertical"
               size="lg"
               link={false}
