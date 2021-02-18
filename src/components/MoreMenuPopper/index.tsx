@@ -6,7 +6,7 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import React from "react";
-import { BsDisplay, BsGear } from "react-icons/bs";
+import { BsDisplay } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
 import { Popper } from "..";
 import { useRouter } from "../../hooks";
@@ -27,14 +27,6 @@ export const MoreMenuPopper: React.FC<MoreMenuPopperProps> = ({ ...props }) => {
   return (
     <Popper {...props}>
       <List className={classes.body}>
-        <ListItem component={Button}>
-          <div className={classes.item}>
-            <ListItemIcon>
-              <BsGear className={classes.icon} />
-            </ListItemIcon>
-            <ListItemText className={classes.text}>Settings</ListItemText>
-          </div>
-        </ListItem>
         <ListItem
           component={Button}
           onClick={() => {
