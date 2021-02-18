@@ -83,8 +83,16 @@ const Profile: React.FC<ProfileProps> = ({
           </div>
           {user && !user?.amIBlockedByThisUser && (
             <div className={classes.stats}>
-              <Stat label="following" stat={user?.followings || 0} />
-              <Stat label="followers" stat={user?.followers || 0} />
+              <Stat
+                label="following"
+                stat={user?.followings || 0}
+                href={`/${user?.username}/followers`}
+              />
+              <Stat
+                label="followers"
+                stat={user?.followers || 0}
+                href={`/${user?.username}/following`}
+              />
             </div>
           )}
         </div>

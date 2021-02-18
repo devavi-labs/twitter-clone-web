@@ -13,7 +13,7 @@ import {
 import React from "react";
 import { BsDisplay, BsGear, BsPerson, BsX } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
-import { Backdrop } from "..";
+import { Backdrop, Stat } from "..";
 import { useMeQuery } from "../../generated/graphql";
 import { useRouter } from "../../hooks";
 import { useStyles } from "./styles";
@@ -57,18 +57,16 @@ export const Drawer: React.FC<DrawerProps> = ({ open, onClose }) => {
             @{data?.me?.username}
           </Typography>
           <div className={classes.follow}>
-            <Typography className={classes.followText}>
-              <Typography className={classes.followStat}>
-                {data?.me?.followings}
-              </Typography>
-              Following
-            </Typography>
-            <Typography className={classes.followText}>
-              <Typography className={classes.followStat}>
-                {data?.me?.followers}
-              </Typography>
-              Followers
-            </Typography>
+            <Stat
+              label="following"
+              stat={data?.me?.followings || 0}
+              href={`/${data?.me?.username}/followers`}
+            />
+            <Stat
+              label="followers"
+              stat={data?.me?.followers || 0}
+              href={`/${data?.me?.username}/following`}
+            />
           </div>
         </div>
         <List>
