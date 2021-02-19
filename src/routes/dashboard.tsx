@@ -48,7 +48,7 @@ export const DashboardRoutes = () => {
       <Route exact path="/explore/tabs/movies">
         <Explore tab={5} />
       </Route>
-      <Route exact path="/:username/quack/:quackId">
+      <Route path="/:username/quack/:quackId">
         <QuackPage />
       </Route>
       <Route path="/:username" exact>
