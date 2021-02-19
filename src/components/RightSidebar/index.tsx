@@ -4,6 +4,7 @@ import {
   SearchBar,
   SidebarNewsFeed,
   NewToQuackerCard,
+  Footer,
 } from "../../components";
 import { useStyles } from "./styles";
 import { useLocation } from "react-router-dom";
@@ -22,21 +23,25 @@ export const RightSidebar = () => {
 
   return (
     <aside className={classes.rightSidebar}>
-      {!sm &&
-        (data && data.me ? (
-          <React.Fragment>
-            {toShowSearchbar && (
-              <AppBar position="sticky" bottomDivider={false}>
-                <SearchBar />
-              </AppBar>
-            )}
-            <div className={classes.feed}>
-              <SidebarNewsFeed />
-            </div>
-          </React.Fragment>
-        ) : (
-          <NewToQuackerCard />
-        ))}
+      {!sm && (
+        <React.Fragment>
+          {data && data.me ? (
+            <React.Fragment>
+              {toShowSearchbar && (
+                <AppBar position="sticky" bottomDivider={false}>
+                  <SearchBar />
+                </AppBar>
+              )}
+              <div className={classes.feed}>
+                <SidebarNewsFeed />
+              </div>
+            </React.Fragment>
+          ) : (
+            <NewToQuackerCard />
+          )}
+          <Footer />
+        </React.Fragment>
+      )}
     </aside>
   );
 };
