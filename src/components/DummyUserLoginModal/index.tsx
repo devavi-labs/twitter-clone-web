@@ -2,13 +2,14 @@ import { IconButton, Typography } from "@material-ui/core";
 import React from "react";
 import { BsX } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
-import { Modal, PaginatedUsers } from "..";
+import { Modal, PaginatedUsers, TopProgressBar } from "..";
 import {
   DummyUsersQueryVariables,
   RegularUserFragment,
   useDummyUsersQuery,
   useLoginAsDummyUserMutation,
 } from "../../generated/graphql";
+import { useToast } from "../../hooks";
 import { RouteStateType } from "../../routes";
 import { saveTokens } from "../../utils/manageTokens";
 import { useStyles } from "./styles";
@@ -43,7 +44,7 @@ export const DummyUserLoginModal: React.FC<DummyUserLoginModalProps> = ({
     }
   };
 
-  const [, login] = useLoginAsDummyUserMutation();
+  const [{ fetching: loggingIn }, login] = useLoginAsDummyUserMutation();
 
   const {
     replace,
@@ -51,8 +52,14 @@ export const DummyUserLoginModal: React.FC<DummyUserLoginModalProps> = ({
     location: { state },
   } = useHistory<RouteStateType>();
 
+  const [, { handleOpen: handleToastOpen }] = useToast();
+
   const handleLogin = async (user: RegularUserFragment | null | undefined) => {
-    const { data } = await login({ userId: user!.id });
+    const { data, error } = await login({ userId: user!.id });
+
+    if (error) {
+      handleToastOpen(error.message);
+    }
 
     if (data?.loginAsDummyUser.user) {
       saveTokens(
@@ -85,16 +92,21 @@ export const DummyUserLoginModal: React.FC<DummyUserLoginModalProps> = ({
       disableBackdropClick={false}
       padding="0px"
     >
-      <div className={classes.body}>
-        <PaginatedUsers
-          users={data?.dummyUsers?.users}
-          hasMore={data?.dummyUsers?.hasMore}
-          loading={fetching}
-          error={error ? (error.networkError ? "network" : "other") : undefined}
-          next={loadMore}
-          onUserClick={handleLogin}
-        />
-      </div>
+      <React.Fragment>
+        <TopProgressBar visible={loggingIn} />
+        <div className={classes.body}>
+          <PaginatedUsers
+            users={data?.dummyUsers?.users}
+            hasMore={data?.dummyUsers?.hasMore}
+            loading={fetching}
+            error={
+              error ? (error.networkError ? "network" : "other") : undefined
+            }
+            next={loadMore}
+            onUserClick={handleLogin}
+          />
+        </div>
+      </React.Fragment>
     </Modal>
   );
 };
