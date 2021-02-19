@@ -83,3 +83,4 @@ export { AdvancedSearchModal } from "./AdvancedSearchModal";
 export { AdvancedSearchForm } from "./AdvancedSearchForm";
 export { FollowStats } from "./FollowStats";
 export { DummyUserLoginModal } from "./DummyUserLoginModal";
+export { QuackStatsModal } from "./QuackStatsModal";
