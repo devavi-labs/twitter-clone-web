@@ -18,17 +18,17 @@ const BottomBanner: React.FC = () => {
         <div className={classes.buttons}>
           <RoundedButton
             variant="outlined"
-            color="secondary"
             className={[classes.loginButton, classes.button].join(" ")}
             onClick={router.pushLoginPage}
+            disableElevation
           >
             Log in
           </RoundedButton>
           <RoundedButton
             variant="contained"
-            color="secondary"
             className={[classes.signupButton, classes.button].join(" ")}
             onClick={router.openSignupModal}
+            disableElevation
           >
             Sign up
           </RoundedButton>

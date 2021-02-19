@@ -59,7 +59,8 @@ export const useStyles = makeStyles(
       },
     },
     loginButton: {
-      color: secondary.main + " !important",
+      color: "white !important",
+      borderColor: "white !important",
     },
     signupButton: {
       color: primary.main + " !important",
