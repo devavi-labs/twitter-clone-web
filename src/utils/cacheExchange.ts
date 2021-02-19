@@ -6,6 +6,7 @@ import {
   FollowMutation,
   FollowMutationVariables,
   LikeMutationVariables,
+  LoginAsDummyUserMutation,
   LoginMutation,
   LogoutMutation,
   MeDocument,
@@ -75,6 +76,22 @@ export const cacheExchange = CE({
             } else {
               return {
                 me: result.login.user,
+              };
+            }
+          }
+        );
+      },
+      loginAsDummyUser: (_result, _, cache) => {
+        betterUpdateQuery<LoginAsDummyUserMutation, MeQuery>(
+          cache,
+          { query: MeDocument },
+          _result,
+          (result, query) => {
+            if (result.loginAsDummyUser.errors) {
+              return query;
+            } else {
+              return {
+                me: result.loginAsDummyUser.user,
               };
             }
           }
