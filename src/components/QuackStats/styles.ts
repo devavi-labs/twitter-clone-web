@@ -1,5 +1,4 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { truncatedTextStyle } from "../../utils/truncatedTextStyle";
 
 export const useStyles = makeStyles(({ palette: { text } }) => ({
   primaryText: {
@@ -7,12 +6,10 @@ export const useStyles = makeStyles(({ palette: { text } }) => ({
     opacity: 0.9,
     fontSize: "0.9rem",
     fontWeight: "bold",
-    ...truncatedTextStyle(),
   },
   secondaryText: {
     color: text.secondary,
     fontSize: "0.8rem",
-    ...truncatedTextStyle(),
   },
   stats: {
     display: "flex",
