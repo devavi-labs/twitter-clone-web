@@ -83,3 +83,4 @@ export { PaginatedUsers } from "./PaginatedUsers";
 export { AdvancedSearchModal } from "./AdvancedSearchModal";
 export { AdvancedSearchForm } from "./AdvancedSearchForm";
 export { FollowStats } from "./FollowStats";
+export { QuackStatsModal } from "./QuackStatsModal";

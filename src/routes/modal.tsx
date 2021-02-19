@@ -6,6 +6,7 @@ import {
   CreateQuackModal,
   DisplaySettingsModal,
   AdvancedSearchModal,
+  QuackStatsModal,
 } from "../components";
 
 export const ModalRoutes = () => {
@@ -34,6 +35,12 @@ export const ModalRoutes = () => {
       />
       <Route exact path="/search-advanced">
         <AdvancedSearchModal open />
+      </Route>
+      <Route exact path="/:username/quack/:quackId/requacks">
+        <QuackStatsModal type="requacks" />
+      </Route>
+      <Route exact path="/:username/quack/:quackId/likes">
+        <QuackStatsModal type="likes" />
       </Route>
     </Switch>
   );
