@@ -11,5 +11,4 @@ export { usePopper } from "./usePopper";
 export { useRecentSearches } from "./useRecentSearches";
 export { useRouter } from "./useRouter";
 export { useToast } from "./useToast";
-export { useUserPopper } from "./useUserPopper";
 export { useSearchQuery } from "./useSearchQuery";

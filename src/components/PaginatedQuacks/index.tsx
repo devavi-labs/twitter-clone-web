@@ -1,8 +1,7 @@
 import { Box, Divider } from "@material-ui/core";
 import React from "react";
-import { PaginatedScroll, Quack, UserPopper } from "..";
+import { PaginatedScroll, Quack } from "..";
 import { RegularQuackFragment } from "../../generated/graphql";
-import { useMediaQuery } from "../../hooks";
 import { transform } from "../../utils/quackTransformer";
 
 type PaginatedQuacksProps = {
@@ -24,8 +23,6 @@ export const PaginatedQuacks: React.FC<PaginatedQuacksProps> = ({
   onEmptyTitle,
   onEmptyMessage,
 }) => {
-  const { xs } = useMediaQuery();
-
   return (
     <div>
       <PaginatedScroll
@@ -52,7 +49,6 @@ export const PaginatedQuacks: React.FC<PaginatedQuacksProps> = ({
           }
           return <></>;
         })}
-        {!xs && <UserPopper />}
       </PaginatedScroll>
     </div>
   );

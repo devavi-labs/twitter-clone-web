@@ -33,7 +33,6 @@ export { Link } from "./Link";
 export { EngageButton } from "./EngageButton";
 export { QuackStats } from "./QuackStats";
 export { LinkCard } from "./LinkCard";
-export { UserPopper } from "./UserPopper";
 export { Stat } from "./Stat";
 export { UserAvatar } from "./UserAvatar";
 export { FollowButton } from "./FollowButton";

@@ -57,14 +57,3 @@ export {
   toastReducer,
 } from "./toast";
 export type { ToastState, ToastAction, ToastContextType } from "./toast";
-export {
-  UserPopperContext,
-  UserPopperProvider,
-  initialUserPopperState,
-  userPopperReducer,
-} from "./userPopper";
-export type {
-  UserPopperState,
-  UserPopperAction,
-  UserPopperContextType,
-} from "./userPopper";

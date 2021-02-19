@@ -14,7 +14,6 @@ import {
   UserAvatar,
 } from "..";
 import { RegularQuackFragment } from "../../generated/graphql";
-import { useMediaQuery, useUserPopper } from "../../hooks";
 
 interface QuackProps {
   quack: RegularQuackFragment;
@@ -31,30 +30,14 @@ export const Quack: React.FC<QuackProps> = ({
   variant = "contained",
   clickable,
 }) => {
-  const [, { handlePopperOpen, handleMouseOut }] = useUserPopper();
-  const { xs } = useMediaQuery();
-
   const history = useHistory();
-
-  const handleMouseOver = (
-    event: React.MouseEvent<HTMLElement, MouseEvent>
-  ) => {
-    if (variant !== "replying-to" && !xs) {
-      handlePopperOpen(event, quack.quackedByUser);
-    }
-  };
 
   return (
     <QuackLayout
       variant={variant}
       left={
         <React.Fragment>
-          <UserAvatar
-            user={quack?.quackedByUser}
-            variant={variant}
-            onMouseOver={handleMouseOver}
-            onMouseLeave={handleMouseOut}
-          />
+          <UserAvatar user={quack?.quackedByUser} variant={variant} />
           {showBar && <ConnectingBar />}
         </React.Fragment>
       }
